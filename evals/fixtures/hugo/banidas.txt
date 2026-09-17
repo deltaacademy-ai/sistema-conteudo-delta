@@ -1,0 +1,142 @@
+# Banidas do Hugo Doria
+# Fonte: hugo-os/resources/dna-da-voz.md, secao 3 (Lista de banidos), 3A a 3E.
+# Uma entrada por linha. Linhas com # sao ignoradas pelo scripts/check-voz.sh.
+# Entradas que o dna-da-voz so bane em certo sentido ou em excesso ficam comentadas no fim,
+# para o grep mecanico nao acusar uso legitimo.
+
+# 3A. Vocabulario morto de IA
+alavancar
+sinergia
+disruptivo
+inovador
+revolucionário
+ecossistema
+transformacional
+exponencial
+holístico
+robusto
+escalável
+otimizar
+empoderar
+potencializar
+maximizar
+fluído
+imersivo
+intuitivo
+dinâmico
+visionário
+pioneiro
+vanguardista
+data-driven
+mission-critical
+plug-and-play
+turnkey
+futurístico
+à prova de futuro
+redefinir
+reimaginar
+reinventar
+intricado
+vibrante
+inigualável
+ressaltar
+fomentar
+alinhar
+ostentar
+gabaritar
+sublinhar
+captar
+aproveitar
+autêntico
+autenticidade
+incrível
+fantástico
+extraordinário
+surpreendente
+impressionante
+sensacional
+espetacular
+marcante
+serve como
+funciona como
+atua como
+se posiciona como
+se destaca como
+marca um
+representa um
+configura um
+
+# 3B. Frases mortas
+em um mundo onde
+no cenário atual
+nos dias de hoje
+é importante notar que
+vale ressaltar que
+é fundamental destacar
+cabe mencionar que
+a fim de
+fico feliz em ajudar
+será um prazer te ajudar
+vamos mergulhar
+vamos explorar
+vamos desvendar
+vamos entender
+vamos descomplicar
+no fim das contas
+no final do dia
+ao fim e ao cabo
+daqui pra frente
+olhando pra frente
+pra colocar em perspectiva
+o que torna isso particularmente interessante
+as implicações aqui são
+não é exagero dizer que
+aqui está a parte que ninguém comenta
+o que ninguém te conta
+a maioria das pessoas não percebe que
+neste artigo, vou
+neste post, você vai aprender
+
+# 3C. Transicoes mortas
+ademais
+outrossim
+destarte
+por conseguinte
+dito isso
+posto isso
+tendo isso em mente
+vale também mencionar
+além de tudo isso
+e não para por aí
+mas tem mais
+
+# 3D. Iscas de engajamento
+pensa nisso
+lê de novo
+para tudo
+isso muda tudo
+você não tá pronto pra isso
+presta atenção
+te garanto
+
+# 3E. Linguagem de hype
+turbinar
+destravar
+desbloquear
+game changer
+estado da arte
+
+# Banidas so em certo sentido ou em excesso (fora do grep mecanico):
+# jornada (sentido figurado)
+# perfeito (no sentido de seamless)
+# estratégico (em excesso)
+# ágil (sentido genérico)
+# descomplicar (em excesso)
+# enfatizar (em excesso)
+# destacar (em excesso)
+# valorizar (genérico)
+# engajamento (como palavra mágica solta)
+# atualmente (como abertura)
+# tranquilo, simples (como enchimento)
+# em outras palavras, ou seja (em excesso)
+# por outro lado (em excesso)
