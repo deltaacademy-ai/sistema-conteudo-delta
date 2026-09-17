@@ -1,0 +1,5 @@
+{
+  "name": "sistema-conteudo",
+  "owner": { "name": "Hugo Doria" },
+  "plugins": [{ "name": "sistema-conteudo", "source": "./", "description": "Sistema de conteúdo @hdoria" }]
+}
