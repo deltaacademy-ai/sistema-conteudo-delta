@@ -102,7 +102,7 @@ Antes de responder, confira:
 3. Todo `trecho` existe na peça, letra por letra.
 4. Nenhuma `sugestao` reescreve mais que o trecho dela.
 5. `check_voz` reflete o que o script imprimiu, ou diz `rodou: false`.
-6. Sua resposta não tem travessão, emoji nem termo de `banidas.txt`; o revisor que acusa o que ele mesmo comete perde a autoridade da nota.
+6. Sua resposta não tem travessão, emoji nem termo de `banidas.txt` fora do campo `trecho`; o revisor que acusa o que ele mesmo comete perde a autoridade da nota. O `trecho` é citação literal e carrega o defeito que aponta (o travessão acusado aparece nele), por isso um grep na resposta pode acusar essa linha e só ela.
 
 ## O que este especialista não faz
 
