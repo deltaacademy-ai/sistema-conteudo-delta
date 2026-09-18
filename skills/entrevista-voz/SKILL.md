@@ -12,8 +12,8 @@ Este especialista decide se o sistema inteiro soa como a pessoa ou como IA gené
 Na pasta de contexto (a pasta atual, que tem `materiais/` ou os arquivos de contexto):
 
 - `voz-bruta.md`: leitura dos materiais e a entrevista literal, pergunta por pergunta. É a fonte; nunca resuma.
-- `voz.md`: o perfil compilado, em XML, com os blocos de `references/compilador.md`, abaixo de 5.000 tokens (menos de 3.500 palavras).
-- `banidas.txt`: um termo por linha, só o que o material sustenta. Linha começando com `#` é comentário.
+- `voz.md`: o perfil compilado, em XML, com os blocos de `references/compilador.md`, até 17.500 caracteres (cerca de 5.000 tokens).
+- `banidas.txt`: um termo por linha (palavra ou expressão de até 4 palavras), só o que o material sustenta. Linha começando com `#` é comentário.
 
 Nada aqui é inventado. Lacuna vira "sem evidência" no perfil e pergunta à pessoa, nunca suposição.
 
@@ -93,7 +93,7 @@ Quem entrevistou não compila. Depois de 50 perguntas, esta conversa carrega as 
 
 Quando o host oferece subagente (no Claude Code, a ferramenta Agent), abra um com esta mensagem, ajustando os caminhos:
 
-> Você é o compilador de voz. Leia, nesta ordem: `[caminho absoluto]/references/compilador.md` (as regras), `[pasta de contexto]/voz-bruta.md` e todos os arquivos de `[pasta de contexto]/materiais/`. Siga o compilador.md à risca. Grave `[pasta de contexto]/voz.md` e `[pasta de contexto]/banidas.txt`. Responda só com a contagem de palavras do voz.md, os blocos que ficaram com "sem evidência" e as contradições registradas.
+> Você é o compilador de voz. Leia, nesta ordem: `[caminho absoluto]/references/compilador.md` (as regras), `[pasta de contexto]/voz-bruta.md` e todos os arquivos de `[pasta de contexto]/materiais/`. Siga o compilador.md à risca. Grave `[pasta de contexto]/voz.md` e `[pasta de contexto]/banidas.txt`. Responda só com a contagem de caracteres do voz.md (teto 17.500), os blocos que ficaram com "sem evidência" e as contradições registradas.
 
 O `compilador.md` fica na mesma pasta deste SKILL.md, em `references/`. Se o subagente não conseguir ler o arquivo, cole o conteúdo dele na mensagem.
 
@@ -102,9 +102,9 @@ Sem subagente disponível, não compile aqui. Peça à pessoa que abra uma conve
 Quando a compilação voltar, confira antes de mostrar:
 
 1. `voz.md` existe, começa em `<sobre_mim>` e termina em `</sobre_mim>`, com todos os blocos do compilador na ordem.
-2. Menos de 3.500 palavras.
+2. Até 17.500 caracteres (`wc -m voz.md`, ou o tamanho que a ferramenta de leitura mostra). Contagem de palavras não substitui: ela subestima.
 3. Sem travessão e sem emoji. Se puder rodar script, `bash [raiz do plugin]/scripts/check-voz.sh voz.md` (sem o segundo argumento: o próprio perfil lista as palavras evitadas). Se não puder, confira na leitura.
-4. `banidas.txt` só lista o que a entrevista ou os textos sustentam, um termo por linha.
+4. `banidas.txt` só lista o que a entrevista ou os textos sustentam, um termo por linha, nenhuma linha sem `#` com mais de 4 palavras.
 5. Toda frase literal em `<banco_de_frases>` e `<exemplos_de_ouro>` existe em `voz-bruta.md` ou em `materiais/`.
 
 Falhou em algum item: devolva ao compilador com o item que falhou, nunca corrija à mão (a correção manual reintroduz a sua voz).

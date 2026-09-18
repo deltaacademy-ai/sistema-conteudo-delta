@@ -12,12 +12,23 @@ Se sim, mantenha. Se não, corte. Você está otimizando fidelidade de comportam
 
 ## Tamanho
 
-- Alvo: entre 2.000 e 4.000 tokens.
-- Teto: 5.000 tokens (na prática, menos de 3.500 palavras em português).
-- Material bruto fino produz arquivo curto. Isso é correto: não estique o arquivo para parecer completo.
-- Passe de 4.000 só se cada linha extra for de alto sinal.
+O tamanho é medido em caracteres, com espaços e quebras de linha, porque é o que dá para contar sem depender de tokenizador. Em português com XML, 3,5 caracteres valem cerca de 1 token.
 
-O teto existe porque o arquivo entra em toda sessão, junto com o ICP, a prova e a tarefa. Acima disso ele começa a disputar espaço com o trabalho que deveria orientar.
+- Alvo: entre 7.000 e 14.000 caracteres (2.000 a 4.000 tokens).
+- Teto: 17.500 caracteres (cerca de 5.000 tokens). Não é alvo, é limite.
+- Material bruto fino produz arquivo curto. Isso é correto: não estique o arquivo para parecer completo.
+- Passe de 14.000 só se cada linha extra for de alto sinal.
+- Não corte especificidade útil só para parecer minimalista: um exemplo literal de 30 palavras que muda o output vale mais que três linhas de descrição.
+
+O teto existe porque o arquivo entra em toda sessão, junto com o ICP, a prova e a tarefa. Acima disso ele começa a disputar espaço com o trabalho que deveria orientar. Contagem de palavras não serve como medida: em compilações anteriores, arquivos com menos de 3.500 palavras passaram de 21.000 caracteres.
+
+Como conferir: com o arquivo pronto, conte os caracteres (`wc -m voz.md`, ou o tamanho que a ferramenta de leitura mostra). Acima de 17.500, corte até caber, assim:
+
+1. Aplique o teste de linha de novo, agora em ordem de valor: primeiro a linha cuja ausência menos mudaria o output (uma lei [leve] redundante com outra, um gosto que repete uma lei, o quinto exemplo de ouro quando os quatro primeiros já ensinam o padrão).
+2. Corte linhas inteiras: uma `<lei>`, uma `<nunca>`, uma `<tensao>`, um `<exemplo>` completo com as quatro partes. Nunca corte no meio de um bloco nem termine o arquivo antes de `</sobre_mim>`: um `<exemplo>` sem `</exemplo>` quebra todo especialista que lê por bloco.
+3. Conte de novo. Repita até 17.500 ou menos.
+
+Recusa dura e exemplo literal saem por último. Descrição e repetição saem primeiro.
 
 ## Mantenha
 
@@ -47,6 +58,7 @@ Tudo que é verdade mas não muda o texto que sai:
 - preferência vaga sem exemplo
 - trecho longo de transcrição
 - citação que não ensina nada sobre a voz
+- qualquer coisa que pareça bio pessoal
 - qualquer coisa incluída só porque é verdade
 
 ## Evidência e invenção
@@ -68,7 +80,12 @@ Os blocos têm nome fixo porque outros especialistas leem o arquivo por bloco: o
 ```xml
 <sobre_mim>
 <uso>
-Três linhas compactas: como carregar o arquivo, em que tarefas ele vale, e a regra de aplicação: espírito acima da letra, exceto nas recusas duras, que são absolutas. Diga também que a voz varia com naturalidade: nem todo texto começa pela abertura de assinatura, e palavra evitada pode ser usada quando é a palavra certa.
+Cinco linhas compactas, uma regra por linha:
+1. Como carregar o arquivo e em que tarefas ele vale.
+2. Espírito acima da letra, exceto nas recusas duras, que são absolutas. Um texto que usa três tendências com naturalidade é melhor que um que enfia dez à força.
+3. A voz varia com naturalidade: nem todo texto começa pela abertura de assinatura, e palavra evitada pode ser usada quando é a palavra certa. O conteúdo dita a estrutura, não o molde.
+4. A voz se adapta ao formato: um post não é uma newsletter, que não é um artigo, que não é uma legenda. Diga à IA que julgue quais padrões cabem em cada formato, e que as leis marcadas com formato só valem nele. Se o material cobre um formato só, diga qual, para a IA saber que fora dele está extrapolando.
+5. O teste final: antes de entregar qualquer texto como a pessoa, perguntar se ele soa como algo que ela escreveria ou como uma IA se esforçando para imitá-la. Se parecer forçado, recuar: menos imitação, mais habitação. É o antídoto para o perfil executado como fórmula.
 </uso>
 
 <prioridade>
@@ -94,6 +111,7 @@ Regras compactas, uma por linha, neste formato:
 <lei>Faça: [instrução específica]. Evite: [falha específica]. Exemplo: [exemplo compacto, opcional].</lei>
 O par "faça e evite" existe porque uma regra só de proibição deixa a IA sem saída, e uma só de permissão não fecha a porta ao erro.
 Quando o material sustentar, marque a frequência no início da lei: [fixa] nunca se viola; [forte] vale em 7 ou 8 textos de 10 e pode ser quebrada quando o conteúdo pede; [leve] é preferência, o contexto decide. Sem marca, leia como leve. A marca existe para a IA não aplicar toda lei em todo texto, que é o que faz o resultado soar como perfil executado, não como pessoa.
+Quando o material cobrir mais de um formato (post, legenda, newsletter, artigo, e-mail) e uma lei só valer em um deles, marque o formato depois da frequência: [forte][legenda]. Lei sem marca de formato vale em todos. A marca existe porque a voz muda com o formato, e uma lei de post aplicada a um artigo longo produz caricatura.
 </leis_de_escrita>
 
 <leis_de_comunicacao>
@@ -153,7 +171,7 @@ O que a IA não deve assumir sobre a pessoa a partir deste perfil. Inclua aqui a
 </nao_inferir>
 
 <instrucao_final>
-Uma instrução compacta: aplicar o perfil em silêncio, em todo output, sem mencionar que está aplicando, a não ser que a pessoa mande diferente.
+Duas linhas: aplicar o perfil em silêncio, em todo output, sem mencionar que está aplicando, a não ser que a pessoa mande diferente; e, antes de entregar, rodar o teste final do bloco <uso> (soa como ela ou como IA imitando ela?) e recuar no que estiver forçado.
 </instrucao_final>
 </sobre_mim>
 ```
@@ -172,7 +190,8 @@ Passe pelo arquivo inteiro uma vez, com este roteiro, e não mostre o roteiro no
 - confirme que o gosto positivo sobreviveu
 - confirme que as regras de decisão sobreviveram
 - confirme que as contradições úteis sobreviveram
-- confirme que o arquivo está abaixo de 5.000 tokens
+- confirme que o bloco <uso> traz as cinco regras, inclusive a adaptação por formato e o teste final
+- conte os caracteres do arquivo: acima de 17.500, corte linhas inteiras pelo roteiro da seção Tamanho e conte de novo
 - confirme que não há travessão, emoji, nem prosa fora dos blocos
 
 O `voz.md` passa pela mesma checagem mecânica que os textos (travessão e emoji), então nem o lado "ruim" de um exemplo pode conter um travessão ou um emoji de verdade. Descreva em palavras: "Ruim: a frase com um foguete no fim" em vez de colar o símbolo.
@@ -180,8 +199,12 @@ O `voz.md` passa pela mesma checagem mecânica que os textos (travessão e emoji
 ## O que gravar
 
 1. `voz.md`: o XML acima, do `<sobre_mim>` ao `</sobre_mim>`, sem nada antes ou depois.
-2. `banidas.txt`: um termo por linha, extraído de `<banco_de_frases><evitar>` e de `<recusas_duras>`, em minúsculas, sem pontuação de lista. Linhas iniciadas por `#` são comentário e servem para agrupar e para citar a fonte. Termo que a pessoa só rejeita em certo sentido ou em excesso ("jornada" figurada, "simples" como enchimento) fica comentado no fim, para a checagem mecânica não acusar uso legítimo. Só entra o que o material sustenta: nada de lista pronta de clichês de IA que a pessoa nunca mencionou nem rejeitou nos textos.
+2. `banidas.txt`: um termo por linha, extraído de `<banco_de_frases><evitar>` e de `<recusas_duras>`, em minúsculas, sem pontuação de lista. Termo é palavra ou expressão curta, de no máximo 4 palavras ("alavancar", "link na bio", "você já parou pra pensar" não cabe, "já parou pra pensar" cabe). Oração inteira não entra, nem como termo nem como comentário: a checagem mecânica casa a linha inteira contra o texto, e uma oração de 13 palavras nunca vai casar com nada, então ela ocupa o arquivo sem proteger nada. O que a pessoa rejeita em forma de frase já está no `voz.md`, em `<evitar>` ou em `<nunca>`; aqui fica só o que dá para caçar por grep.
 
-   O que entra é vocabulário: palavra, expressão, muleta de transição, isca de engajamento, frase feita que a pessoa rejeita. O arquivo alimenta uma checagem mecânica que roda em todo texto futuro, então cada linha precisa ser algo que nunca deveria aparecer em texto nenhum dela. Por isso não entram: nome próprio, produto ou cargo deixado de fora de um texto por falta de confirmação (isso é fato pendente, não palavra banida); tese que ela refuta (ela precisa poder citar a tese para refutá-la); trecho cortado de um rascunho específico por motivo daquele texto; padrão que não é termo literal (regra de três, paralelismo negativo, emoji), que fica descrito em comentário.
+   Linhas iniciadas por `#` são comentário, uma linha por grupo, só para nomear o grupo e citar a fonte ("# isca de engajamento (post grok bot, corte da v2)"). Termo que a pessoa só rejeita em certo sentido ou em excesso ("jornada" figurada, "simples" como enchimento) fica comentado no fim, um por linha, curto, para a checagem mecânica não acusar uso legítimo. Só entra o que o material sustenta: nada de lista pronta de clichês de IA que a pessoa nunca mencionou nem rejeitou nos textos.
 
-Na mensagem de resposta, e não no arquivo, informe: contagem de palavras do `voz.md`, blocos que ficaram com "sem evidência", e as contradições registradas.
+   O que entra é vocabulário: palavra, expressão, muleta de transição, isca de engajamento, frase feita que a pessoa rejeita. O arquivo alimenta uma checagem mecânica que roda em todo texto futuro, então cada linha precisa ser algo que nunca deveria aparecer em texto nenhum dela. Por isso não entram: nome próprio, produto ou cargo deixado de fora de um texto por falta de confirmação (isso é fato pendente, não palavra banida); tese que ela refuta (ela precisa poder citar a tese para refutá-la); trecho cortado de um rascunho específico por motivo daquele texto; padrão que não é termo literal (regra de três, paralelismo negativo, emoji), que fica em uma linha de comentário no fim.
+
+   Antes de gravar, releia o arquivo: toda linha sem `#` com mais de 4 palavras sai. Se sobrar um arquivo com três termos, é o arquivo certo; a lista cresce com `learnings.md`, não com frase de rascunho.
+
+Na mensagem de resposta, e não no arquivo, informe: contagem de caracteres do `voz.md` (o teto é 17.500), blocos que ficaram com "sem evidência", e as contradições registradas.
