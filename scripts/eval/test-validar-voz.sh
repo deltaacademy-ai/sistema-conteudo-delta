@@ -34,4 +34,8 @@ printf 'ja parou pra pensar\n' > "$d/b4.txt"; printf 'voce ja parou pra pensar\n
 bash "$s" "$d/ok.md" "$d/b4.txt" > /dev/null && ok "4 palavras passa" || falha "4 palavras reprovou"
 bash "$s" "$d/ok.md" "$d/b5.txt" > /dev/null && falha "5 palavras passou" || ok "5 palavras reprova"
 
+# banidas: so comentario, nenhum termo
+printf '# isca de engajamento\n# emoji\n' > "$d/b0.txt"
+bash "$s" "$d/ok.md" "$d/b0.txt" > "$d/saida.txt" && falha "banidas sem termo passou" || { grep -q '^BANIDAS: nenhum termo' "$d/saida.txt" && ok "banidas sem termo reprova" || falha "sem termo sem linha BANIDAS"; }
+
 exit $falhou

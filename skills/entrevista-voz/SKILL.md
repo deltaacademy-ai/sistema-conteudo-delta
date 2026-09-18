@@ -93,7 +93,7 @@ Quem entrevistou não compila. Depois de 50 perguntas, esta conversa carrega as 
 
 Quando o host oferece subagente (no Claude Code, a ferramenta Agent), abra um com esta mensagem, ajustando os caminhos:
 
-> Você é o compilador de voz. Leia, nesta ordem: `[caminho absoluto]/references/compilador.md` (as regras), `[pasta de contexto]/voz-bruta.md` e todos os arquivos de `[pasta de contexto]/materiais/`. Siga o compilador.md à risca. Grave `[pasta de contexto]/voz.md` e `[pasta de contexto]/banidas.txt`. Responda só com a contagem de caracteres do voz.md (teto 17.500), os blocos que ficaram com "sem evidência" e as contradições registradas.
+> Você é o compilador de voz. Leia, nesta ordem: `[caminho absoluto]/references/compilador.md` (as regras), `[pasta de contexto]/voz-bruta.md` e todos os arquivos de `[pasta de contexto]/materiais/`. Siga o compilador.md à risca. Grave `[pasta de contexto]/voz.md` e `[pasta de contexto]/banidas.txt`. Responda só com a contagem de caracteres do voz.md (teto 17.500), a contagem de termos do banidas.txt (linhas sem `#`), os blocos que ficaram com "sem evidência" e as contradições registradas.
 
 O `compilador.md` fica na mesma pasta deste SKILL.md, em `references/`. Se o subagente não conseguir ler o arquivo, cole o conteúdo dele na mensagem.
 
@@ -104,7 +104,7 @@ Quando a compilação voltar, confira antes de mostrar:
 1. `voz.md` existe, começa em `<sobre_mim>` e termina em `</sobre_mim>`, com todos os blocos do compilador na ordem.
 2. Até 17.500 caracteres (`wc -m voz.md`, ou o tamanho que a ferramenta de leitura mostra). Contagem de palavras não substitui: ela subestima.
 3. Sem travessão e sem emoji. Se puder rodar script, `bash [raiz do plugin]/scripts/check-voz.sh voz.md` (sem o segundo argumento: o próprio perfil lista as palavras evitadas). Se não puder, confira na leitura.
-4. `banidas.txt` só lista o que a entrevista ou os textos sustentam, um termo por linha, nenhuma linha sem `#` com mais de 4 palavras.
+4. `banidas.txt` lista tudo que a entrevista ou os textos sustentam, e só isso: um termo por linha, nenhuma linha sem `#` com mais de 4 palavras. Arquivo sem termo, ou com mais comentário do que termo, volta ao compilador: a checagem mecânica dos outros especialistas depende dessa lista.
 5. Toda frase literal em `<banco_de_frases>` e `<exemplos_de_ouro>` existe em `voz-bruta.md` ou em `materiais/`.
 
 Falhou em algum item: devolva ao compilador com o item que falhou, nunca corrija à mão (a correção manual reintroduz a sua voz).

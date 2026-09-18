@@ -15,6 +15,9 @@ set -u
 # - CHECK-VOZ: travessao ou emoji (scripts/check-voz.sh) no voz.md ou no banidas.txt.
 # - BANIDAS: linha sem # com mais de 4 palavras. O check-voz.sh casa a linha
 #   inteira contra o texto, entao uma oracao nunca dispara e so ocupa o arquivo.
+#   Tambem falha quando nao ha nenhuma linha sem #: um banidas.txt so de
+#   comentario deixa a checagem mecanica dos outros especialistas sem nada para
+#   conferir (regressao vista na rodada 3 da Tarefa 4).
 dir=$(cd "$(dirname "$0")" && pwd)
 voz="$1"; ban="${2:-}"; falhou=0; teto="${TETO_VOZ:-17500}"
 [ -s "$voz" ] || { echo "ARQUIVO: voz.md vazio ou ausente: $voz"; exit 1; }
@@ -54,6 +57,9 @@ if [ -n "$ban" ]; then
     if ! bash "$dir/../check-voz.sh" "$ban" > /dev/null; then echo "CHECK-VOZ: travessao ou emoji em $ban"; falhou=1; fi
     uteis=$(grep -v '^[[:space:]]*#' "$ban" | grep -c -v '^[[:space:]]*$')
     comentario=$(grep -c '^[[:space:]]*#' "$ban")
+    if [ "$uteis" -eq 0 ]; then
+      echo "BANIDAS: nenhum termo (so comentario): a checagem mecanica dos outros especialistas fica cega"; falhou=1
+    fi
     echo "banidas: $uteis termos, $comentario linhas de comentario"
   fi
 fi
