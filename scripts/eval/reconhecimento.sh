@@ -15,7 +15,8 @@ set -euo pipefail
 # Contrato:
 # 1. Pega os 3 posts reais de <materiais-dir>: em cada arquivo, o primeiro bloco
 #    entre <!-- ai:start --> e <!-- ai:end --> (formato das notas do vault); se
-#    o arquivo nao tem cerca, vale o arquivo inteiro. Precisa haver exatamente 3.
+#    o arquivo nao tem cerca, vale o arquivo inteiro. Precisa haver pelo menos 3;
+#    usa os 3 primeiros em ordem C de nome.
 # 2. Para cada post real, extrai um briefing factual (tipo, tamanho, fatos,
 #    numeros, nomes, ordem do que aconteceu, o que o autor pede no fim) com um
 #    modelo isolado fixo (claude-sonnet-5, prompt em reconhecimento-briefing.md),
