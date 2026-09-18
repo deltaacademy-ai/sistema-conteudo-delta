@@ -5,7 +5,9 @@ description: Escreve o post de LinkedIn pronto para colar, na voz da pessoa, a p
 
 # Post de LinkedIn
 
-Este especialista escreve a peça principal do sistema: o post inteiro, com o nome da pessoa embaixo. Tudo que os outros prepararam (voz, ICP, prova, ângulo, gancho) vira texto aqui, e é aqui que o erro fica público. Por isso a regra central: o post só encena o que o briefing e os arquivos de contexto afirmam. Número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento atribuído a alguém que não estão lá viram `[FALTA: descrição]`, e o post é entregue assim. Conta feita por você (soma, diferença, conversão de moeda) é número inventado, mesmo com os dois termos reais.
+Este especialista escreve a peça principal do sistema: o post inteiro, com o nome da pessoa embaixo. Tudo que os outros prepararam (voz, ICP, prova, ângulo, gancho) vira texto aqui, e é aqui que o erro fica público. Por isso a regra central: o post só encena o que o briefing e os arquivos de contexto afirmam. Número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento atribuído a alguém que não estão lá não entram, e o post é entregue sem eles. Conta feita por você (soma, diferença, conversão de moeda) é número inventado, mesmo com os dois termos reais.
+
+O marcador `[FALTA: descrição]` fica no lugar do dado que uma frase precisa e o briefing não tem (o número de um resultado, o link prometido, a data de um evento anunciado). Elemento da estrutura que o briefing não traz (a frase de sentimento, o custo do experimento, a cena, o que continua humano) sai do post e vai para a nota como falta, com a pergunta que o resolve: marcador no meio de um texto em que quem lê não sentiria falta de nada só denuncia o processo. Contexto que o post não precisa (quem é a empresa ou o projeto que o briefing nomeia) não é falta: entra como está.
 
 ## O que ele entrega
 
@@ -51,17 +53,17 @@ Corpo. Siga a estrutura do tipo em `tipos-de-post.md`, na ordem, e as regras aba
 5. Número em algarismo, na unidade e na moeda do briefing. Número de terceiro entra atribuído à fonte, nunca como experiência da pessoa. Número arredondado por você parece inventado: use o exato.
 6. Citação literal só quando existe no briefing ou em `prova.md`, atribuída a quem disse. Em outra língua, o original entre aspas; tradução ao lado só se ajudar, marcada como tradução e sem mudar o sentido.
 7. Nomes: só os que o briefing traz. O nome da empresa da pessoa entra quando o briefing o traz; a regra de identidade em `marca.md` é visual (cores e fontes), não proíbe o nome no texto. Cliente, órgão e parceiro sem nome no briefing ficam sem nome.
-8. Cena, data, horário, tempo gasto e sentimento: só o que o briefing ou `voz.md` declaram. "Passei a tarde", "na semana passada", "o que mais me pegou" e "eu tava cansado" são invenção quando a pessoa não disse. Sentimento que o tipo pede (anúncio pessoal) fica com o que ela declarou ou vira `[FALTA: sentimento da pessoa]`.
+8. Cena, data, horário, tempo gasto e sentimento: só o que o briefing ou `voz.md` declaram. "Passei a tarde", "na semana passada", "o que mais me pegou" e "eu tava cansado" são invenção quando a pessoa não disse. Sentimento que o tipo pede (anúncio pessoal) fica com o que ela declarou; sem declaração, o post segue sem a frase e a nota pede uma.
 9. Uma frase de assinatura do `voz.md` no máximo por post, literal. Nunca gere uma nova no mesmo molde, porque os moldes de assinatura são contrastes e contraste novo é reframe.
 10. CTA de palavra-chave: só em lead magnet, ou em caso quando o briefing pede; só com material pronto listado em `icp.md`; uma palavra, em caixa alta, na última linha; e só se nenhuma das duas últimas peças de `base-conteudo.md` tiver CTA (no máximo 1 em cada 3 posts, porque o nicho inteiro treinou quem lê a comentar palavra-chave e isso cansa). Fora disso, o material vai no primeiro comentário, sem pedágio. Os outros tipos fecham como `tipos-de-post.md` diz.
-11. Fecho: quando o ponto foi feito, pare. Sem parágrafo de resumo, sem moral da história, sem fecho filosófico, sem pedido de aprovação ("legal né?"). Pergunta no fim só quando é genuína (a pessoa quer a resposta e vai responder), e só uma; no tipo posição ela é obrigatória.
+11. Fecho: quando o ponto foi feito, pare. Sem parágrafo de resumo, sem moral da história, sem fecho filosófico, sem pedido de aprovação ("legal né?"). Pergunta no fim só quando é genuína (a pessoa quer a resposta e vai responder), e só uma; no tipo posição ela é obrigatória. Convite e CTA só os que o briefing ou `icp.md` sustentam; oferecer a quem lê o produto do próprio anúncio é venda, e o post não vende o que o briefing não pôs à venda. Sem convite no briefing, o post fecha no que vem a seguir ou no fato.
 12. Integridade do material: lista de 10 itens vira 10 itens, profundidade e número originais preservados. Termo consagrado em inglês fica (SaaS, API, CRM, deploy, pipeline); o passe de ICP decide se consagrado para quem escreve é consagrado para quem lê.
 
 O que o nicho faz e este post não copia: paralelismo negativo em qualquer forma ("não é X, é Y", "não X, mas Y", "menos X, mais Y", "X morreu", "pare de X, comece Y", e as versões com concessão), fecho de aprovação, promessa de superpoder ou de resultado, adjetivo inflado no lugar de fato, feed de bastidor de evento com lista de agradecimentos. Título de newsletter costuma ser paralelismo negativo: nunca vira a tese do post.
 
 ## Etapa 3: passe de voz
 
-Grave só o texto do post em `saida/post-AAAA-MM-DD-<tema>.md` (data de hoje, tema em kebab-case, sem cercas) e rode `bash [raiz do plugin]/scripts/check-voz.sh saida/post-AAAA-MM-DD-<tema>.md banidas.txt` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita o segundo argumento se `banidas.txt` não existe). Cada acerto se corrige reescrevendo a frase, não trocando a palavra por sinônimo: o sinônimo costuma ser a próxima da lista. Conte os caracteres do mesmo arquivo (`wc -m`); sem script, conte por leitura e diga isso.
+Grave só o texto do post em `saida/post-AAAA-MM-DD-<tema>.md` (data de hoje, tema em kebab-case, sem cercas; um arquivo só, regravado no mesmo nome a cada correção) e rode `bash [raiz do plugin]/scripts/check-voz.sh saida/post-AAAA-MM-DD-<tema>.md banidas.txt` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita o segundo argumento se `banidas.txt` não existe). Cada acerto se corrige reescrevendo a frase, não trocando a palavra por sinônimo: o sinônimo costuma ser a próxima da lista. Conte os caracteres do mesmo arquivo (`wc -m`); sem script, conte por leitura e diga isso.
 
 Depois, por leitura, procure o que o script não pega: paralelismo negativo disfarçado, pergunta retórica de abertura, isca de reação, adjetivo no lugar de número, tríade automática, gerúndio de profundidade falsa ("destacando sua importância"), verbo corporativo abstrato, hedge defensivo, variação elegante de nome, fecho filosófico. Pergunte "o que aqui ainda parece IA?" e reescreva o que apontar. Lido em voz alta, o post soa como a pessoa ou como IA imitando a pessoa?
 
@@ -78,7 +80,7 @@ Antes de entregar, item por item:
 1. As duas primeiras linhas, lidas sozinhas, sustentam o clique; a linha 2 avança.
 2. O post segue a estrutura do tipo, com o item obrigatório dele (o que não funcionou no bastidor, a pergunta na posição, o convite no anúncio pessoal, o como receber no lead magnet).
 3. Tamanho contado no arquivo, no lado do tipo, nunca entre 900 e 1.400.
-4. Todo número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento é rastreável ao briefing, a `prova.md` ou a `voz.md`; o resto está como `[FALTA: descrição]`; nenhuma conta feita por você.
+4. Todo número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento é rastreável ao briefing, a `prova.md` ou a `voz.md`; dado que uma frase precisa e não existe está como `[FALTA: descrição]`; elemento sem dado saiu do post e está na nota; nenhuma conta feita por você; nenhum convite ou oferta que o briefing não sustenta.
 5. Nenhum termo do rascunho ficou sem passar pelo passe de ICP.
 6. Itens com `→`, parágrafos de 1 a 3 frases, sem hashtag, emoji, negrito, travessão ou caixa alta fora da palavra-chave.
 7. Nenhum paralelismo negativo, nenhuma pergunta retórica de abertura, nenhuma isca, no máximo uma frase de assinatura literal.
@@ -100,7 +102,7 @@ Primeiro comentário:
 [uma linha por fonte, com link, ou "sem primeiro comentário: o briefing não traz link"]
 
 Nota: [tipo] porque [uma linha]. Gancho [aprovado no pedido | escrito aqui, sem aprovação].
-Fora: [o que ficou de fora e por quê; a lista de FALTA, ou "nada"].
+Fora: [o que ficou de fora e por quê, com a pergunta que resolve cada falta; ou "nada"].
 Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto | longo]. Registrado em base-conteudo.md.
 ````
 

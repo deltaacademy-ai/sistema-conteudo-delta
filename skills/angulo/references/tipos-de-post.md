@@ -73,7 +73,7 @@ Estrutura:
 3. O que rolou, afirmado, com número quando o briefing traz.
 4. O que não funcionou. Obrigatório, como parte da história e nunca como nota de rodapé: é o que separa bastidor de vitrine.
 5. O que continua sendo trabalho humano.
-6. O custo real do experimento (tempo, dinheiro), só se o briefing dá; sem o dado, o item some ou vira `[FALTA]`.
+6. O custo real do experimento (tempo, dinheiro), só se o briefing dá; sem o dado, o item sai e a nota registra.
 
 Tamanho: 1.500 a 2.900 caracteres.
 
@@ -147,15 +147,15 @@ Estrutura:
 
 1. Linha 1: cena ou memória concreta, com lugar, hora ou objeto, ou o fato dito com o sentimento junto.
 2. O fato, numa frase: o que aconteceu e o que muda.
-3. Uma frase de sentimento, específica, que só a pessoa diria. Uma, não um parágrafo.
+3. Uma frase de sentimento, específica, que só a pessoa diria. Uma, não um parágrafo, e só quando ela a declarou: sem declaração, o post segue sem a frase e a nota pede uma.
 4. O que segue (o que ela vai fazer, quando, onde), só o que o briefing confirma.
-5. Convite: o que quem lê pode fazer (chamar, aparecer, levar para a cidade dele).
+5. Convite: o que quem lê pode fazer (chamar, aparecer, levar para a cidade dele), só o que o briefing sustenta. Sem convite no briefing, o post fecha no que vem a seguir.
 6. Agradecimento nominal em uma linha, só com os nomes que o briefing traz.
 
 Tamanho: abaixo de 900 caracteres.
 
-Fecho: o convite. Sem CTA de palavra-chave, sem venda.
+Fecho: o convite que o briefing dá, ou o que vem a seguir. Sem CTA de palavra-chave. Oferecer a quem lê o mesmo produto do anúncio (o treinamento, a mentoria, a vaga) é venda, e anúncio não é venda.
 
-Exige: fato confirmado e cena verdadeira, dita pela pessoa. Cena de sala, data, cidade, turma ou número de participantes que o briefing não dá ficam fora ou viram `[FALTA]`.
+Exige: fato confirmado. Cena de sala, data, cidade, turma ou número de participantes que o briefing não dá ficam fora; só a data de um evento anunciado sem data vira `[FALTA: data]`, porque a frase do evento precisa dela.
 
-Fica de fora: todo parágrafo que começa a explicar por que aquilo importa (é a tese voltando), o que a pessoa vai ensinar em detalhe, foto de palco com lista de agradecimentos, regionalismo forçado.
+Fica de fora: todo parágrafo que começa a explicar por que aquilo importa (é a tese voltando), o que a pessoa vai ensinar em detalhe, oferta do produto a quem lê, foto de palco com lista de agradecimentos, regionalismo forçado.
