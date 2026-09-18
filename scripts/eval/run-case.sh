@@ -18,10 +18,13 @@ if [ -n "$retido" ]; then
   [ -f "$work/materiais/$retido" ] || { echo "retido nao existe na fixture $fx: materiais/$retido" >&2; exit 1; }
   rm -f "$work/materiais/$retido"
 fi
-# Alem de ler as skills do plugin, a execucao pode rodar so o check-voz.sh do
-# repositorio (Bash restrito a esse script, nada mais largo): a sessao de um
-# comprador tem esse script disponivel, e sem ele o portao media as skills sem
-# a checagem mecanica que elas mandam rodar (ruling da Tarefa 5, depois do
-# lote de contexto-negocio, que rodou inteiro sem essa permissao).
+# Alem de ler as skills do plugin, a execucao pode rodar o check-voz.sh do
+# repositorio: a sessao de um comprador tem esse script disponivel, e sem ele
+# o portao media as skills sem a checagem mecanica que elas mandam rodar
+# (ruling da Tarefa 5, depois do lote de contexto-negocio, que rodou inteiro
+# sem essa permissao). A permissao e por prefixo (`:*`): autoriza qualquer
+# comando que comece pela chamada do script, inclusive um encadeamento depois
+# dela; nao e "so esse script" no sentido estrito. Basta aqui porque o lado
+# executado nao e adversario; nao reutilize o padrao onde for.
 ( cd "$work" && "${CLAUDE_ISOLADO:-$dir/claude-isolado.sh}" --model "$modelo" --plugin-dir "$plugin" --allowedTools "Read(/$plugin/skills/**)" "Bash(bash $plugin/scripts/check-voz.sh:*)" "Bash($plugin/scripts/check-voz.sh:*)" --permission-mode acceptEdits --output-format json "$pr" ) | jq -r '.result' > "$saida"
 mkdir -p "$saida.arquivos" && cp -R "$work/." "$saida.arquivos/"
