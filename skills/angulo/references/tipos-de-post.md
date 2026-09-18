@@ -50,7 +50,7 @@ Quando: uma história real com problema, o que foi feito, o que mudou e número.
 Estrutura:
 
 1. Linha 1: o resultado ou o número da história.
-2. A história em 4 a 6 parágrafos curtos, com data e número: a situação, o que foi feito, o que mudou. Sem IA nem oferta no meio.
+2. A história em 4 a 6 parágrafos curtos, em primeira pessoa e na ordem em que aconteceu, com data e número: a situação, o que a pessoa fez, o que mudou. O número da linha 1 não volta no corpo. Sem IA nem oferta no meio, e sem glossário: o termo de área que a história não explica sozinha é reescrito na palavra de quem lê.
 3. O princípio que a história prova, nomeado numa frase.
 4. Onde a oferta ou a IA entram hoje nesse mesmo problema, só quando o briefing pede; sem pedido, o post fecha no princípio.
 
