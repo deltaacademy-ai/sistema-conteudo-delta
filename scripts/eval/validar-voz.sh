@@ -17,7 +17,10 @@ set -u
 #   inteira contra o texto, entao uma oracao nunca dispara e so ocupa o arquivo.
 #   Tambem falha quando nao ha nenhuma linha sem #: um banidas.txt so de
 #   comentario deixa a checagem mecanica dos outros especialistas sem nada para
-#   conferir (regressao vista na rodada 3 da Tarefa 4).
+#   conferir (regressao vista na rodada 3 da Tarefa 4). E falha em linha feita
+#   so de palavra funcional ou verbo comum (lista em palavras-comuns.txt) ou de
+#   uma palavra unica com menos de 4 letras: "para", "esta", "comenta" como termo
+#   ativo acusariam uso legitimo em quase toda peca (rodada 4 da Tarefa 4).
 dir=$(cd "$(dirname "$0")" && pwd)
 voz="$1"; ban="${2:-}"; falhou=0; teto="${TETO_VOZ:-17500}"
 [ -s "$voz" ] || { echo "ARQUIVO: voz.md vazio ou ausente: $voz"; exit 1; }
@@ -59,6 +62,20 @@ if [ -n "$ban" ]; then
     comentario=$(grep -c '^[[:space:]]*#' "$ban")
     if [ "$uteis" -eq 0 ]; then
       echo "BANIDAS: nenhum termo (so comentario): a checagem mecanica dos outros especialistas fica cega"; falhou=1
+    fi
+    # linha feita so de palavra funcional ou verbo comum (palavras-comuns.txt), ou palavra
+    # unica com menos de 4 letras: termo ativo dispara em todo texto, e acusaria uso legitimo
+    funcionais=$(perl -CSD -e '
+      use utf8;
+      sub norm { my $w = lc shift; $w =~ tr/áàâãäéèêëíìîïóòôõöúùûüç/aaaaaeeeeiiiiooooouuuuc/; $w }
+      open my $l, "<", $ARGV[0] or die; my %c; while (<$l>) { next if /^#/; $c{norm($_)} = 1 for grep { length } split /\s+/ }
+      open my $b, "<", $ARGV[1] or die;
+      while (my $ln = <$b>) { chomp $ln; next if $ln =~ /^\s*#/ || $ln =~ /^\s*$/; my @w = grep { length } split /\s+/, $ln;
+        my $todas = 1; $todas = 0 for grep { !$c{norm($_)} } @w;
+        my $curta = (@w == 1 && length(norm($w[0])) < 4);
+        print "$ln\n" if $todas || $curta }' "$dir/palavras-comuns.txt" "$ban")
+    if [ -n "$funcionais" ]; then
+      echo "BANIDAS: palavra funcional, verbo comum ou palavra unica sem valor distintivo (dispara em uso legitimo):"; printf '  %s\n' "$funcionais" | head -n 20; falhou=1
     fi
     echo "banidas: $uteis termos, $comentario linhas de comentario"
   fi

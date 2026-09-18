@@ -1,0 +1,48 @@
+# Palavras funcionais e verbos comuns do portugues, sem acento, uma por linha.
+# validar-voz.sh rejeita linha do banidas.txt feita so de palavras desta lista:
+# um termo ativo dispara em todo texto futuro, e uma palavra destas acusaria
+# uso legitimo em quase toda peca (ruling do controlador, rodada de correcao
+# da Tarefa 4). A comparacao ignora acento e caixa.
+# artigos, preposicoes, contracoes, conjuncoes
+a o os as um uma uns umas
+de do da dos das em no na nos nas por pelo pela pelos pelas
+para pra pro pros pras com sem sob sobre entre contra ate desde apos ante perante
+e ou mas nem que se porque porquê como quando onde quanto quanta quantos quantas qual quais quem cujo cuja
+ao aos à às num numa dum duma nele nela neles nelas
+# pronomes e possessivos
+eu tu ele ela nos vos voce voces eles elas me te lhe lhes se si gente
+meu minha meus minhas teu tua teus tuas seu sua seus suas nosso nossa nossos nossas dele dela deles delas
+este esta estes estas esse essa esses essas aquele aquela aqueles aquelas isto isso aquilo
+todo toda todos todas tudo nada algo alguem ninguem cada outro outra outros outras mesmo mesma mesmos mesmas tal tais
+# adverbios e marcadores comuns
+ja nao sim tambem ainda so apenas mais menos muito muita muitos muitas pouco pouca poucos poucas
+tao bem mal aqui ali la ca agora hoje ontem amanha sempre nunca depois antes entao assim logo talvez quase
+# ser, estar, ter, haver
+ser sou es somos sao era eras eramos eram fui foi fomos foram sera serao seria seriam sendo sido seja sejam
+estar estou esta estas estamos estao estava estavam estive esteve estivemos estiveram estara estarao estaria estando estado esteja
+ter tenho tem tens temos tinha tinham tive teve tivemos tiveram tera terao teria tendo tido tenha
+haver ha havia houve haja
+# verbos comuns de uso geral
+fazer faco faz fazemos fazem fazia faziam fiz fez fizemos fizeram fara farao faria fazendo feito faca
+ir vou vai vamos vao ia iam ira irao iria indo ido
+dar dou da damos dao dava davam dei deu demos deram dara daria dando dado
+ver vejo ve vemos veem via viam vi viu vimos viram vera veria vendo visto
+vir venho vem vinha vinham veio vieram vira viria vindo
+poder posso pode podemos podem podia podiam pude pudemos puderam podera poderia podendo podido
+dever devo deve devemos devem devia deviam devera deveria
+querer quero quer queremos querem queria queriam quis quisemos quiseram querendo
+saber sei sabe sabemos sabem sabia sabiam soube soubemos souberam sabendo sabido
+ficar fico fica ficamos ficam ficava ficaram ficou fique ficando ficado
+dizer digo diz dizemos dizem dizia disse disseram dira diria dizendo dito
+usar uso usa usamos usam usava usou usaram usando usado
+falar falo fala falamos falam falou falaram falando falado
+pensar penso pensa pensou pensando achar acho acha achou achando
+olhar olho olha olhou olhando deixar deixo deixa deixou deixando
+passar passo passa passou passando chegar chego chega chegou chegando
+colocar coloco coloca colocou colocando por poe pos
+# verbos de plataforma: so entram em expressao completa (comenta muse), nunca sozinhos
+comentar comento comenta comente comentem comentou comentario comentarios
+curtir curto curte curta curtam curtiu curtida curtidas
+compartilhar compartilho compartilha compartilhe compartilhem compartilhou
+seguir sigo segue siga sigam seguiu marcar marco marca marque marquem marcou
+salvar salvo salva salve salvem salvou
