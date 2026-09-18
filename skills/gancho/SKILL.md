@@ -32,7 +32,7 @@ Sem briefing e sem tema, peça em uma pergunta o tema e o fato principal (o núm
 
 ## Etapa 1: as regras que decidem cada linha
 
-1. Linha 1 tem até 15 palavras e traz um fato, uma cena ou um número. Conte as palavras. Nunca aquecimento: pergunta retórica, "hoje quero falar sobre", "vou contar uma história", frase que prepara o terreno. A linha 1 é a única que todo mundo lê, e aquecimento gasta essa vez com nada.
+1. Linha 1 tem até 15 palavras e traz um fato, uma cena ou um número que o briefing ou o `prova.md` declaram. Conte as palavras. Nunca aquecimento: pergunta retórica, "hoje quero falar sobre", "vou contar uma história", frase que prepara o terreno. A linha 1 é a única que todo mundo lê, e aquecimento gasta essa vez com nada.
 2. Linha 2 avança: um dado novo, o passo seguinte da história ou a consequência para quem lê. Ela nunca explica a linha 1. Teste: se a linha 2 pode ser apagada sem perder informação, ela está explicando; escreva no lugar a próxima informação. Depois leia as duas isoladas do resto. Se não sustentam o clique sozinhas, reescreva.
 3. Notícia (teardown): a notícia crua em segunda pessoa, com quem lê como alvo. Quem fez o quê, o que muda e quando. O ângulo fica para os parágrafos seguintes, porque quem lê já viu o anúncio; o que ainda não viu é o que muda para ele.
 4. Capa de carrossel nomeia a entrega, no formato do que a pessoa vai conseguir fazer: "Como [fazer X] usando [Y]", "[N] [coisas] para [resultado]". Problema, diagnóstico de mercado e promessa de facilidade descem para a linha de apoio ou para a legenda. Capa é rótulo de prateleira: quem passa o feed decide pelo que vai levar, e diagnóstico não é rótulo. A regra veio de um post apagado depois de publicado, em 2026-08-15, cuja capa gastava três linhas descrevendo o problema.
@@ -40,7 +40,7 @@ Sem briefing e sem tema, peça em uma pergunta o tema e o fato principal (o núm
    - paralelismo negativo, em qualquer forma: "não é X, é Y", "não X, mas Y", "menos X, mais Y", "X? Não. Y.", "pare de X, comece a Y", "X morreu, Y é o futuro", "você não precisa de X, precisa de Y", e as versões com concessão ("claro, X funciona, mas Y", "embora X pareça, Y na verdade"). Diga só o que a coisa é.
    - pergunta retórica de aquecimento ("já parou pra pensar", "e se eu te dissesse", "você sabia que"). Pergunta genuína existe, mas fecha um post de posição, e nunca é a abertura.
    - isca de engajamento: ordem para quem lê reagir, reler, salvar ou se preparar, e qualquer frase de `banidas.txt`.
-6. Especificidade: número exato, nome de ferramenta, data, valor em reais. Número arredondado parece inventado. Só entra número do briefing ou de `prova.md`, e conta feita por você (soma, diferença, média, total, "por mês" a partir de "por ano") é número inventado, mesmo com os dois termos reais. Citação literal só quando existe no briefing ou em `prova.md`, atribuída a quem disse, no original ou com tradução que não muda o sentido. Não prometa o que a peça não entrega, o que `icp.md` lista como claim sem aval, nem o que o produto não faz.
+6. Especificidade: número exato, nome de ferramenta, data, valor em reais. Número arredondado parece inventado. O gancho só encena o que o contexto declara, e isso vale para número, nome, citação, cena, data e sentimento: o que o briefing e o `prova.md` não trazem vira `[FALTA: descrição]` ou sai do gancho. Conta feita por você (soma, diferença, média, total, "por mês" a partir de "por ano") é número inventado, mesmo com os dois termos reais. Data de fonte ("lição de 2026-09-03", "levantamento de 2026-07-29") é a data da nota, nunca a do evento; sem a data do evento, o gancho fica sem data. Sentimento é o que o briefing atribui à pessoa, dito com as palavras dele: se o briefing diz "alívio", "os dois que eu mais gostava" é opinião inventada. Cena é o que o briefing conta que aconteceu; lugar, hora, quem estava e o que foi dito só entram quando ele os traz. Citação literal só quando existe no briefing ou em `prova.md`, atribuída a quem disse, no original ou com tradução que não muda o sentido. Não prometa o que a peça não entrega, o que `icp.md` lista como claim sem aval, nem o que o produto não faz.
 7. Fórmula, não cópia: adapte a forma da estrutura ao fato da peça. Se o gancho ficou parecido com um exemplo do banco, reescreva: exemplo é calibração da forma, e paráfrase é cópia.
 8. Voz: imperativo na forma de "você" quando o gancho instrui (monte, escolha, copie); primeira pessoa quando o fato é da pessoa; contrações que o `voz.md` lista. Sem travessão, sem emoji, sem caixa alta de grito, sem hashtag. Uma frase de assinatura do `voz.md` só literal e no máximo uma por peça; nunca gere uma nova no mesmo molde.
 
@@ -52,6 +52,8 @@ Consulte o mapa por tipo de peça no banco e escolha 2 ou 3 estruturas de famíl
 2. A que o funil pede: topo promete aprendizado ou material, meio mostra prova ou processo, fundo compara ou demonstra.
 3. A que o dado disponível sustenta. Estrutura que exige número, caso, fala literal ou material pronto que o briefing e o `prova.md` não têm é descartada, e outra entra no lugar. Descartar é sempre mais barato que inventar.
 
+O mapa pode deixar só duas famílias com dado. Build ou bastidor sem fala literal é o caso comum: o mapa libera 6, 7, 3 e 8, a 6 e a 7 são uma família só, e a 8 exige citação que o briefing muitas vezes não traz. Entregue 2 e diga o motivo no campo `Por que 2` do formato, em uma linha. Não busque a terceira fora do mapa nem repita família para chegar a 3: a terceira opção forçada custa mais que a falta dela, porque é a que sai inventada ou repetida.
+
 As estruturas 10, 11 e 12 entram só quando a pessoa pede, com uma exceção: anúncio pessoal usa a 11 por padrão, porque o fato é sobre a pessoa e tese seria peso morto. Quando o pedido é "mais viral" ou "mais polêmico", a pessoa quer mais direto e mais apontado para quem lê, nunca mais esperto: troque para a estrutura de maior tensão que o dado sustenta (5 ou 7) e encurte.
 
 ## Etapa 3: escrita e conferência
@@ -60,12 +62,13 @@ Para cada estrutura escolhida, escreva o gancho completo (as linhas que a estrut
 
 1. Linha 1 com até 15 palavras (contadas) e com fato, cena ou número.
 2. Linha 2 avança; apagá-la perderia informação.
-3. Nenhuma das três categorias banidas, nem disfarçada.
-4. Todo número, nome e citação rastreável ao briefing ou ao `prova.md`; o que faltou está como `[FALTA: descrição]`.
-5. O gancho promete o que a peça entrega (o ângulo e a tese do briefing), no tom pedido, e não repete gancho de `base-conteudo.md`.
-6. O gancho funciona sozinho, sem o resto da peça.
-7. Nenhum gancho é paráfrase de exemplo do banco.
-8. Sem travessão, sem emoji e sem termo de `banidas.txt`, nos ganchos e na sua mensagem final. Quando puder rodar script, grave só o texto dos ganchos em `ganchos-rascunho.md` na pasta atual e rode `bash [raiz do plugin]/scripts/check-voz.sh ganchos-rascunho.md banidas.txt` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita o segundo argumento se `banidas.txt` não existe). Diga na mensagem final que o script rodou e o que ele acusou. Se não puder rodar, confira na leitura e diga que a conferência foi por leitura: quem lê precisa saber se a checagem foi mecânica ou de olho.
+3. Em teardown, a linha 1 é a notícia crua em segunda pessoa, sem ângulo. Em capa, o título nomeia a entrega como capacidade, em até 10 palavras.
+4. Nenhuma das três categorias banidas, nem disfarçada.
+5. Todo número, nome, citação, cena, data e sentimento rastreável ao briefing ou ao `prova.md`; data de fonte não virou data de evento; o que faltou está como `[FALTA: descrição]`.
+6. O gancho promete o que a peça entrega (o ângulo e a tese do briefing), no tom pedido, e não repete gancho de `base-conteudo.md`.
+7. O gancho funciona sozinho, sem o resto da peça.
+8. Nenhum gancho é paráfrase de exemplo do banco.
+9. Sem travessão, sem emoji e sem termo de `banidas.txt`, nos ganchos e na sua mensagem final. Quando puder rodar script, grave só o texto dos ganchos em `ganchos-rascunho.md` na pasta atual e rode a checagem e a remoção num comando só: `bash [raiz do plugin]/scripts/check-voz.sh ganchos-rascunho.md banidas.txt; echo "codigo $?"; rm -f ganchos-rascunho.md` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita `banidas.txt` se não existe). O rascunho é temporário porque a pasta atual é a pasta de contexto da pessoa, e ela não recebe arquivo que não pediu. Na linha `Checagem`, reporte o código de saída (0 limpo, 1 acusou, com o que acusou) e que o rascunho foi apagado; se a remoção falhou, diga que ele ficou e onde, para a pessoa apagar. O script cobre travessão, emoji e termo da lista, e não casa termo banido dentro de aspas nem em blockquote; a linha entre aspas da estrutura 8, a contagem de 15 palavras e as três categorias banidas são conferidas por leitura, e a linha `Checagem` separa o que foi mecânico do que foi de olho. Se não puder rodar o script, confira tudo na leitura e diga isso: quem lê precisa saber se a checagem foi mecânica ou de olho.
 
 Falhou em algum item: corrija aquele gancho, não regenere o conjunto.
 
@@ -81,11 +84,12 @@ Gancho B, estrutura 3 (número exato próprio)
 [linha 2]
 
 Recomendo: [letra], porque [uma linha].
+Por que 2: [motivo em uma linha; omita a linha quando forem 3].
 Falta: [lista de FALTA, ou "nada"].
-Checagem: [o que o script acusou, ou "por leitura"]; linha 1 com até 15 palavras em todos.
+Checagem: check-voz.sh código [0 ou 1, com o que acusou], rascunho apagado; 15 palavras, categorias banidas e linha entre aspas por leitura.
 ```
 
-Para capa, cada opção traz `Título:` e, quando houver, `Apoio:`. A pessoa escolhe respondendo com a letra; não pergunte qual ela prefere, recomende uma e pare. Quem chamou (linkedin-post, carrossel-roteiro, motor) usa o gancho escolhido como âncora da abertura e não o reescreve.
+Tudo o que houver a dizer cabe nesses campos: nada antes do primeiro gancho, nada depois de `Checagem`, e sem cerca de bloco de código em volta da resposta, porque quem consome pelo motor cola o texto direto. Para capa, cada opção traz `Título:` e, quando houver, `Apoio:`. A pessoa escolhe respondendo com a letra; não pergunte qual ela prefere, recomende uma e pare. Quem chamou (linkedin-post, carrossel-roteiro, motor) usa o gancho escolhido como âncora da abertura e não o reescreve.
 
 ## Modo avulso: 10 ganchos para um tema
 
@@ -105,7 +109,7 @@ Quando o pedido é só um tema, sem peça nem briefing, o gancho é a ferramenta
 
 - Não escreve o post, a legenda nem o roteiro: entrega a abertura e para.
 - Não muda a tese nem o briefing para o gancho caber.
-- Não inventa número, caso, citação, nome ou resultado, nem faz conta com os que existem.
+- Não inventa número, caso, citação, nome, cena, data, sentimento ou resultado, nem faz conta com os que existem.
 - Não promete material que não está pronto, nem coloca a palavra-chave de comentário no gancho: ela é da última linha do post, e o linkedin-post decide se entra.
 - Não usa as três categorias banidas, nem quando o pedido é "mais viral".
 - Não escolhe pela pessoa: recomenda uma opção e deixa as outras de pé.

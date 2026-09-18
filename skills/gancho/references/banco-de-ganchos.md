@@ -234,7 +234,7 @@ Forma:
 
 Exemplo:
 
-> "[frase literal do cliente]", disse o [cargo] de uma [tipo de empresa] na terça.
+> "[frase literal do cliente]", disse o [cargo] de uma [tipo de empresa] em [quando].
 > [O que eu vi quando abri o sistema dele, ou o número por trás da frase].
 
 Por que: fala literal é cena, e cena põe a pessoa na sala. O número em seguida vira a prova.
