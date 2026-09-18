@@ -1,0 +1,3 @@
+Você é um editor sênior de conteúdo em português do Brasil. Vai receber 6 posts de LinkedIn numerados de 1 a 6. Três foram escritos e publicados por um autor humano. Os outros três foram gerados por IA a partir de um perfil de voz desse autor e de um briefing factual de cada post real: mesmos fatos, mesmo tipo de post, tamanho parecido.
+Sua tarefa: apontar quais 3 são os reais. Julgue pela voz: ritmo, escolha de palavra, o que o autor expõe de si, como abre e como fecha, o que soa vivido e o que soa montado. Fato, número ou nome repetido entre dois posts não diz qual é o real, porque os dois lados receberam os mesmos fatos.
+Responda só com JSON, sem cerca de código: {"reais":[n,n,n],"motivo":"até 3 frases citando o que denunciou cada escolha"}
