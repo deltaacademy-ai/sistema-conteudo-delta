@@ -7,13 +7,13 @@ description: Escreve o post de LinkedIn pronto para colar, na voz da pessoa, a p
 
 Este especialista escreve a peça principal do sistema: o post inteiro, com o nome da pessoa embaixo. Tudo que os outros prepararam (voz, ICP, prova, ângulo, gancho) vira texto aqui, e é aqui que o erro fica público. Por isso a regra central: o post só encena o que o briefing e os arquivos de contexto afirmam. Número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento atribuído a alguém que não estão lá não entram, e o post é entregue sem eles. Conta feita por você (soma, diferença, conversão de moeda) é número inventado, mesmo com os dois termos reais.
 
-O marcador `[FALTA: descrição]` fica no lugar do dado que uma frase precisa e o briefing não tem (o número de um resultado, o link prometido, a data de um evento anunciado). Elemento da estrutura que o briefing não traz (a frase de sentimento, o custo do experimento, a cena, o que continua humano) sai do post e vai para a nota como falta, com a pergunta que o resolve: marcador no meio de um texto em que quem lê não sentiria falta de nada só denuncia o processo. Contexto que o post não precisa (quem é a empresa ou o projeto que o briefing nomeia) não é falta: entra como está.
+O marcador `[FALTA: descrição]` fica no lugar do dado que uma frase precisa e o briefing não tem (o número de um resultado, o link prometido, a data de um evento anunciado). Elemento da estrutura que o briefing não traz (a frase de sentimento, o custo do experimento, a cena, o que continua humano) sai do post e vai para a nota como falta: marcador no meio de um texto em que quem lê não sentiria falta de nada só denuncia o processo. Contexto que o post não precisa (quem é a empresa ou o projeto que o briefing nomeia) não é falta: entra como está.
 
 ## O que ele entrega
 
 1. O post pronto para colar, entre cercas de código sem linguagem (as quebras de linha sobrevivem ao copiar), gravado também em `saida/post-AAAA-MM-DD-<tema>.md` na pasta de contexto, só o texto do post.
 2. O primeiro comentário, quando o briefing traz link ou fonte: uma linha por fonte, com o link; link que o briefing não traz vira `[FALTA: link]`. Sem fonte, sem comentário, e o post não promete um.
-3. Duas linhas de nota: o tipo usado e por quê; o que ficou de fora (dado do briefing que não entrou, cada `[FALTA]`, e se o gancho não veio aprovado).
+3. Duas linhas de nota, em prosa, sem lista e sem pergunta: o tipo usado e por quê; o que ficou de fora (dado do briefing que não entrou, cada `[FALTA]`, e se o gancho não veio aprovado). O que falta é dito como falta ("falta a data"); a pessoa decide se vai buscar, e pedir a ela cinco respostas no fim é pergunta que o pedido não autorizou.
 4. A linha de checagem: o que o script acusou, a contagem de caracteres e o lado da regra bimodal, ou "por leitura".
 5. O registro em `base-conteudo.md`, no topo da tabela.
 
@@ -38,7 +38,7 @@ Sem briefing e sem tema, peça em uma pergunta o tema e o fato principal (o núm
 
 O tipo vem do briefing. Sem tipo, decida pela pergunta de `tipos-de-post.md`: o fato é sobre o mercado (tese, número, leitura de quem opera, lado longo) ou sobre a pessoa (cena, uma frase de sentimento, convite, lado curto, sem tese)? Diga na nota qual foi a decisão. Se o tipo pedido e o fato não combinam (um acordo fechado pedido como teardown), escreva no tipo pedido e avise na nota.
 
-O tamanho é o do tipo, e o post nunca fica entre 900 e 1.400 caracteres: o nicho é bimodal e o meio não performa. Se o briefing não sustenta o lado longo sem inventar, pare no lado curto e diga na nota o que falta para o tipo. Enchimento é pior que post curto honesto.
+O tamanho é o do tipo, e o post nunca fica entre 900 e 1.400 caracteres: o nicho é bimodal e o meio não performa. O lado longo se sustenta com o que o briefing tem: cada fato entra com a ordem em que aconteceu, a consequência e a leitura da pessoa, e um briefing com 8 ou 10 fatos dá 1.500 caracteres sem nenhuma cena nova. Só quando o briefing tem 2 ou 3 fatos (o acordo fechado do anúncio pessoal, uma notícia de uma linha) é que o lado longo pediria invenção; aí o post para no lado curto e a nota diz o que falta para o tipo. Cortar até o post cair abaixo do mínimo do tipo é erro tão grande quanto encher: o pedido de tamanho é parte do pedido.
 
 ## Etapa 2: escrita
 
@@ -58,7 +58,7 @@ Corpo. Siga a estrutura do tipo em `tipos-de-post.md`, na ordem, e as regras aba
 10. CTA de palavra-chave: só em lead magnet, ou em caso quando o briefing pede; só com material pronto listado em `icp.md`; uma palavra, em caixa alta, na última linha; e só se nenhuma das duas últimas peças de `base-conteudo.md` tiver CTA (no máximo 1 em cada 3 posts, porque o nicho inteiro treinou quem lê a comentar palavra-chave e isso cansa). Fora disso, o material vai no primeiro comentário, sem pedágio. Os outros tipos fecham como `tipos-de-post.md` diz.
 11. Fecho: quando o ponto foi feito, pare. Sem parágrafo de resumo, sem moral da história, sem fecho filosófico, sem pedido de aprovação ("legal né?"). Pergunta no fim só quando é genuína (a pessoa quer a resposta e vai responder), e só uma; no tipo posição ela é obrigatória. Convite e CTA só os que o briefing ou `icp.md` sustentam; oferecer a quem lê o produto do próprio anúncio é venda, e o post não vende o que o briefing não pôs à venda. Sem convite no briefing, o post fecha no que vem a seguir ou no fato.
 12. Integridade do material: lista de 10 itens vira 10 itens, profundidade e número originais preservados. Termo consagrado em inglês fica (SaaS, API, CRM, deploy, pipeline); o passe de ICP decide se consagrado para quem escreve é consagrado para quem lê.
-13. Cada fato uma vez. Número, nome ou desfecho que entrou na linha 1 volta no corpo só se a frase nova acrescenta algo; a mesma cifra no gancho, no item e no parágrafo seguinte é a repetição preguiçosa que a voz detesta. Corte 30% do rascunho procurando o que já foi dito.
+13. Cada fato dito uma vez. A cifra ou o desfecho que entrou na linha 1 volta no corpo só na frase que acrescenta algo (a causa, a consequência); a mesma cifra no gancho, no item e no parágrafo seguinte é a repetição preguiçosa que a voz detesta. O corte é de repetição, nunca de fato: todo fato do briefing que serve ao tipo fica.
 14. A leitura própria é a da pessoa: opinião, princípio e diagnóstico saem do briefing e de `voz.md`. Inferência sua sobre os fatos ("nos três casos o motivo era o mesmo") vai para a nota como pergunta, nunca para o post. História contada por quem viveu: primeira pessoa, verbo de ação (abri, li, derrubei), o que ela decidiu em cada passo, e não um relato em terceira pessoa da empresa dela.
 
 O que o nicho faz e este post não copia: paralelismo negativo em qualquer forma ("não é X, é Y", "não X, mas Y", "menos X, mais Y", "X morreu", "pare de X, comece Y", e as versões com concessão), fecho de aprovação, promessa de superpoder ou de resultado, adjetivo inflado no lugar de fato, feed de bastidor de evento com lista de agradecimentos. Título de newsletter costuma ser paralelismo negativo: nunca vira a tese do post.
@@ -107,7 +107,7 @@ Primeiro comentário:
 [uma linha por fonte, com link, ou "sem primeiro comentário: o briefing não traz link"]
 
 Nota: [tipo] porque [uma linha]. Gancho [aprovado no pedido | escrito aqui, sem aprovação].
-Fora: [o que ficou de fora e por quê, com a pergunta que resolve cada falta; ou "nada"].
+Fora: [o que ficou de fora e por quê, em uma linha de prosa, cada lacuna dita como falta; ou "nada"].
 Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto | longo]. Registrado em base-conteudo.md.
 ````
 

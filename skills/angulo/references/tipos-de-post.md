@@ -10,7 +10,7 @@ Sobre o mercado (uma notícia, um método, um caso, uma tese) pede tese, número
 
 O nicho é bimodal: ou abaixo de 900 caracteres, ou acima de 1.400. O meio (de 900 a 1.400) não performa e não existe na amostra, então nenhum post é entregue nessa faixa. Caracteres contam com espaço e quebra de linha, como o LinkedIn conta (`wc -m` no arquivo do post). Os tetos por tipo vêm dos maiores posts que performaram; acima deles a leitura cai.
 
-Quando o briefing não sustenta o tamanho do tipo sem inventar, o post para no lado curto e a nota diz o que faltou. Enchimento para chegar a 1.400 é pior que um post curto honesto.
+O lado longo se sustenta com os fatos do briefing contados inteiros (ordem, consequência, leitura da pessoa); um briefing de 8 ou 10 fatos dá 1.500 caracteres sem cena nova. Só quando o briefing tem 2 ou 3 fatos o lado longo pediria invenção, e aí o post para no lado curto e a nota diz o que faltou. Enchimento para chegar a 1.400 e corte até cair abaixo do mínimo do tipo são o mesmo erro: o tamanho é parte do pedido.
 
 | Tipo | Tamanho | Quando usar | Como fecha |
 |---|---|---|---|
