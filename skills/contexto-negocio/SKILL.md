@@ -169,7 +169,7 @@ Antes de mostrar, confira:
 1. Todo número em `prova.md` tem linha citada, fonte e data. Todo número em `icp.md` e `marca.md` aparece também em `prova.md` ou em "Claims que precisam de aval".
 2. Nenhum nome, caso, depoimento ou dor de cliente que o material não traz.
 3. Nenhuma divergência resolvida por você.
-4. Sem travessão e sem emoji nos três arquivos. Se puder rodar script, `bash [raiz do plugin]/scripts/check-voz.sh <arquivo>` em cada um (a pasta `scripts/` fica dois níveis acima deste SKILL.md). Se não puder, confira na leitura.
+4. Sem travessão, sem emoji e sem termo de `banidas.txt` nos três arquivos e na sua mensagem final. Quando puder rodar script, rode `bash [raiz do plugin]/scripts/check-voz.sh <arquivo> banidas.txt` em cada arquivo (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita o segundo argumento se `banidas.txt` não existe) e diga na mensagem final que o script rodou e o que ele acusou. Se não puder rodar, confira na leitura e diga que a conferência foi por leitura: quem lê precisa saber se a checagem foi mecânica ou de olho.
 5. Nada de voz nos arquivos: regra de ritmo, vocabulário do autor ou frase de assinatura pertence a `voz.md`.
 
 Falhou em algum item: corrija o item, não regenere o arquivo inteiro (a regeneração reintroduz o que você já tinha limpado).
