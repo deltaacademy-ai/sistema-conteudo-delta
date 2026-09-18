@@ -4,12 +4,18 @@
 # maiuscula de minuscula. O substituto e neutro de proposito: os dois lados
 # recebem a mesma troca, entao nenhum lado fica identificavel pelo nome do
 # especialista que o gerou.
+#
+# Regra para escolher o substituto: mesmo genero gramatical do nome trocado e
+# grafia acentuada correta, para a troca nao injetar erro de concordancia no
+# texto que o juiz avalia como "soa como o autor". Plural entra como linha
+# propria quando o nome aparece no plural no corpus ("ganchos", "angulos").
+# "squads" NAO entra: e vocabulario de negocio da Popcode, nao nome de skill.
 carrossel-roteiro	roteiro de carrossel
 carrossel-render	render de carrossel
 sistema-conteudo	sistema
-contexto-negocio	contexto de negocio
+contexto-negocio	contexto de negócio
 entrevista-voz	entrevista de voz
-linkedin-post	post de linkedin
+linkedin-post	post de LinkedIn
 squad-legado	sistema
 da vinci	especialista
 davinci	especialista
@@ -17,10 +23,13 @@ hormozi	especialista
 ogilvy	especialista
 kotler	especialista
 publicar	levar ao ar
-revisor	revisao
+revisor	verificador
+angulos	enquadramentos
+ângulos	enquadramentos
 angulo	enquadramento
 ângulo	enquadramento
-gancho	abertura
+ganchos	inícios
+gancho	início
 squad	time
-setup	preparacao
+setup	preparo
 motor	mecanismo
