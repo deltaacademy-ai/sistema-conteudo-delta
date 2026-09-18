@@ -57,6 +57,7 @@ Na pasta de contexto (a pasta atual, a que tem os arquivos de contexto):
 - `icp.md`: quem lê, o que o preocupa, jargão que usa e não usa, o que o produto não faz, claims que precisam de aval. É a régua do leitor do ICP.
 - `prova.md`: os únicos números e casos que a peça pode usar sobre o autor. É a régua do cético.
 - O tipo de peça, se quem chamou informou (post e qual dos sete tipos, legenda, roteiro de carrossel). Sem tipo, revise como post de LinkedIn e aplique só a regra dos dois lados do tamanho.
+- A data prevista de publicação, se quem chamou informou. Leia a peça como o leitor desse dia: prazo, "hoje", "essa semana" e "este mês" contam a partir dela. Sem data, a referência é o dia da revisão, e prazo vencido é achado do cético.
 
 Arquivo de contexto ausente: diga qual falta na linha de veredito e revise com o que há. O crítico que depende do arquivo ausente fica limitado pelo teto que o painel define para esse caso.
 
