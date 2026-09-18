@@ -1,0 +1,26 @@
+# nome de skill ou de plugin	substituto neutro
+# Um por linha, separados por TAB. A troca e aplicada a TUDO que vai ao juiz
+# (pedido, rubrica e as duas saidas), com fronteira de palavra e sem diferenciar
+# maiuscula de minuscula. O substituto e neutro de proposito: os dois lados
+# recebem a mesma troca, entao nenhum lado fica identificavel pelo nome do
+# especialista que o gerou.
+carrossel-roteiro	roteiro de carrossel
+carrossel-render	render de carrossel
+sistema-conteudo	sistema
+contexto-negocio	contexto de negocio
+entrevista-voz	entrevista de voz
+linkedin-post	post de linkedin
+squad-legado	sistema
+da vinci	especialista
+davinci	especialista
+hormozi	especialista
+ogilvy	especialista
+kotler	especialista
+publicar	levar ao ar
+revisor	revisao
+angulo	enquadramento
+ângulo	enquadramento
+gancho	abertura
+squad	time
+setup	preparacao
+motor	mecanismo
