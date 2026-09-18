@@ -14,6 +14,8 @@ set -u
 # Idempotente: pula a compilacao quando o voz.md ja existe e o portao quando o JSON ja
 # existe, entao pode ser relancado depois de um limite de sessao. Sem `timeout` no
 # macOS, o relogio de cada passo e um alarm do perl que sobrevive ao exec.
+# Caso cujo voz.md reprova em validar-voz.sh para na validacao ("FALHOU validacao" no
+# log) e nao vai ao portao; teste em test-lote-entrevista-voz.sh.
 #
 # Saidas (fora do git):
 #   evals/results/nova/entrevista-voz-<rodada>/<caso>-<modelo>.md{,.arquivos/,.log,.validacao.txt}
@@ -22,7 +24,9 @@ set -u
 rodada="${1:?rodada, ex.: r3}"; par="${2:-2}"
 raiz=$(cd "$(dirname "$0")/../.." && pwd); cd "$raiz"
 export R="evals/results/nova/entrevista-voz-$rodada" P="evals/results/preferencia/entrevista-voz-$rodada"
-export BRIEFINGS_CACHE="$raiz/evals/results/preferencia/briefings-cache" MAT="evals/fixtures/hugo-materiais/materiais"
+export BRIEFINGS_CACHE="${BRIEFINGS_CACHE:-$raiz/evals/results/preferencia/briefings-cache}" MAT="evals/fixtures/hugo-materiais/materiais"
+# CASOS e MODELOS no ambiente restringem o lote (uso: retomada parcial e o teste do lote)
+CASOS="${CASOS:-01 02 03 04 05}"; MODELOS="${MODELOS:-claude-sonnet-5 claude-opus-5}"
 export L="$P/_log.txt" LIMITE_COMPILA="${LIMITE_COMPILA:-3000}" LIMITE_PORTAO="${LIMITE_PORTAO:-3600}"
 mkdir -p "$R" "$P" "$BRIEFINGS_CACHE"
 log() { echo "$(date +%H:%M:%S) $*" >> "$L"; }
@@ -45,7 +49,10 @@ job() {
   if bash scripts/eval/validar-voz.sh "$vozf" "$R/$n.md.arquivos/banidas.txt" > "$R/$n.validacao.txt" 2>&1; then
     log "validacao ok $n $(grep -E '^(tamanho|banidas)' "$R/$n.validacao.txt" | tr '\n' ';')"
   else
+    # validacao mecanica e o contrato do artefato: caso reprovado para aqui e nao entra no
+    # resultado (na rodada 3 dois casos com banidas.txt vazio seguiram ao portao)
     log "VALIDACAO FALHOU $n $(grep -E '^[A-Z]+:' "$R/$n.validacao.txt" | cut -c1-80 | tr '\n' ';')"
+    log "FALHOU validacao $n: caso parado, nao vai ao portao"; return
   fi
   [ -s "$P/$n.json" ] && { log "portao ja pronto $n"; return; }
   for t in 1 2 3; do
@@ -59,6 +66,6 @@ job() {
 }
 export -f job
 log "INICIO lote $rodada paralelismo=$par"
-for c in 01 02 03 04 05; do for m in claude-sonnet-5 claude-opus-5; do echo "$c $m"; done; done \
+for c in $CASOS; do for m in $MODELOS; do echo "$c $m"; done; done \
   | xargs -P "$par" -n 2 bash -c 'job "$0" "$1"'
 log "FIM lote $rodada voz=$(ls "$R"/*.md.arquivos/voz.md 2>/dev/null | wc -l | tr -d ' ') json=$(ls "$P"/*.json 2>/dev/null | wc -l | tr -d ' ')"

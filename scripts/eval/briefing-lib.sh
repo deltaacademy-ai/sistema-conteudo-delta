@@ -10,8 +10,9 @@
 # script antes da segunda tentativa (achado 6 da revisao da Tarefa 4). O claude -p, em
 # erro de API, sai com 1 e imprime JSON com is_error true e api_error_status; o .result
 # nesse caso e a mensagem de erro, entao nunca pode virar candidato.
-# Em 429 (ou mensagem de limite) espera ESPERA_LIMITE segundos e tenta de novo, sem mudar
-# o protocolo; em outra falha espera ESPERA e dobra a cada tentativa.
+# Em 429 ou 529 (ou mensagem de rate limit, session limit, overloaded) espera ESPERA_LIMITE
+# segundos e tenta de novo, sem mudar o protocolo; em outra falha espera ESPERA e dobra a
+# cada tentativa. Teste do roteamento em test-chamar-claude.sh.
 # Ambiente: TENTATIVAS (padrao 6), ESPERA (padrao 30), ESPERA_LIMITE (padrao 300),
 # CLAUDE_ISOLADO (troca o binario; os testes usam um claude falso).
 chamar_claude() {
@@ -26,7 +27,10 @@ chamar_claude() {
     if [ "$rc" -eq 0 ] && [ -n "$res" ]; then return 0; fi
     echo "chamada falhou (tentativa $t/$tent, exit $rc, status ${status:-?}): $({ cat "$bruto.err"; cat "$bruto"; } 2>/dev/null | tr '\n' ' ' | head -c 200)" >&2
     [ "$t" -lt "$tent" ] || break
-    if [ "$status" = 429 ] || grep -qiE 'limit|overloaded|429|529' "$bruto" "$bruto.err" 2>/dev/null; then
+    # sinal real de limite: status 429 ou 529, ou a mensagem de rate limit, limite de sessao
+    # ou sobrecarga; "limit" solto casava dentro de "limite" em qualquer erro em portugues e
+    # custava ESPERA_LIMITE por tentativa (menor da re-revisao da Tarefa 4)
+    if [ "$status" = 429 ] || [ "$status" = 529 ] || grep -qiE 'rate.?limit|session limit|usage limit|too many requests|overloaded' "$bruto" "$bruto.err" 2>/dev/null; then
       echo "limite da API: esperando ${lim}s antes da tentativa $((t + 1))" >&2; sleep "$lim"
     else
       sleep "$espera"; espera=$((espera * 2))
