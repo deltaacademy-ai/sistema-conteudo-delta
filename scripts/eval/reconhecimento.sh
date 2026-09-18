@@ -56,7 +56,8 @@ extrator=claude-sonnet-5
 dir=$(cd "$(dirname "$0")" && pwd)
 [ -s "$voz" ] || { echo "voz.md vazio ou ausente: $voz" >&2; exit 1; }
 [ -d "$mat" ] || { echo "pasta de materiais ausente: $mat" >&2; exit 1; }
-arq="$out.arquivos"; rm -rf "$arq"; mkdir -p "$arq/textos" "$arq/briefings"
+# artefatos em pasta temporaria, substituem a anterior so no fim (ver preferencia-voz.sh)
+arq="$out.arquivos.tmp"; rm -rf "$arq"; mkdir -p "$arq/textos" "$arq/briefings"
 
 . "$dir/briefing-lib.sh"
 extrair_reais "$mat"
@@ -107,4 +108,5 @@ acertos=0
 for p in $apontados; do case " $reais " in *" $p "*) acertos=$((acertos+1));; esac; done
 jq -n --argjson a "$acertos" --arg d "reais eram:$reais; juiz apontou: $apontados; gerador: $modelo; extrator: $extrator;$aviso motivo: $motivo" \
   '{acertos:$a, detalhe:$d}' > "$out"
+rm -rf "$out.arquivos"; mv "$arq" "$out.arquivos"
 cat "$out"

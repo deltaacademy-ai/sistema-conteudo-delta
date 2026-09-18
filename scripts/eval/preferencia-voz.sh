@@ -47,7 +47,9 @@ dir=$(cd "$(dirname "$0")" && pwd)
 . "$dir/briefing-lib.sh"
 [ -s "$voz" ] || { echo "voz.md vazio ou ausente: $voz" >&2; exit 1; }
 [ -d "$mat" ] || { echo "pasta de materiais ausente: $mat" >&2; exit 1; }
-arq="$out.arquivos"; rm -rf "$arq"; mkdir -p "$arq/textos" "$arq/briefings" "$arq/juiz"
+# artefatos vao para uma pasta temporaria e so substituem a anterior no fim, para uma
+# execucao que falhe (ex.: limite de sessao da API) nao apagar os artefatos de um veredito ja gravado
+arq="$out.arquivos.tmp"; rm -rf "$arq"; mkdir -p "$arq/textos" "$arq/briefings" "$arq/juiz"
 
 extrair_reais "$mat"
 extrair_briefings
@@ -108,4 +110,5 @@ if [ $vv -gt $vn ]; then r=voz; elif [ $vn -gt $vv ]; then r=neutro; else r=empa
 jq -n --arg r "$r" --argjson vv $vv --argjson vn $vn --argjson ve $ve --argjson p "$pares" \
   --arg d "gerador: $modelo; extrator: $extrator;$aviso" \
   '{resultado:$r, vitorias_voz:$vv, vitorias_neutro:$vn, empates:$ve, pares:$p, detalhe:$d}' > "$out"
+rm -rf "$out.arquivos"; mv "$arq" "$out.arquivos"
 cat "$out"
