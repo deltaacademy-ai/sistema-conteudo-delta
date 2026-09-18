@@ -82,6 +82,28 @@ ngramas_reusados() {
     print scalar(keys %hit), "\n"' "$@"
 }
 
+# ngramas_reusados_liquidos <n> <candidato> <briefing> <real.txt...>: igual a
+# ngramas_reusados, descontando toda sequencia que compartilha uma janela de 5 palavras
+# com o briefing que os dois candidatos receberam (ruling do controlador, rodada de
+# correcao da Tarefa 4: 6 das 11 anulacoes da rodada 3 vinham do briefing repetindo a
+# formulacao do post original em nomes e cronologia, e um candidato que a reproduz esta
+# seguindo o briefing, nao colando o perfil). A janela e de 5 palavras porque e a unidade
+# do proprio verificador de vazamento do extrator (sobreposicao) e porque nenhum 8-grama
+# inteiro aparece no briefing: o vazamento chega em pedacos menores.
+ngramas_reusados_liquidos() {
+  perl -CSD -e '
+    my $n = shift @ARGV; my $cand = shift @ARGV; my $brief = shift @ARGV;
+    sub toks { my $t = lc shift; $t =~ s/[^\p{L}\p{N}\s]/ /g; return grep { length } split /\s+/, $t }
+    local $/; my %g;
+    for my $f (@ARGV) { open my $h, "<", $f or die "$f: $!"; my @a = toks(<$h>); for my $i (0 .. $#a-$n+1) { $g{join " ", @a[$i..$i+$n-1]} = 1 } }
+    open my $bh, "<", $brief or die "$brief: $!"; my @bt = toks(<$bh>); my %b5; for my $i (0 .. $#bt-4) { $b5{join " ", @bt[$i..$i+4]} = 1 }
+    open my $c, "<", $cand or die "$cand: $!"; my @b = toks(<$c>); my %hit;
+    for my $i (0 .. $#b-$n+1) { my @w = @b[$i..$i+$n-1]; my $k = join " ", @w; next unless $g{$k};
+      my $viab = 0; for my $j (0 .. $n-5) { $viab = 1 if $b5{join " ", @w[$j..$j+4]} }
+      $hit{$k} = 1 unless $viab }
+    print scalar(keys %hit), "\n"' "$@"
+}
+
 # extrair_briefings [indices]: grava $arq/briefings/briefing-<i>.txt a partir dos reais
 # (padrao 1 2 3), sem frase do original (prompt reconhecimento-briefing.md, modelo
 # $extrator). Se BRIEFINGS_CACHE apontar para uma pasta com o briefing, copia de la;

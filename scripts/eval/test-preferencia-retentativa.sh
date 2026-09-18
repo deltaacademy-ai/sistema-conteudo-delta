@@ -59,6 +59,16 @@ FAKE_NEUTRO_REUSA=1 bash "$dir/preferencia-voz.sh" "$d/voz.md" "$d/mat" "$d/said
   && [ "$(jq -r '[.pares[].reuso_neutro] | unique | join(",")' "$d/saida2.json")" = 3 ] \
   && ok "reuso igual dos dois lados: a vitoria conta (voz 3-0-0)" || falha "reuso igual anulou a vitoria: $(jq -c '{resultado, vitorias_voz, anuladas_por_reuso}' "$d/saida2.json" 2>/dev/null)"
 
+# desconto do briefing: o briefing repete a sequencia do real 1 que a voz recola, entao os
+# 3 8-gramas compartilham janela de 5 palavras com ele; o reuso bruto continua 3, o
+# liquido cai a 0 e a vitoria conta
+rm -rf "$d/cache-b"; echo 0 > "$d/contador"
+FAKE_BRIEFING_REUSA=1 BRIEFINGS_CACHE="$d/cache-b" bash "$dir/preferencia-voz.sh" "$d/voz.md" "$d/mat" "$d/saida4.json" claude-sonnet-5 b-real-2.md > "$d/log4.txt" 2>&1 \
+  && [ "$(jq -r '[.pares[].reuso_bruto_voz] | unique | join(",")' "$d/saida4.json")" = 3 ] \
+  && [ "$(jq -r '[.pares[].reuso_voz] | unique | join(",")' "$d/saida4.json")" = 0 ] \
+  && [ "$(jq -r '.resultado + " " + (.vitorias_voz|tostring) + " " + (.anuladas_por_reuso|tostring)' "$d/saida4.json")" = "voz 3 0" ] \
+  && ok "desconto do briefing: bruto 3, liquido 0, vitoria conta" || falha "desconto do briefing: $(jq -c '{resultado, vitorias_voz, anuladas_por_reuso, r:[.pares[]|[.reuso_voz,.reuso_bruto_voz]]}' "$d/saida4.json" 2>/dev/null)"
+
 # sem retido: roda os 3 briefings e avisa que nao vale como portao
 echo 0 > "$d/contador"
 bash "$dir/preferencia-voz.sh" "$d/voz.md" "$d/mat" "$d/saida3.json" > "$d/log3.txt" 2>&1 \

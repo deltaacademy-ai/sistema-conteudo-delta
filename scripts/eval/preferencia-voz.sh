@@ -24,10 +24,14 @@ set -euo pipefail
 #    recebem o mesmo prompt de geracao (preferencia-gerador.md). Os 3 pares partem do
 #    mesmo briefing e sao 3 geracoes independentes.
 # 5. Mede o reaproveitamento literal de cada candidato: sequencias distintas de 8
-#    palavras que aparecem em algum dos 3 posts reais (ngramas_reusados). Par em que o
-#    juiz escolhe o candidato do voz.md, mas esse candidato reusa mais que FATOR_REUSO
-#    (padrao 2) vezes o que o neutro reusa, nao conta como vitoria: vira "reuso", que
-#    pesa como empate no resultado do caso. Os dois numeros ficam registrados por par.
+#    palavras que aparecem em algum dos 3 posts reais (ngramas_reusados), descontando
+#    as que compartilham uma janela de 5 palavras com o briefing que os dois receberam
+#    (ngramas_reusados_liquidos): o que o briefing repete do original nao e colagem do
+#    perfil. Par em que o juiz escolhe o candidato do voz.md, mas esse candidato reusa
+#    (liquido) mais que FATOR_REUSO (padrao 2) vezes o que o neutro reusa, nao conta
+#    como vitoria: vira "reuso", que pesa como empate no resultado do caso. Por par
+#    ficam registrados reuso_voz e reuso_neutro (liquidos, os que decidem) e
+#    reuso_bruto_voz e reuso_bruto_neutro (sem o desconto).
 # 6. Para cada par, um juiz isolado (claude-opus-5, preferencia-juiz.md) recebe os
 #    3 posts reais como referencia e os dois candidatos como A e B, em ordem sorteada
 #    por par, e diz qual le como escrito pelo mesmo autor, com motivo. O juiz nao sabe
@@ -37,7 +41,8 @@ set -euo pipefail
 #     "empates":n,"anuladas_por_reuso":n,"retido":"nome.md",
 #     "pares":[{"par":k,"briefing":i,"vencedor_juiz":"voz"|"neutro"|"empate",
 #               "vencedor":"voz"|"neutro"|"empate"|"reuso","posicao_voz":"A"|"B",
-#               "reuso_voz":n,"reuso_neutro":n,"motivo":"..."}],"detalhe":"..."}
+#               "reuso_voz":n,"reuso_neutro":n,"reuso_bruto_voz":n,"reuso_bruto_neutro":n,
+#               "motivo":"..."}],"detalhe":"..."}
 #    resultado do caso = maioria dos 3 pares depois da regra de reuso (voz > neutro:
 #    voz; neutro > voz: neutro; iguais: empate). Textos, briefings, JSON cru de cada
 #    chamada e respostas do juiz ficam em <saida.json>.arquivos/.
@@ -105,8 +110,10 @@ $(cat "$arq/textos/real-$i.txt")"; done
 vv=0; vn=0; ve=0; vr=0; pares="[]"; k=0
 for i in $briefs; do
   k=$((k + 1))
-  rv=$(ngramas_reusados 8 "$arq/textos/voz-$k.txt" "$arq/textos/real-1.txt" "$arq/textos/real-2.txt" "$arq/textos/real-3.txt")
-  rn=$(ngramas_reusados 8 "$arq/textos/neutro-$k.txt" "$arq/textos/real-1.txt" "$arq/textos/real-2.txt" "$arq/textos/real-3.txt")
+  rvb=$(ngramas_reusados 8 "$arq/textos/voz-$k.txt" "$arq/textos/real-1.txt" "$arq/textos/real-2.txt" "$arq/textos/real-3.txt")
+  rnb=$(ngramas_reusados 8 "$arq/textos/neutro-$k.txt" "$arq/textos/real-1.txt" "$arq/textos/real-2.txt" "$arq/textos/real-3.txt")
+  rv=$(ngramas_reusados_liquidos 8 "$arq/textos/voz-$k.txt" "$arq/briefings/briefing-$i.txt" "$arq/textos/real-1.txt" "$arq/textos/real-2.txt" "$arq/textos/real-3.txt")
+  rn=$(ngramas_reusados_liquidos 8 "$arq/textos/neutro-$k.txt" "$arq/briefings/briefing-$i.txt" "$arq/textos/real-1.txt" "$arq/textos/real-2.txt" "$arq/textos/real-3.txt")
   if [ $((RANDOM % 2)) -eq 0 ]; then pa="voz"; pb="neutro"; pos=A; else pa="neutro"; pb="voz"; pos=B; fi
   msg="$ref
 
@@ -140,8 +147,8 @@ $(cat "$arq/textos/$pb-$k.txt")"
   if [ "$wj" = voz ] && [ "$rv" -gt $((rn * fator)) ]; then w=reuso; fi
   case $w in voz) vv=$((vv + 1));; neutro) vn=$((vn + 1));; empate) ve=$((ve + 1));; reuso) vr=$((vr + 1));; esac
   pares=$(printf '%s' "$pares" | jq --argjson k "$k" --argjson i "$i" --arg wj "$wj" --arg w "$w" --arg p "$pos" \
-    --argjson rv "$rv" --argjson rn "$rn" --arg m "$mo" \
-    '. + [{par:$k, briefing:$i, vencedor_juiz:$wj, vencedor:$w, posicao_voz:$p, reuso_voz:$rv, reuso_neutro:$rn, motivo:$m}]')
+    --argjson rv "$rv" --argjson rn "$rn" --argjson rvb "$rvb" --argjson rnb "$rnb" --arg m "$mo" \
+    '. + [{par:$k, briefing:$i, vencedor_juiz:$wj, vencedor:$w, posicao_voz:$p, reuso_voz:$rv, reuso_neutro:$rn, reuso_bruto_voz:$rvb, reuso_bruto_neutro:$rnb, motivo:$m}]')
 done
 if [ $vv -gt $vn ]; then r=voz; elif [ $vn -gt $vv ]; then r=neutro; else r=empate; fi
 jq -n --arg r "$r" --argjson vv $vv --argjson vn $vn --argjson ve $ve --argjson vr $vr --arg ret "$retido" --argjson p "$pares" \

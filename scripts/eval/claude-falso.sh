@@ -25,6 +25,11 @@ case "$prompt" in
       r="- tipo: caso, 600 caracteres
 - assunto: teste do harness
 - fatos: numero 42, nome Beta, data 2026-09-18"
+      # FAKE_BRIEFING_REUSA=1: o briefing repete a sequencia do post real 1 que a voz
+      # recola, como o extrator faz com nomes e cronologia; cada um dos 3 8-gramas passa
+      # a compartilhar janela de 5 palavras com o briefing e o reuso liquido da voz zera
+      [ "${FAKE_BRIEFING_REUSA:-0}" = 1 ] && r="$r
+- ordem: um dois tres quatro cinco seis sete oito nove dez, depois o resto"
     elif printf '%s' "$sys" | grep -q '<sobre_mim>'; then
       # recola uma sequencia de 10 palavras do post real 1 (3 sequencias distintas de 8 palavras)
       r="MARCA-VOZ Texto com voz. um dois tres quatro cinco seis sete oito nove dez. Fato 42, nome Beta."
