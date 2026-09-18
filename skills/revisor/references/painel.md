@@ -18,13 +18,16 @@ Vale para os cinco. Escolha a faixa primeiro, o número depois.
 
 Os tetos abaixo limitam a nota de um crítico quando um defeito específico aparece. Teto é máximo, não nota: dentro do teto, a gravidade ainda move o número. Dois defeitos no mesmo crítico usam o menor teto e descem a partir dele.
 
+Calibração: use 8 a 13 só quando o achado derruba um teto deste painel ou fere uma recusa dura de `voz.md`. Achado de gosto, de ritmo, ou ajuste que a pessoa faria em um minuto fica em 14 a 17, mesmo que sejam vários. Uma peça que o autor já aprovou e publicou costuma somar 85 ou mais aqui, com uma ou duas correções pontuais; se os cinco críticos ficaram abaixo de 13 numa peça que lê bem, você cobrou o mesmo achado em mais de um crítico ou usou 8 a 13 para ajuste pontual. A nota existe para comparar duas versões da mesma peça, e isso só funciona se um defeito custa o mesmo em toda rodada.
+
 ## 1. O cético
 
 Pergunta: um leitor inteligente, ocupado e desconfiado acreditaria nisso?
 
 Ele lê procurando o que o autor não consegue sustentar. Confere:
 
-- Todo número sobre o autor, a empresa, a oferta, um cliente ou um resultado: precisa estar em `prova.md`, na tabela ou em "Casos", com a linha citada. Métrica de post, faturamento, quantidade de alunos, resultado de mentorado, tempo economizado: tudo isso é número sobre o autor.
+- Todo número que prova algo sobre o autor, a empresa, a oferta, um cliente ou um resultado: precisa estar em `prova.md`, na tabela ou em "Casos", com a linha citada. São os três tipos de `prova.md`: credencial (anos, projetos, clientes), operação (encontros, capítulos, alunos) e resultado (métrica de post, faturamento, resultado de mentorado, tempo economizado).
+- Número de cena não é prova: que horas eram, quanto tempo a sessão levou, quantos agentes, quantas abas. Sem ele não existe cena, e ele vem do briefing, não de `prova.md`. Só vira correção quando ocupa o lugar de um resultado ("em 5 minutos" como o que o leitor vai conseguir) ou quando a cena inteira parece inventada.
 - Todo número de fato externo (notícia, mercado, terceiro): precisa de atribuição na própria peça (comunicado, veículo, nome de quem disse) ou no primeiro comentário que a peça anuncia. Se quem chamou passou o briefing e o número está lá, conta como lastro.
 - Número que `prova.md` registra em "Divergências entre fontes" e a peça usa sem aval: correção com "precisa de aval".
 - Promessa de prazo, garantia ou resultado futuro: precisa estar em `icp.md`, "Claims que precisam de aval", com o aval dado. Sem isso, correção.
@@ -36,7 +39,7 @@ Ele lê procurando o que o autor não consegue sustentar. Confere:
 
 Tetos:
 
-- Zero automático: número sobre o autor ou a oferta sem lastro em `prova.md`. Zera porque o leitor cético que pega um número inventado descarta o resto da peça, e o autor que publica um número falso paga com o nome dele.
+- Zero automático: número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md`. Zera porque o leitor cético que pega um número inventado descarta o resto da peça, e o autor que publica um número falso paga com o nome dele.
 - Número externo sem atribuição: no máximo 10.
 - Número em divergência sem aval, ou promessa sem aval: no máximo 12.
 - Sem `prova.md` na pasta: no máximo 10, e todo número sobre o autor entra nas correções como "a confirmar".

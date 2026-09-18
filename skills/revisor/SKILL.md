@@ -83,7 +83,8 @@ Leia `references/painel.md` e passe pela peça cinco vezes, uma por crítico, na
 
 Regras que não podem falhar:
 
-- Número sobre o autor ou a oferta sem lastro em `prova.md` zera o cético. Não procure uma justificativa para o número: se não está em `prova.md` e não veio no briefing, é sem lastro.
+- Número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md` zera o cético. Não procure uma justificativa para o número: se não está em `prova.md` e não veio no briefing, é sem lastro. Número de cena (hora, duração, quantos agentes) é narrativa, não prova, e não zera.
+- Achado de gosto ou ajuste de um minuto fica em 14 a 17; a faixa 8 a 13 é para teto derrubado ou recusa dura de `voz.md`. Peça aprovada e publicada pelo autor costuma somar 85 ou mais.
 - Cada defeito é cobrado do crítico dono dele, uma vez. Um termo banido custa ao editor, não ao editor e ao concorrente.
 - `[FALTA: ...]` na peça não é defeito de quem escreveu: é a lacuna marcada como o sistema manda. Só impede o `aprovar`.
 - Sem base para avaliar um eixo (arquivo ausente), o painel diz o teto; não invente o que o arquivo diria.
