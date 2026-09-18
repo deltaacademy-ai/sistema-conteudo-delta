@@ -30,6 +30,10 @@ case "$prompt" in
       # a compartilhar janela de 5 palavras com o briefing e o reuso liquido da voz zera
       [ "${FAKE_BRIEFING_REUSA:-0}" = 1 ] && r="$r
 - ordem: um dois tres quatro cinco seis sete oito nove dez, depois o resto"
+      # FAKE_BRIEFING_REUSA=2: o briefing repete so uma janela de 5 palavras; dos 3
+      # 8-gramas recolados, 1 e descontado e sobram 2, que ficam no piso e nao anulam
+      [ "${FAKE_BRIEFING_REUSA:-0}" = 2 ] && r="$r
+- ordem: um dois tres quatro cinco, depois o resto"
     elif printf '%s' "$sys" | grep -q '<sobre_mim>'; then
       # recola uma sequencia de 10 palavras do post real 1 (3 sequencias distintas de 8 palavras)
       r="MARCA-VOZ Texto com voz. um dois tres quatro cinco seis sete oito nove dez. Fato 42, nome Beta."

@@ -69,6 +69,20 @@ FAKE_BRIEFING_REUSA=1 BRIEFINGS_CACHE="$d/cache-b" bash "$dir/preferencia-voz.sh
   && [ "$(jq -r '.resultado + " " + (.vitorias_voz|tostring) + " " + (.anuladas_por_reuso|tostring)' "$d/saida4.json")" = "voz 3 0" ] \
   && ok "desconto do briefing: bruto 3, liquido 0, vitoria conta" || falha "desconto do briefing: $(jq -c '{resultado, vitorias_voz, anuladas_por_reuso, r:[.pares[]|[.reuso_voz,.reuso_bruto_voz]]}' "$d/saida4.json" 2>/dev/null)"
 
+# piso absoluto: o briefing repete so 5 palavras, o liquido da voz cai de 3 para 2, e 2 nao
+# passa do piso (PISO_REUSO, padrao 2), entao a vitoria conta mesmo com o neutro em 0;
+# com PISO_REUSO=0 a mesma execucao anula (2 > 2 x 0), o que prova que a regra do dobro
+# continua valendo acima do piso
+rm -rf "$d/cache-c"; echo 0 > "$d/contador"
+FAKE_BRIEFING_REUSA=2 BRIEFINGS_CACHE="$d/cache-c" bash "$dir/preferencia-voz.sh" "$d/voz.md" "$d/mat" "$d/saida5.json" claude-sonnet-5 b-real-2.md > "$d/log5.txt" 2>&1 \
+  && [ "$(jq -r '[.pares[].reuso_voz] | unique | join(",")' "$d/saida5.json")" = 2 ] \
+  && [ "$(jq -r '.resultado + " " + (.vitorias_voz|tostring) + " " + (.anuladas_por_reuso|tostring)' "$d/saida5.json")" = "voz 3 0" ] \
+  && ok "piso: liquido 2 com neutro 0 nao anula (voz 3-0-0)" || falha "piso: $(jq -c '{resultado, vitorias_voz, anuladas_por_reuso, r:[.pares[]|[.reuso_voz,.reuso_neutro]]}' "$d/saida5.json" 2>/dev/null)"
+rm -rf "$d/cache-c"; echo 0 > "$d/contador"
+PISO_REUSO=0 FAKE_BRIEFING_REUSA=2 BRIEFINGS_CACHE="$d/cache-c" bash "$dir/preferencia-voz.sh" "$d/voz.md" "$d/mat" "$d/saida6.json" claude-sonnet-5 b-real-2.md > "$d/log6.txt" 2>&1 \
+  && [ "$(jq -r '.resultado + " " + (.anuladas_por_reuso|tostring)' "$d/saida6.json")" = "empate 3" ] \
+  && ok "sem piso a mesma execucao anula: a regra do dobro segue acima do piso" || falha "sem piso: $(jq -c '{resultado, anuladas_por_reuso}' "$d/saida6.json" 2>/dev/null)"
+
 # sem retido: roda os 3 briefings e avisa que nao vale como portao
 echo 0 > "$d/contador"
 bash "$dir/preferencia-voz.sh" "$d/voz.md" "$d/mat" "$d/saida3.json" > "$d/log3.txt" 2>&1 \

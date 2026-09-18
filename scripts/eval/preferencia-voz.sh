@@ -28,10 +28,15 @@ set -euo pipefail
 #    as que compartilham uma janela de 5 palavras com o briefing que os dois receberam
 #    (ngramas_reusados_liquidos): o que o briefing repete do original nao e colagem do
 #    perfil. Par em que o juiz escolhe o candidato do voz.md, mas esse candidato reusa
-#    (liquido) mais que FATOR_REUSO (padrao 2) vezes o que o neutro reusa, nao conta
-#    como vitoria: vira "reuso", que pesa como empate no resultado do caso. Por par
-#    ficam registrados reuso_voz e reuso_neutro (liquidos, os que decidem) e
-#    reuso_bruto_voz e reuso_bruto_neutro (sem o desconto).
+#    (liquido) mais que PISO_REUSO (padrao 2) sequencias E mais que FATOR_REUSO (padrao
+#    2) vezes o que o neutro reusa, nao conta como vitoria: vira "reuso", que pesa como
+#    empate no resultado do caso. O piso absoluto existe porque, com o desconto do
+#    briefing, o neutro costuma zerar e a regra do dobro passava a anular com 1 ou 2
+#    sequencias residuais, que sao nome proprio, data e termo tecnico, nao memorizacao
+#    (ruling do controlador, rodada de correcao 2 da Tarefa 4: 13 anulacoes contra 11
+#    antes do desconto). Acima do piso vale a regra do dobro. Por par ficam registrados
+#    reuso_voz e reuso_neutro (liquidos, os que decidem) e reuso_bruto_voz e
+#    reuso_bruto_neutro (sem o desconto).
 # 6. Para cada par, um juiz isolado (claude-opus-5, preferencia-juiz.md) recebe os
 #    3 posts reais como referencia e os dois candidatos como A e B, em ordem sorteada
 #    por par, e diz qual le como escrito pelo mesmo autor, com motivo. O juiz nao sabe
@@ -64,7 +69,7 @@ set -euo pipefail
 #   identificavel, com ou sem perfil, entao o teste media o gerador, nao o voz.md.
 #   Ele continua disponivel como metrica informativa.
 voz=$(cd "$(dirname "$1")" && pwd)/$(basename "$1"); mat=$(cd "$2" && pwd); out=$(cd "$(dirname "$3")" && pwd)/$(basename "$3")
-modelo="${4:-claude-sonnet-5}"; retido="${5:-${RETIDO:-}}"; fator="${FATOR_REUSO:-2}"
+modelo="${4:-claude-sonnet-5}"; retido="${5:-${RETIDO:-}}"; fator="${FATOR_REUSO:-2}"; piso="${PISO_REUSO:-2}"
 extrator=claude-sonnet-5
 dir=$(cd "$(dirname "$0")" && pwd)
 . "$dir/briefing-lib.sh"
@@ -144,7 +149,7 @@ $(cat "$arq/textos/$pb-$k.txt")"
     *) echo "juiz nao devolveu vencedor no par $k: $res" >&2; exit 1;;
   esac
   w="$wj"
-  if [ "$wj" = voz ] && [ "$rv" -gt $((rn * fator)) ]; then w=reuso; fi
+  if [ "$wj" = voz ] && [ "$rv" -gt "$piso" ] && [ "$rv" -gt $((rn * fator)) ]; then w=reuso; fi
   case $w in voz) vv=$((vv + 1));; neutro) vn=$((vn + 1));; empate) ve=$((ve + 1));; reuso) vr=$((vr + 1));; esac
   pares=$(printf '%s' "$pares" | jq --argjson k "$k" --argjson i "$i" --arg wj "$wj" --arg w "$w" --arg p "$pos" \
     --argjson rv "$rv" --argjson rn "$rn" --argjson rvb "$rvb" --argjson rnb "$rnb" --arg m "$mo" \
@@ -152,7 +157,7 @@ $(cat "$arq/textos/$pb-$k.txt")"
 done
 if [ $vv -gt $vn ]; then r=voz; elif [ $vn -gt $vv ]; then r=neutro; else r=empate; fi
 jq -n --arg r "$r" --argjson vv $vv --argjson vn $vn --argjson ve $ve --argjson vr $vr --arg ret "$retido" --argjson p "$pares" \
-  --arg d "gerador: $modelo; extrator: $extrator; fator de reuso: $fator; neutro: perfil-neutro.md;$aviso" \
+  --arg d "gerador: $modelo; extrator: $extrator; fator de reuso: $fator; piso de reuso: $piso; neutro: perfil-neutro.md;$aviso" \
   '{resultado:$r, vitorias_voz:$vv, vitorias_neutro:$vn, empates:$ve, anuladas_por_reuso:$vr, retido:$ret, pares:$p, detalhe:$d}' > "$out"
 rm -rf "$out.arquivos"; mv "$arq" "$out.arquivos"
 cat "$out"
