@@ -29,7 +29,7 @@ _organized: true
 - Modelos: reescrita em `claude-fable-5-1` na sessão principal; execução de casos em `claude-sonnet-5` e `claude-opus-5`; juiz em `claude-opus-5` com contexto limpo.
 - Tipos de post: teardown de notícia, caso, build ou bastidor, educativo, posição, lead magnet, anúncio pessoal. Tamanho: abaixo de 900 ou acima de 1.400 caracteres.
 - Carrossel: slide 1080x1350, capa estática que nomeia a entrega, máximo 10 slides, fontes locais.
-- Portão de cada especialista do núcleo: nos 5 casos, a versão nova empata ou vence a squad antiga nos dois modelos, segundo o juiz. Especialista sem equivalente antigo (`revisor`, `motor`) passa por rubrica própria descrita na tarefa.
+- Portão de cada especialista do núcleo: nos 5 casos, a versão nova empata ou vence a squad antiga nos dois modelos, segundo o juiz. Exceção registrada em 2026-09-18: a Tarefa 7 fecha em 9 de 10, porque o caso perdido (anúncio pessoal em Opus) só seria vencido inventando o sentimento da pessoa, que é a regra central do produto; o motivo e os veredictos contraditórios sobre o mesmo texto antigo estão no relatório da tarefa. Especialista sem equivalente antigo (`revisor`, `motor`) passa por rubrica própria descrita na tarefa.
 - As skills atuais do Hugo (`linkedin-copy`, carrosséis) não são alteradas por este plano.
 
 ## Estrutura de arquivos
