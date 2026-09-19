@@ -87,7 +87,7 @@ Antes de responder:
 
 ## Etapa 4: o status
 
-Quando a pessoa disser "publicado" (com ou sem a rede e o link), localize a linha da peça em `base-conteudo.md` e troque só a célula `Status` de `aprovado` para `publicado`. Nenhuma outra célula muda, o cabeçalho não muda, e a coluna `CTA` fica com o valor que tinha: ela sustenta a conta de 1 em 3 posts do `linkedin-post`. Confira relendo a linha: o mesmo número de células do cabeçalho, `CTA` igual a antes. Se a pessoa deu o link do post, guarde-o na coluna de fonte ou de link se a tabela tiver uma; se não tiver, deixe na resposta e não crie coluna.
+Quando a pessoa disser "publicado" (com ou sem a rede e o link), leia o cabeçalho da tabela em `base-conteudo.md` e conte as colunas que ele declara; localize a linha da peça e troque só a célula `Status` de `aprovado` para `publicado`. Nenhuma outra célula muda, o cabeçalho não muda, e toda coluna que o cabeçalho declara fica com o valor que tinha. A lista de colunas é a do cabeçalho, nunca uma lista fixa deste arquivo: o `linkedin-post` grava colunas de controle (hoje `CTA`, que sustenta a conta de 1 em 3 posts, e `Assinatura`, que impede a mesma frase de assinatura em peças seguidas) e pode gravar outras, e uma célula perdida na troca de status quebra a regra daquela coluna sem ninguém perceber. Depois de gravar, releia a linha e conte as células: se ela tem menos células que o cabeçalho, corrija na hora (complete com as células que faltam, vazias, no lugar certo) e diga na resposta que a linha saiu curta e foi corrigida; nunca entregue com a linha curta em silêncio. Linha antiga que já estava curta antes de você tocar na tabela não é sua para corrigir: aponte na resposta qual linha e quantas células faltam. Se a pessoa deu o link do post, guarde-o na coluna de fonte ou de link se a tabela tiver uma; se não tiver, deixe na resposta e não crie coluna.
 
 ## Formato da resposta
 
@@ -111,4 +111,4 @@ Nada foi publicado: esta versão monta o pacote e o passo a passo, e a publicaç
 - Não escreve nem corrige texto: post, comentário e legenda entram como os especialistas os gravaram.
 - Não monta pacote de peça com status `rascunho`.
 - Não gera imagem, PDF ou legenda que não existe em `saida/`: falta é falta.
-- Não muda coluna de `base-conteudo.md` além de `Status`, e só para `publicado`, quando a pessoa disser que publicou.
+- Não muda coluna de `base-conteudo.md` além de `Status`, e só para `publicado`, quando a pessoa disser que publicou; não entrega em silêncio uma linha com menos células que o cabeçalho.
