@@ -9,7 +9,7 @@ Este especialista é o segundo par de olhos. Quem escreve uma peça não consegu
 
 ## O que ele entrega
 
-Um bloco JSON, sempre com os mesmos campos, seguido de uma linha em texto corrido com o veredito e a primeira correção:
+Um bloco JSON, sempre com os mesmos campos, seguido de uma linha de veredito em texto corrido, sem formatação (sem negrito, sem cerca), no formato fixo `Veredito: <aprovar|reescrever|descartar>, <nota> de 100. Primeira correção: <onde e o que fazer>.` A linha aponta o lugar (parágrafo, bullet, linha) e a ação, e nunca cita o trecho com o defeito: o trecho literal já está no JSON, e a citação fora dele faria a própria resposta do revisor carregar o travessão ou o termo que ela acusa.
 
 ```json
 {
@@ -19,7 +19,8 @@ Um bloco JSON, sempre com os mesmos campos, seguido de uma linha em texto corrid
   "correcoes": [
     { "trecho": "citação literal da peça", "problema": "qual crítico viu e o quê", "sugestao": "o que fazer, concreto" }
   ],
-  "check_voz": { "rodou": true, "travessao": 0, "emoji": 0, "banidas": [], "tamanho": 0 }
+  "check_voz": { "rodou": true, "travessao": 0, "emoji": 0, "banidas": [], "tamanho": 0 },
+  "contexto_limpo": true
 }
 ```
 
@@ -27,6 +28,7 @@ Um bloco JSON, sempre com os mesmos campos, seguido de uma linha em texto corrid
 - `veredito`: 90 ou mais `aprovar`; 70 a 89 `reescrever`, com as correções dizendo o que falta para 90; abaixo de 70 `descartar`, com o problema de raiz na primeira correção.
 - `correcoes`: uma por achado, na ordem do que mais pesa. Cada `sugestao` é uma ação ou uma frase substituta para aquele trecho, nunca a peça reescrita.
 - `check_voz`: o resultado do script, com `rodou: false` e a contagem feita por leitura quando o script não pôde rodar. Quem lê precisa saber se a checagem foi mecânica ou de olho.
+- `contexto_limpo`: `true` quando a revisão rodou em conversa nova ou em subagente que não viu a escrita da peça; `false` quando a pessoa mandou revisar na mesma conversa em que a peça foi escrita. O `motor` e a pessoa precisam distinguir a nota de um contexto limpo da nota do próprio autor, que é o que esta skill existe para separar.
 
 O JSON é o contrato com o `motor` e com os outros especialistas; a linha de texto é para a pessoa que está na conversa. Nada mais na resposta: sem resumo do processo, sem elogio, sem versão corrigida.
 
@@ -47,6 +49,8 @@ Passe ao subagente só isso. Se a peça ainda não está em arquivo, grave-a em 
 
 Sem subagente, peça à pessoa que abra uma conversa nova e cole: "Use a skill revisor sobre `peca.md` desta pasta, com o contexto que está aqui." Diga o motivo em uma oração: quem escreveu a peça não pode dar a nota dela.
 
+Se a pessoa responder "revisa aqui mesmo", revise, com `contexto_limpo: false` no JSON e a ressalva na linha de veredito ("revisado na conversa que escreveu a peça"). A decisão é dela; o registro é seu, para a nota não passar por nota de contexto limpo.
+
 ## Etapa 0: o que ler
 
 Na pasta de contexto (a pasta atual, a que tem os arquivos de contexto):
@@ -59,7 +63,7 @@ Na pasta de contexto (a pasta atual, a que tem os arquivos de contexto):
 - O tipo de peça, se quem chamou informou (post e qual dos sete tipos, legenda, roteiro de carrossel). Sem tipo, revise como post de LinkedIn e aplique só a regra dos dois lados do tamanho.
 - A data prevista de publicação, se quem chamou informou. Leia a peça como o leitor desse dia: prazo, "hoje", "essa semana" e "este mês" contam a partir dela. Sem data, a referência é o dia da revisão, e prazo vencido é achado do cético.
 
-Arquivo de contexto ausente: diga qual falta na linha de veredito e revise com o que há. O crítico que depende do arquivo ausente fica limitado pelo teto que o painel define para esse caso.
+Arquivo de contexto ausente: diga qual falta na linha de veredito e revise com o que há. O crítico que depende do arquivo ausente fica limitado pelo teto que o painel define para esse caso: sem `prova.md`, cético no máximo 10; sem `icp.md`, leitor do ICP no máximo 12; sem `voz.md`, editor no máximo 16 e concorrente no máximo 14; sem `banidas.txt`, o editor confere só travessão e emoji e o JSON diz isso.
 
 Não leia: `voz-bruta.md`, `base-conteudo.md`, `learnings.md`, `materiais/`, rascunhos, briefing com justificativa. Nada disso é a peça, e o que a voz tem de útil para a revisão já está compilado em `voz.md`.
 
@@ -68,10 +72,10 @@ Não leia: `voz-bruta.md`, `base-conteudo.md`, `learnings.md`, `materiais/`, ras
 Rode, numa chamada só, o script e a contagem de caracteres (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita o segundo argumento se `banidas.txt` não existe):
 
 ```bash
-bash [raiz do plugin]/scripts/check-voz.sh peca.md banidas.txt; wc -m peca.md
+bash [raiz do plugin]/scripts/check-voz.sh peca.md banidas.txt; echo "codigo $?"; wc -m peca.md
 ```
 
-O script imprime cada linha com travessão, emoji ou termo banido, seguida do nome da falha; saída 0 é limpa. Copie o que ele acusou para `check_voz` (quantas linhas com travessão, quantas com emoji, quais termos) e a contagem para `tamanho`. Não substitua o script por leitura quando ele pode rodar: o grep enxerga o que o olho pula.
+O script imprime cada linha com travessão, emoji ou termo banido, seguida do nome da falha; `codigo 0` é limpo (o `echo` no meio da cadeia existe porque o código de saída que sobra no fim é o do `wc`, não o do script). Copie o que ele acusou para `check_voz` (quantas linhas com travessão, quantas com emoji, quais termos) e a contagem para `tamanho`. Não substitua o script por leitura quando ele pode rodar: o grep enxerga o que o olho pula.
 
 Se não puder rodar (sem terminal, sem o script), confira por leitura, procurando travessão (o traço longo), emoji e cada termo de `banidas.txt`, conte os caracteres com a ferramenta que tiver, e grave `rodou: false`.
 
@@ -84,7 +88,7 @@ Leia `references/painel.md` e passe pela peça cinco vezes, uma por crítico, na
 Regras que não podem falhar:
 
 - Número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md` zera o cético. Não procure uma justificativa para o número: se não está em `prova.md` e não veio no briefing, é sem lastro. Número de cena (hora, duração, quantos agentes) é narrativa, não prova, e não zera. Número externo tem lastro quando está atribuído no corpo, no primeiro comentário que a peça anuncia, em `prova.md` ou no briefing; o lastro não precisa estar no corpo.
-- Sem teto derrubado, o crítico começa em 18 e desce 1 ponto por achado pontual, até 14. Tendência forte não seguida (linha 1 longa, forma "tu" na instrução, concessão com virada, fecho de moral) é achado pontual e custa pontos, nunca teto. Teto é só para o que o painel lista como teto. A âncora é forma e substância: peça que segue o painel e tem substância real soma entre 80 e 90; ter sido publicada não vale nota.
+- Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual, até 14. Eixo sem achado fica em 20: partir de menos torna `aprovar` impossível na conta. Só duas regras são tendência forte, e custam pontos sem teto: linha 1 com mais de 15 palavras e instrução na forma "tu" em vez do imperativo em "você". Todo o resto que o painel lista como teto é teto, inclusive paralelismo negativo em qualquer forma ("X, não Y" e concessão seguida de virada incluídas), linha 1 sem fato, cena nem número, fecho de moral e assunto fora do leitor. A âncora é forma e substância: peça que segue o painel e tem substância real soma 90 ou mais; ter sido publicada não vale nota.
 - Cada defeito é cobrado do crítico dono dele, uma vez. Um termo banido custa ao editor, não ao editor e ao concorrente.
 - `[FALTA: ...]` na peça não é defeito de quem escreveu: é a lacuna marcada como o sistema manda. Só impede o `aprovar`.
 - Sem base para avaliar um eixo (arquivo ausente), o painel diz o teto; não invente o que o arquivo diria.
@@ -102,7 +106,8 @@ Antes de responder, confira:
 3. Todo `trecho` existe na peça, letra por letra.
 4. Nenhuma `sugestao` reescreve mais que o trecho dela.
 5. `check_voz` reflete o que o script imprimiu, ou diz `rodou: false`.
-6. Sua resposta não tem travessão, emoji nem termo de `banidas.txt` fora do campo `trecho`; o revisor que acusa o que ele mesmo comete perde a autoridade da nota. O `trecho` é citação literal e carrega o defeito que aponta (o travessão acusado aparece nele), por isso um grep na resposta pode acusar essa linha e só ela.
+6. Sua resposta não tem travessão, emoji nem termo de `banidas.txt` fora do campo `trecho`; o revisor que acusa o que ele mesmo comete perde a autoridade da nota. O `trecho` é citação literal e carrega o defeito que aponta (o travessão acusado aparece nele), por isso um grep na resposta pode acusar essa linha e só ela. A linha de veredito aponta o lugar e nunca cita o trecho: "tire o travessão do parágrafo que começa em 'Dá pra ler'", e não a frase com o travessão dentro.
+7. `contexto_limpo` reflete onde a revisão rodou, e a linha de veredito carrega a ressalva quando é `false`.
 
 ## O que este especialista não faz
 

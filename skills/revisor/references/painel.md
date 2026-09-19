@@ -10,8 +10,9 @@ Nenhum crítico reescreve. Cada achado vira uma correção com o trecho literal,
 
 Vale para os cinco. Escolha a faixa primeiro, o número depois.
 
-- 18 a 20: nada a corrigir nesse eixo.
-- 14 a 17: um ajuste pontual; a peça sairia sem ele, mas sai melhor com ele.
+- 20: nenhum achado nesse eixo. É a nota de partida de todo crítico, e ele só desce dela por achado que consegue citar no trecho. Cada crítico diz abaixo, em uma oração, o que o 20 dele significa.
+- 18 a 19: um ou dois achados que a pessoa corrige em um minuto e que não mudam a leitura.
+- 14 a 17: ajustes pontuais em mais de um lugar; a peça sairia sem eles, mas sai melhor com eles.
 - 8 a 13: um problema com o qual a peça não vai ao ar.
 - 1 a 7: o problema atravessa a peça inteira.
 - 0: teto derrubado por regra automática, listada em cada crítico.
@@ -20,14 +21,17 @@ Os tetos abaixo limitam a nota de um crítico quando um defeito específico apar
 
 Calibração, que vale para os cinco:
 
-- Sem teto derrubado, o crítico começa em 18 e desce 1 ponto por achado pontual (2 quando o achado se repete pela peça), até o piso de 14. Achado pontual é tendência forte não seguida, gosto, ritmo, ajuste que a pessoa faz em um minuto. Por mais que sejam, eles não levam um crítico abaixo de 14: isso é reservado a teto derrubado.
+- Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual (2 quando o achado se repete pela peça), até o piso de 14. Eixo sem achado nenhum fica em 20, sem desconto por cautela: nota de partida menor que 20 torna `aprovar` impossível na conta (cinco críticos em 18 somam 90, o piso do `aprovar`, e qualquer achado de 1 ponto já derruba). Achado pontual é tendência forte não seguida, gosto, ritmo, ajuste que a pessoa faz em um minuto. Por mais que sejam, eles não levam um crítico abaixo de 14: isso é reservado a teto derrubado.
 - Com teto derrubado, o crítico começa no teto e desce pelos achados pontuais do mesmo jeito.
+- `aprovar` a 90 significa: no máximo 10 pontos de achados pontuais somados nos cinco eixos e nenhum teto derrubado. Uma peça excelente chega a 95 ou mais; isso é alcançável e esperado quando a peça segue o painel.
 - A âncora é forma e substância, não o histórico: uma peça que segue este painel e carrega substância real (cena própria, número com lastro, tese do autor, leitor certo) soma entre 80 e 90. Ter sido publicada não prova nada; uma peça publicada com defeito real recebe a nota do defeito.
 - Se os cinco críticos ficaram abaixo de 14 numa peça sem teto derrubado, você cobrou o mesmo achado em mais de um crítico ou usou a faixa 8 a 13 para ajuste pontual. Refaça. A nota existe para comparar duas versões da mesma peça, e isso só funciona se um defeito custa o mesmo em toda rodada.
 
 ## 1. O cético
 
 Pergunta: um leitor inteligente, ocupado e desconfiado acreditaria nisso?
+
+O 20 do cético: toda afirmação com número, nome, resultado ou "eu fiz" tem lastro que ele consegue apontar, e nada na peça pede que o leitor confie na palavra do autor.
 
 Ele lê procurando o que o autor não consegue sustentar. Confere:
 
@@ -56,6 +60,8 @@ Tetos:
 
 Pergunta: isso segura, a frio, em 3 segundos, alguém que nunca ouviu falar do autor?
 
+O 20 do estranho: a linha 1 dá o fato e o motivo de continuar, a linha 2 acrescenta, e o fecho deixa o leitor com algo para fazer; nada antes do "ver mais" está sobrando.
+
 Ele lê só as duas primeiras linhas, sem contexto, como quem rola o feed. Depois lê o resto para saber se a peça entrega o que a linha 1 prometeu. Confere:
 
 - Linha 1 tem fato, cena ou número. Linha 1 é o que aparece antes do "ver mais". Até 15 palavras é tendência forte: conte, e cobre 1 ponto por linha 1 mais longa, 2 se passar de 20; não é teto.
@@ -69,11 +75,13 @@ Tetos:
 
 - Linha 2 que explica a linha 1: no máximo 10.
 - Linha 1 com pergunta retórica de aquecimento, isca ou meta comentário: no máximo 8.
-- Linha 1 sem fato, cena nem número (opinião solta, adjetivo, frase de efeito): 2 a 4 pontos, sem teto. Uma frase própria que abre uma cena (anúncio pessoal, caso) tem cena, e não cai aqui.
+- Linha 1 sem fato, cena nem número (opinião solta, adjetivo, frase de efeito): no máximo 12. Uma frase própria que abre uma cena (anúncio pessoal, caso) tem cena, e não cai aqui.
 
 ## 3. O concorrente
 
 Pergunta: um concorrente colaria o logo dele nessa peça e publicaria sem mudar uma linha?
+
+O 20 do concorrente: a peça tem ao menos uma cena ou um dado que só esse autor tem, e a tese é dita com a posição dele, de um jeito que um concorrente teria de reescrever para assinar.
 
 Ele lê cobrindo o nome do autor e tenta adivinhar quem escreveu. Confere:
 
@@ -93,6 +101,8 @@ Tetos:
 
 Pergunta: isso fala com o que essa pessoa, descrita em `icp.md`, se preocupa hoje?
 
+O 20 do leitor do ICP: cada termo da peça é do vocabulário dele ou vem traduzido na mesma frase, o assunto é uma preocupação dele, e a peça termina com algo que ele consegue fazer.
+
 Ele lê como o leitor de "Quem lê", com as preocupações de "O que o preocupa" e o vocabulário de "Jargão que usa" e "Jargão que não usa". Confere:
 
 - Cada sigla, nome de produto e termo de infraestrutura: esse leitor usa isso no dia a dia? Se não usa, a peça traduz para a função ou corta. Nome técnico fica só quando o leitor precisa dele para agir. Termo em inglês consagrado no nicho fica; consagrado para dev não é consagrado para gestor.
@@ -106,16 +116,19 @@ Tetos:
 
 - Jargão sem tradução que o leitor do ICP não usa: no máximo 12 no primeiro termo, menos 2 por termo adicional.
 - Promessa do que o produto não faz: no máximo 6.
-- Peça sobre preocupação que não é do leitor (assunto de dev para leitor gestor, ou o inverso): no máximo 14. É ângulo, não defeito de execução; o `angulo` decide o assunto, o revisor só sinaliza.
+- Peça sobre preocupação que não é do leitor (assunto de dev para leitor gestor, ou o inverso): no máximo 10. O `angulo` escolheu o assunto, e a correção diz isso; o teto vale mesmo assim, porque o leitor errado não lê.
+- Sem `icp.md` na pasta: no máximo 12, dito na correção.
 
 ## 5. O editor
 
 Pergunta: cada palavra está segurando peso?
 
+O 20 do editor: nenhuma frase sai sem perda, o tamanho está no lado certo, e nenhum padrão de máquina aparece (o script limpo é condição, não prova).
+
 Ele lê frase por frase, cortando mentalmente cada uma para ver se algo se perde. Confere:
 
 - Tamanho, medido em caracteres pelo script ou por `wc -m`. Post de LinkedIn vive em dois lados: abaixo de 900 ou acima de 1.400. Entre 900 e 1.400 é a faixa morta: longo demais para ser lido inteiro no feed e curto demais para recompensar o "ver mais". Quando o tipo de peça foi informado, vale também a faixa do tipo (teardown de 1.400 a 2.500, caso de 1.500 a 2.500, build ou bastidor de 1.500 a 2.900, educativo acima de 1.400, posição abaixo de 900, lead magnet acima de 1.400, anúncio pessoal abaixo de 900).
-- Padrão de máquina: travessão, emoji, termo de `banidas.txt` (o resultado da checagem mecânica entra aqui), paralelismo negativo nas formas de enquadramento negado ("não é X, é Y", "não só X, mas Y", "menos X, mais Y", "X? Não. Y.", "você não precisa de X, precisa de Y"), tríade automática de adjetivos ou benefícios, hedge defensivo, cadência de metrônomo (toda frase do mesmo tamanho). Concessão seguida de virada ("dá pra ler como X, e é. Mas Y") é a forma branda: achado pontual de 1 a 2 pontos, sem teto.
+- Padrão de máquina: travessão, emoji, termo de `banidas.txt` (o resultado da checagem mecânica entra aqui), paralelismo negativo em qualquer forma, tríade automática de adjetivos ou benefícios, hedge defensivo, cadência de metrônomo (toda frase do mesmo tamanho). Paralelismo negativo é toda frase que instala uma ideia negando outra, em qualquer ordem e com qualquer conector; os exemplos ilustram e não fecham a lista: "não é X, é Y", "X, não Y", "não só X, mas Y", "menos X, mais Y", "X? Não. Y.", "você não precisa de X, precisa de Y", "X morreu", "pare de X, comece Y", e a concessão seguida de virada ("claro, X. Mas Y", "dá pra ler como X, e é. Mas Y").
 - Fecho: resumo do que já foi dito, moral da história, frase filosófica, pedido de aprovação ("legal, né?").
 - Parágrafos de 2 a 4 frases; frase com mais de 3 vírgulas vira duas; bloco de texto sem respiro.
 - Formatação de LinkedIn: bullet com `→`, sem hashtag, sem negrito unicode, sem caixa alta fora de sigla e de palavra-chave de CTA.
@@ -125,10 +138,12 @@ Ele lê frase por frase, cortando mentalmente cada uma para ver se algo se perde
 Tetos:
 
 - Travessão ou emoji: no máximo 10. É a digital mais confiável de texto de máquina, e o leitor do nicho já aprendeu a reconhecer.
-- Paralelismo negativo na forma de enquadramento negado: no máximo 10.
+- Paralelismo negativo em qualquer forma, inclusive "X, não Y" e a concessão seguida de virada: no máximo 10.
 - Tamanho na faixa morta (900 a 1.400), ou fora da faixa do tipo quando o tipo foi informado: no máximo 12.
 - Termo de `banidas.txt`: no máximo 14 no primeiro, menos 2 por termo adicional.
-- Fecho de resumo ou moral, parágrafo longo demais, frase com mais de 3 vírgulas, forma "tu", concessão com virada, repetição: achados pontuais, sem teto.
+- Fecho de resumo ou moral: no máximo 14.
+- Parágrafo longo demais, frase com mais de 3 vírgulas, forma "tu" na instrução, repetição: achados pontuais, sem teto.
+- Sem `voz.md` na pasta: editor no máximo 16 e concorrente no máximo 14, porque as leis de escrita e os sinais de assinatura não podem ser conferidos; dito na correção. Sem `banidas.txt`: o editor confere só travessão e emoji, e o JSON diz isso em `banidas`.
 
 ## Veredito
 
