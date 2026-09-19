@@ -83,8 +83,8 @@ Leia `references/painel.md` e passe pela peça cinco vezes, uma por crítico, na
 
 Regras que não podem falhar:
 
-- Número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md` zera o cético. Não procure uma justificativa para o número: se não está em `prova.md` e não veio no briefing, é sem lastro. Número de cena (hora, duração, quantos agentes) é narrativa, não prova, e não zera.
-- Achado de gosto ou ajuste de um minuto fica em 14 a 17; a faixa 8 a 13 é para teto derrubado ou recusa dura de `voz.md`. Peça aprovada e publicada pelo autor costuma somar 85 ou mais.
+- Número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md` zera o cético. Não procure uma justificativa para o número: se não está em `prova.md` e não veio no briefing, é sem lastro. Número de cena (hora, duração, quantos agentes) é narrativa, não prova, e não zera. Número externo tem lastro quando está atribuído no corpo, no primeiro comentário que a peça anuncia, em `prova.md` ou no briefing; o lastro não precisa estar no corpo.
+- Sem teto derrubado, o crítico começa em 18 e desce 1 ponto por achado pontual, até 14. Tendência forte não seguida (linha 1 longa, forma "tu" na instrução, concessão com virada, fecho de moral) é achado pontual e custa pontos, nunca teto. Teto é só para o que o painel lista como teto. A âncora é forma e substância: peça que segue o painel e tem substância real soma entre 80 e 90; ter sido publicada não vale nota.
 - Cada defeito é cobrado do crítico dono dele, uma vez. Um termo banido custa ao editor, não ao editor e ao concorrente.
 - `[FALTA: ...]` na peça não é defeito de quem escreveu: é a lacuna marcada como o sistema manda. Só impede o `aprovar`.
 - Sem base para avaliar um eixo (arquivo ausente), o painel diz o teto; não invente o que o arquivo diria.

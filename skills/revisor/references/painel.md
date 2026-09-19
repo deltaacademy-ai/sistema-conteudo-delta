@@ -18,7 +18,12 @@ Vale para os cinco. Escolha a faixa primeiro, o número depois.
 
 Os tetos abaixo limitam a nota de um crítico quando um defeito específico aparece. Teto é máximo, não nota: dentro do teto, a gravidade ainda move o número. Dois defeitos no mesmo crítico usam o menor teto e descem a partir dele.
 
-Calibração: use 8 a 13 só quando o achado derruba um teto deste painel ou fere uma recusa dura de `voz.md`. Achado de gosto, de ritmo, ou ajuste que a pessoa faria em um minuto fica em 14 a 17, mesmo que sejam vários. Uma peça que o autor já aprovou e publicou costuma somar 85 ou mais aqui, com uma ou duas correções pontuais; se os cinco críticos ficaram abaixo de 13 numa peça que lê bem, você cobrou o mesmo achado em mais de um crítico ou usou 8 a 13 para ajuste pontual. A nota existe para comparar duas versões da mesma peça, e isso só funciona se um defeito custa o mesmo em toda rodada.
+Calibração, que vale para os cinco:
+
+- Sem teto derrubado, o crítico começa em 18 e desce 1 ponto por achado pontual (2 quando o achado se repete pela peça), até o piso de 14. Achado pontual é tendência forte não seguida, gosto, ritmo, ajuste que a pessoa faz em um minuto. Por mais que sejam, eles não levam um crítico abaixo de 14: isso é reservado a teto derrubado.
+- Com teto derrubado, o crítico começa no teto e desce pelos achados pontuais do mesmo jeito.
+- A âncora é forma e substância, não o histórico: uma peça que segue este painel e carrega substância real (cena própria, número com lastro, tese do autor, leitor certo) soma entre 80 e 90. Ter sido publicada não prova nada; uma peça publicada com defeito real recebe a nota do defeito.
+- Se os cinco críticos ficaram abaixo de 14 numa peça sem teto derrubado, você cobrou o mesmo achado em mais de um crítico ou usou a faixa 8 a 13 para ajuste pontual. Refaça. A nota existe para comparar duas versões da mesma peça, e isso só funciona se um defeito custa o mesmo em toda rodada.
 
 ## 1. O cético
 
@@ -28,7 +33,7 @@ Ele lê procurando o que o autor não consegue sustentar. Confere:
 
 - Todo número que prova algo sobre o autor, a empresa, a oferta, um cliente ou um resultado: precisa estar em `prova.md`, na tabela ou em "Casos", com a linha citada. São os três tipos de `prova.md`: credencial (anos, projetos, clientes), operação (encontros, capítulos, alunos) e resultado (métrica de post, faturamento, resultado de mentorado, tempo economizado).
 - Número de cena não é prova: que horas eram, quanto tempo a sessão levou, quantos agentes, quantas abas. Sem ele não existe cena, e ele vem do briefing, não de `prova.md`. Só vira correção quando ocupa o lugar de um resultado ("em 5 minutos" como o que o leitor vai conseguir) ou quando a cena inteira parece inventada.
-- Todo número de fato externo (notícia, mercado, terceiro): precisa de atribuição na própria peça (comunicado, veículo, nome de quem disse) ou no primeiro comentário que a peça anuncia. Se quem chamou passou o briefing e o número está lá, conta como lastro.
+- Todo número de fato externo (notícia, mercado, terceiro): precisa de lastro em algum lugar, e o lugar pode ser fora do corpo. Conta como lastro: atribuição na própria peça (comunicado, veículo, nome de quem disse); um primeiro comentário que a peça anuncia como lugar das fontes (a peça não precisa listar cada fonte no corpo); o número em `prova.md`; o número no briefing, se quem chamou o passou. Só é "sem lastro" quando nenhum desses quatro existe.
 - Número que `prova.md` registra em "Divergências entre fontes" e a peça usa sem aval: correção com "precisa de aval".
 - Promessa de prazo, garantia ou resultado futuro: precisa estar em `icp.md`, "Claims que precisam de aval", com o aval dado. Sem isso, correção.
 - "Eu testei", "eu rodei", "na prática": precisa dizer o quê, quando e o que aconteceu. Sem os três, é afirmação de autoridade sem cena.
@@ -40,8 +45,9 @@ Ele lê procurando o que o autor não consegue sustentar. Confere:
 Tetos:
 
 - Zero automático: número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md`. Zera porque o leitor cético que pega um número inventado descarta o resto da peça, e o autor que publica um número falso paga com o nome dele.
-- Número externo sem atribuição: no máximo 10.
+- Número externo sem lastro em nenhum dos quatro lugares: no máximo 10.
 - Número em divergência sem aval, ou promessa sem aval: no máximo 12.
+- Contagem que não fecha com as datas da peça (dias até um prazo, "4 vezes" que a conta não dá): achado pontual, 1 a 2 pontos, sem teto. É erro de conta, não número inventado.
 - Sem `prova.md` na pasta: no máximo 10, e todo número sobre o autor entra nas correções como "a confirmar".
 
 `[FALTA: ...]` na peça não é número inventado: o cético não pune. A peça com `[FALTA]` só não pode ser aprovada (ver Veredito).
@@ -52,7 +58,7 @@ Pergunta: isso segura, a frio, em 3 segundos, alguém que nunca ouviu falar do a
 
 Ele lê só as duas primeiras linhas, sem contexto, como quem rola o feed. Depois lê o resto para saber se a peça entrega o que a linha 1 prometeu. Confere:
 
-- Linha 1 tem fato, cena ou número, em até 15 palavras, contadas. Linha 1 é o que aparece antes do "ver mais".
+- Linha 1 tem fato, cena ou número. Linha 1 é o que aparece antes do "ver mais". Até 15 palavras é tendência forte: conte, e cobre 1 ponto por linha 1 mais longa, 2 se passar de 20; não é teto.
 - Linha 2 avança. Teste: apague a linha 2 e leia de novo; se nenhuma informação se perdeu, ela explica a linha 1 em vez de avançar.
 - Nada de aquecimento: pergunta retórica, "e se eu te dissesse", "você sabia que", "neste post você vai ver".
 - Nada de isca: pedido de curtida, "lê de novo", "para tudo", promessa de que o texto vai mudar alguma coisa.
@@ -63,8 +69,7 @@ Tetos:
 
 - Linha 2 que explica a linha 1: no máximo 10.
 - Linha 1 com pergunta retórica de aquecimento, isca ou meta comentário: no máximo 8.
-- Linha 1 sem fato, cena nem número (opinião solta, adjetivo, frase de efeito): no máximo 12.
-- Linha 1 com mais de 15 palavras: no máximo 14.
+- Linha 1 sem fato, cena nem número (opinião solta, adjetivo, frase de efeito): 2 a 4 pontos, sem teto. Uma frase própria que abre uma cena (anúncio pessoal, caso) tem cena, e não cai aqui.
 
 ## 3. O concorrente
 
@@ -101,7 +106,7 @@ Tetos:
 
 - Jargão sem tradução que o leitor do ICP não usa: no máximo 12 no primeiro termo, menos 2 por termo adicional.
 - Promessa do que o produto não faz: no máximo 6.
-- Peça sobre preocupação que não é do leitor (assunto de dev para leitor gestor, ou o inverso): no máximo 10.
+- Peça sobre preocupação que não é do leitor (assunto de dev para leitor gestor, ou o inverso): no máximo 14. É ângulo, não defeito de execução; o `angulo` decide o assunto, o revisor só sinaliza.
 
 ## 5. O editor
 
@@ -110,20 +115,20 @@ Pergunta: cada palavra está segurando peso?
 Ele lê frase por frase, cortando mentalmente cada uma para ver se algo se perde. Confere:
 
 - Tamanho, medido em caracteres pelo script ou por `wc -m`. Post de LinkedIn vive em dois lados: abaixo de 900 ou acima de 1.400. Entre 900 e 1.400 é a faixa morta: longo demais para ser lido inteiro no feed e curto demais para recompensar o "ver mais". Quando o tipo de peça foi informado, vale também a faixa do tipo (teardown de 1.400 a 2.500, caso de 1.500 a 2.500, build ou bastidor de 1.500 a 2.900, educativo acima de 1.400, posição abaixo de 900, lead magnet acima de 1.400, anúncio pessoal abaixo de 900).
-- Padrão de máquina: travessão, emoji, termo de `banidas.txt` (o resultado da checagem mecânica entra aqui), paralelismo negativo em qualquer forma ("não é X, é Y", "não só X, mas Y", "menos X, mais Y", "X? Não. Y.", concessão seguida de virada), tríade automática de adjetivos ou benefícios, hedge defensivo, cadência de metrônomo (toda frase do mesmo tamanho).
+- Padrão de máquina: travessão, emoji, termo de `banidas.txt` (o resultado da checagem mecânica entra aqui), paralelismo negativo nas formas de enquadramento negado ("não é X, é Y", "não só X, mas Y", "menos X, mais Y", "X? Não. Y.", "você não precisa de X, precisa de Y"), tríade automática de adjetivos ou benefícios, hedge defensivo, cadência de metrônomo (toda frase do mesmo tamanho). Concessão seguida de virada ("dá pra ler como X, e é. Mas Y") é a forma branda: achado pontual de 1 a 2 pontos, sem teto.
 - Fecho: resumo do que já foi dito, moral da história, frase filosófica, pedido de aprovação ("legal, né?").
 - Parágrafos de 2 a 4 frases; frase com mais de 3 vírgulas vira duas; bloco de texto sem respiro.
 - Formatação de LinkedIn: bullet com `→`, sem hashtag, sem negrito unicode, sem caixa alta fora de sigla e de palavra-chave de CTA.
 - Repetição preguiçosa: a mesma ideia dita duas vezes com palavras diferentes.
-- Imperativo na forma de "você" em instrução ao leitor (comprima, monte, escolha), primeira pessoa quando o autor conta o que fez.
+- Imperativo na forma de "você" em instrução ao leitor (comprima, monte, escolha), primeira pessoa quando o autor conta o que fez. É tendência forte: instrução na forma "tu" (comprime, monta, escolhe) custa 1 ponto, 2 se repete pela peça, e vira uma correção só, que lista as ocorrências.
 
 Tetos:
 
 - Travessão ou emoji: no máximo 10. É a digital mais confiável de texto de máquina, e o leitor do nicho já aprendeu a reconhecer.
-- Paralelismo negativo: no máximo 10.
+- Paralelismo negativo na forma de enquadramento negado: no máximo 10.
 - Tamanho na faixa morta (900 a 1.400), ou fora da faixa do tipo quando o tipo foi informado: no máximo 12.
 - Termo de `banidas.txt`: no máximo 14 no primeiro, menos 2 por termo adicional.
-- Fecho de resumo ou moral: no máximo 14.
+- Fecho de resumo ou moral, parágrafo longo demais, frase com mais de 3 vírgulas, forma "tu", concessão com virada, repetição: achados pontuais, sem teto.
 
 ## Veredito
 
