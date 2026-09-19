@@ -10,7 +10,7 @@ Sobre o mercado (uma notícia, um método, um caso, uma tese) pede tese, número
 
 O nicho é bimodal: ou abaixo de 900 caracteres, ou acima de 1.400. O meio (de 900 a 1.400) não performa e não existe na amostra, então nenhum post é entregue nessa faixa. Caracteres contam com espaço e quebra de linha, como o LinkedIn conta (`wc -m` no arquivo do post). Os tetos por tipo vêm dos maiores posts que performaram; acima deles a leitura cai.
 
-O lado longo se sustenta com os fatos do briefing contados inteiros (ordem, consequência, leitura da pessoa); um briefing de 8 ou 10 fatos dá 1.500 caracteres sem cena nova. Só quando o briefing tem 2 ou 3 fatos o lado longo pediria invenção, e aí o post para no lado curto e a nota diz o que faltou. Enchimento para chegar a 1.400 e corte até cair abaixo do mínimo do tipo são o mesmo erro: o tamanho é parte do pedido.
+O lado longo se sustenta com os fatos do briefing contados inteiros (ordem, consequência, leitura da pessoa que o briefing registra). O piso se alcança com fato, nunca com enchimento: glosa de termo (uma por post, no máximo, em qualquer tamanho), contexto dispensável e repetição não são material. Escrito inteiro, se o post fica abaixo do piso do tipo, o briefing é fino para o lado longo: o post vai para abaixo de 900 e a nota diz que o tipo pede mais material e o que faltou. Enchimento para chegar ao piso e corte abaixo do piso com material sobrando são o mesmo erro: o tamanho é parte do pedido.
 
 | Tipo | Tamanho | Quando usar | Como fecha |
 |---|---|---|---|
@@ -28,7 +28,7 @@ Quando: fato externo do dia (lançamento, mudança de regra, aquisição, prazo)
 
 Estrutura:
 
-1. Linha 1: a notícia crua, em segunda pessoa, com quem lê como alvo: o que muda para ele e desde quando. "A empresa X publicou o artigo Y" é o anúncio, e quem lê já viu; o que ainda não viu é a notícia chegando nele. O ângulo fica para o corpo.
+1. Linha 1: a notícia crua, em segunda pessoa, com quem lê como alvo: o que muda para ele e desde quando. "A empresa X publicou o artigo Y" é o anúncio, e quem lê já viu; o que ainda não viu é a notícia chegando nele. O ângulo fica para o corpo. Padrão aprovado pelo Hugo e registrado em `linkedin-copy/SKILL.md`, seção "O hook", linha 51 ("Agora o Claude vai marcar todos os textos que você gerar com ele").
 2. Duas ou três linhas de contexto concreto: datas, valores, quem disse.
 3. Bloco de 3 ou 4 itens com `→`, um por linha: o que quebrou ou o que mudou.
 4. A leitura própria: o que quem opera vê que o release não diz, com o caso ou o número que a pessoa tem. Aqui é onde o post ganha do resto, e por isso é a leitura dela, registrada no briefing; sem registro, o item sai, o post vai do bloco direto ao que muda para quem lê, e a nota leva `[FALTA: leitura da pessoa sobre a notícia]`.
