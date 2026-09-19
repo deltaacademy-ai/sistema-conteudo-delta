@@ -6,8 +6,9 @@ d=$(mktemp -d)
 s=scripts/check-voz.sh
 printf 'alavancar\n' > "$d/banidas.txt"
 falhas=0
-espera_ok()    { bash $s "$@" >/dev/null && echo "ok    $1" || { echo "FALHA $1 (devia passar)"; falhas=$((falhas+1)); }; }
-espera_falha() { bash $s "$@" >/dev/null && { echo "FALHA $1 (devia acusar)"; falhas=$((falhas+1)); } || echo "ok    $1"; }
+nome() { local n=; for x in "$@"; do case $x in *.md|*.json) n=$x;; esac; done; echo "${n##*/}"; }
+espera_ok()    { bash $s "$@" >/dev/null 2>&1 && echo "ok    $(nome "$@")" || { echo "FALHA $(nome "$@") (devia passar)"; falhas=$((falhas+1)); }; }
+espera_falha() { bash $s "$@" >/dev/null 2>&1 && { echo "FALHA $(nome "$@") (devia acusar)"; falhas=$((falhas+1)); } || echo "ok    $(nome "$@")"; }
 # basicos
 printf 'texto limpo, sem nada.\n' > "$d/limpo.md";                 espera_ok "$d/limpo.md" "$d/banidas.txt"
 printf 'texto com travess\xe2\x80\x94o\n' > "$d/trav.md";         espera_falha "$d/trav.md"
@@ -36,4 +37,21 @@ printf 'antes\n```\nvamos alavancar\n```\ndepois limpo\n' > "$d/cerca.md";      
 printf '```\nvamos alavancar\n```\ndepois alavancar\n' > "$d/cerca-depois.md";                espera_falha "$d/cerca-depois.md" "$d/banidas.txt"
 # emoji dentro de blockquote continua acusando
 printf '> foguete \xf0\x9f\x9a\x80 citado\n' > "$d/emoji-bq.md";                              espera_falha "$d/emoji-bq.md"
+# modo --json: as aspas da sintaxe nao sao citacao. Termo banido dentro de um valor acusa,
+# com o caminho do valor (indice a partir de 1) no lugar do numero da linha
+printf '{"slides":[{"tipo":"capa","titulo":"Capa"},{"tipo":"conteudo","corpo":"vamos alavancar isso\\nsegunda linha"}]}\n' > "$d/ban.json"
+espera_falha --json "$d/ban.json" "$d/banidas.txt"
+bash $s --json "$d/ban.json" "$d/banidas.txt" | grep -q '^slides\[2\].corpo: \[alavancar\]' && echo "ok    json acusa com o caminho slides[2].corpo" || { echo "FALHA json: caminho do acerto"; falhas=$((falhas+1)); }
+# o mesmo termo dentro de citacao marcada no proprio valor passa (aspas retas escapadas e curvas)
+printf '{"slides":[{"corpo":"o site diz \\"vamos alavancar seu negocio\\" e pronto"}]}\n' > "$d/cit.json";       espera_ok --json "$d/cit.json" "$d/banidas.txt"
+printf '{"slides":[{"corpo":"o site diz \xe2\x80\x9cvamos alavancar\xe2\x80\x9d e pronto"}]}\n' > "$d/cit2.json"; espera_ok --json "$d/cit2.json" "$d/banidas.txt"
+# citacao fechada nao mascara o termo fora dela
+printf '{"corpo":"o site diz \\"crescer\\" e eu quero alavancar"}\n' > "$d/cit-fora.json";                      espera_falha --json "$d/cit-fora.json" "$d/banidas.txt"
+# travessao e emoji dentro de valor acusam, com ou sem lista, e mesmo entre aspas
+printf '{"titulo":"IA \xe2\x80\x94 acelera"}\n' > "$d/trav.json";                        espera_falha --json "$d/trav.json"
+printf '{"titulo":"cita \\"IA \xe2\x80\x94 acelera\\" aqui"}\n' > "$d/trav-cit.json";    espera_falha --json "$d/trav-cit.json" "$d/banidas.txt"
+printf '{"titulo":"foguete \xf0\x9f\x9a\x80"}\n' > "$d/emoji.json";                     espera_falha --json "$d/emoji.json"
+# sem lista, json limpo passa; json invalido acusa
+printf '{"slides":[{"titulo":"Texto limpo, com \\"aspas\\" e acento: ação"}]}\n' > "$d/limpo.json"; espera_ok --json "$d/limpo.json"
+printf '{"slides":[\n' > "$d/quebrado.json";                                            espera_falha --json "$d/quebrado.json"
 [ "$falhas" -eq 0 ] && echo "todos os testes passaram" || { echo "$falhas teste(s) falharam"; exit 1; }
