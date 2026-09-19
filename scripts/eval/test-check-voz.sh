@@ -51,6 +51,13 @@ printf '{"corpo":"o site diz \\"crescer\\" e eu quero alavancar"}\n' > "$d/cit-f
 printf '{"titulo":"IA \xe2\x80\x94 acelera"}\n' > "$d/trav.json";                        espera_falha --json "$d/trav.json"
 printf '{"titulo":"cita \\"IA \xe2\x80\x94 acelera\\" aqui"}\n' > "$d/trav-cit.json";    espera_falha --json "$d/trav-cit.json" "$d/banidas.txt"
 printf '{"titulo":"foguete \xf0\x9f\x9a\x80"}\n' > "$d/emoji.json";                     espera_falha --json "$d/emoji.json"
+# termo banido na chave nao vira acerto do valor limpo (o rotulo do caminho fica fora da conferencia)
+printf '{"alavancar":[{"corpo":"texto limpo"}]}\n' > "$d/chave.json";                   espera_ok --json "$d/chave.json" "$d/banidas.txt"
+# modo texto com CHECK_VOZ_PREFIXO=1: o rotulo antes do TAB sai da conferencia, o texto depois entra
+printf 'slide alavancar\ttexto limpo\n' > "$d/prefixo-ok.txt"
+CHECK_VOZ_PREFIXO=1 bash $s "$d/prefixo-ok.txt" "$d/banidas.txt" >/dev/null && echo "ok    prefixo-ok.txt" || { echo "FALHA prefixo-ok.txt (devia passar)"; falhas=$((falhas+1)); }
+printf 'slide 2\tquero alavancar\n' > "$d/prefixo-ban.txt"
+CHECK_VOZ_PREFIXO=1 bash $s "$d/prefixo-ban.txt" "$d/banidas.txt" >/dev/null && { echo "FALHA prefixo-ban.txt (devia acusar)"; falhas=$((falhas+1)); } || echo "ok    prefixo-ban.txt"
 # sem lista, json limpo passa; json invalido acusa
 printf '{"slides":[{"titulo":"Texto limpo, com \\"aspas\\" e acento: ação"}]}\n' > "$d/limpo.json"; espera_ok --json "$d/limpo.json"
 printf '{"slides":[\n' > "$d/quebrado.json";                                            espera_falha --json "$d/quebrado.json"

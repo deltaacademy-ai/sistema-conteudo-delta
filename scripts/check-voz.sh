@@ -30,16 +30,20 @@ if [ "${1:-}" = "--json" ]; then modo=json; shift; fi
 arq="${1:-}"; ban="${2:-}"
 if [ -z "$arq" ] || [ ! -f "$arq" ]; then echo "uso: check-voz.sh [--json] <arquivo> [banidas.txt]"; exit 1; fi
 
+# Com CHECK_VOZ_PREFIXO=1 no ambiente, cada linha e "rotulo<TAB>texto": o rotulo (caminho no JSON,
+# numero do slide no texto renderizado) sai na mensagem mas nao entra na conferencia, senao termo
+# banido numa chave viraria acerto atribuido a um valor limpo.
 checar() {
   local arq="$1" ban="$2" falhou=0
-  if perl -CSD -ne 'if (/[\x{2014}\x{2013}]/) { print "$.: $_"; $f=1 } END { exit($f?0:1) }' "$arq"; then echo "travessao"; falhou=1; fi
-  if perl -CSD -ne 'if (/[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]/) { print "$.: $_"; $f=1 } END { exit($f?0:1) }' "$arq"; then echo "emoji"; falhou=1; fi
+  if perl -CSD -ne 'my $t = $_; $t =~ s/^[^\t]*\t// if $ENV{CHECK_VOZ_PREFIXO}; if ($t =~ /[\x{2014}\x{2013}]/) { print "$.: $_"; $f=1 } END { exit($f?0:1) }' "$arq"; then echo "travessao"; falhou=1; fi
+  if perl -CSD -ne 'my $t = $_; $t =~ s/^[^\t]*\t// if $ENV{CHECK_VOZ_PREFIXO}; if ($t =~ /[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]/) { print "$.: $_"; $f=1 } END { exit($f?0:1) }' "$arq"; then echo "emoji"; falhou=1; fi
   if [ -n "$ban" ] && [ -s "$ban" ]; then
     if perl -CSD -e '
       open my $b, "<", $ARGV[0]; my @p = grep { length } map { chomp; s/^\s+|\s+$//g; $_ } grep { !/^#/ } <$b>;
       open my $a, "<", $ARGV[1]; my $f = 0; my $cerca = 0;
       while (my $l = <$a>) {
         my $orig = $l;
+        $l =~ s/^[^\t]*\t// if $ENV{CHECK_VOZ_PREFIXO};                # rotulo nao e texto
         if ($l =~ /^\s*(`{3,}|~{3,})/) { $cerca = !$cerca; next }   # abre ou fecha bloco de codigo
         next if $cerca;                                              # dentro do bloco: citacao
         next if $l =~ /^\s*>/;                                       # blockquote: citacao
@@ -72,8 +76,8 @@ if ! perl -MJSON::PP -e '
     my ($v, $cam) = @_;
     if (ref $v eq "HASH")  { anda($v->{$_}, $cam eq "" ? $_ : "$cam.$_") for sort keys %$v }
     elsif (ref $v eq "ARRAY") { anda($v->[$_], $cam . "[" . ($_ + 1) . "]") for 0 .. $#$v }
-    elsif (defined $v && !ref $v) { print "$cam: $_\n" for split /\r?\n/, $v }
+    elsif (defined $v && !ref $v) { print "$cam\t$_\n" for split /\r?\n/, $v }
   }
   anda($j, "");' < "$arq" > "$tmp"; then echo "json invalido: $arq"; exit 1; fi
-checar "$tmp" "$ban" | sed -E -e 's/^[0-9]+: (\[[^]]*\] )([^ ]+: )/\2\1/' -e 's/^[0-9]+: //'
+CHECK_VOZ_PREFIXO=1 checar "$tmp" "$ban" | sed -E -e 's/^[0-9]+: (\[[^]]*\] )([^\t]*)\t/\2: \1/' -e 's/^[0-9]+: ([^\t]*)\t/\1: /'
 exit "${PIPESTATUS[0]}"
