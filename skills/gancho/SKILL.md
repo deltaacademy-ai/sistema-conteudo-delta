@@ -7,6 +7,14 @@ description: Escreve a abertura de uma peça, as duas linhas que aparecem antes 
 
 Só as duas primeiras linhas de um post aparecem antes do "ver mais", e a capa é o único slide que todo mundo vê. Essas linhas decidem se a peça existe. Este especialista escreve só elas. A regra central é a mesma dos outros: gancho é fato, cena ou número que a peça sustenta, dito na voz da pessoa; número que o briefing e o `prova.md` não trazem vira `[FALTA: número real]`, e o gancho é entregue assim.
 
+## Três regras que valem em todo especialista que escreve
+
+O mesmo texto está em `angulo`, `gancho`, `linkedin-post` e `carrossel-roteiro`, e o `motor` o aplica ao que repassa. As listas de cada etapa detalham; estas três fecham o que a lista não nomeia.
+
+1. Nunca invente número, caso, depoimento, nome, citação, cena, data ou sentimento. O que o briefing e `prova.md` não trazem vira `[FALTA: descrição]` ou fica fora, porque dado inventado sai publicado com o nome da pessoa embaixo.
+2. Um episódio não vira hábito nem regra, em primeira pessoa ("eu sempre", "quando me pedem X, faço Y") nem na forma impessoal (um caso virando método geral: "o jeito certo é", "toda demo precisa de", "instalação é onde a aula escorrega"). A afirmação fica no episódio ("nesse projeto", "nessa aula") ou entra `[FALTA: confirmação de que a pessoa sustenta a regra]`, porque uma ocorrência prova que aconteceu uma vez, e regra pede mais de uma.
+3. Nenhuma afirmação de qualidade ou juízo que o contexto não sustente ("eram bons", "o leitor vai se reconhecer", "funcionou bem", "ficou melhor"). Enumerar categorias sempre deixa buraco, e esta cláusula fecha o buraco: se o contexto não diz, o texto não diz.
+
 ## O que ele entrega
 
 - Por pedido de peça: 2 ou 3 ganchos, cada um rotulado com a estrutura do banco, uma recomendação com o motivo em uma linha, a lista de `[FALTA]` e o resultado da checagem.
@@ -40,7 +48,7 @@ Sem briefing e sem tema, peça em uma pergunta o tema e o fato principal (o núm
    - paralelismo negativo, em qualquer forma: "não é X, é Y", "não X, mas Y", "menos X, mais Y", "X? Não. Y.", "pare de X, comece a Y", "X morreu, Y é o futuro", "você não precisa de X, precisa de Y", e as versões com concessão ("claro, X funciona, mas Y", "embora X pareça, Y na verdade"). Diga só o que a coisa é.
    - pergunta retórica de aquecimento ("já parou pra pensar", "e se eu te dissesse", "você sabia que"). Pergunta genuína existe, mas fecha um post de posição, e nunca é a abertura.
    - isca de engajamento: ordem para quem lê reagir, reler, salvar ou se preparar, e qualquer frase de `banidas.txt`.
-6. Especificidade: número exato, nome de ferramenta, data, valor em reais. Número arredondado parece inventado. O gancho só encena o que o contexto declara, e isso vale para número, nome, citação, cena, data e sentimento: o que o briefing e o `prova.md` não trazem vira `[FALTA: descrição]` ou sai do gancho. Conta feita por você (soma, diferença, média, total, "por mês" a partir de "por ano") é número inventado, mesmo com os dois termos reais. Data de fonte ("lição de 2026-09-03", "levantamento de 2026-07-29") é a data da nota, nunca a do evento; sem a data do evento, o gancho fica sem data. Sentimento é o que o briefing atribui à pessoa, dito com as palavras dele: se o briefing diz "alívio", "os dois que eu mais gostava" é opinião inventada. Cena é o que o briefing conta que aconteceu; lugar, hora, quem estava e o que foi dito só entram quando ele os traz. Citação literal só quando existe no briefing ou em `prova.md`, atribuída a quem disse, no original ou com tradução que não muda o sentido. Não prometa o que a peça não entrega, o que `icp.md` lista como claim sem aval, nem o que o produto não faz.
+6. Especificidade: número exato, nome de ferramenta, data, valor em reais. Número arredondado parece inventado. O gancho só encena o que o contexto declara, e isso vale para número, caso, depoimento, nome, citação, cena, data e sentimento: o que o briefing e o `prova.md` não trazem vira `[FALTA: descrição]` ou sai do gancho. Vale também para juízo ("eram bons", "ficou melhor") e para episódio virando hábito ou regra ("eu sempre", "toda demo precisa de"): as três regras do começo deste arquivo mandam aqui. Conta feita por você (soma, diferença, média, total, "por mês" a partir de "por ano") é número inventado, mesmo com os dois termos reais. Data de fonte ("lição de 2026-09-03", "levantamento de 2026-07-29") é a data da nota, nunca a do evento; sem a data do evento, o gancho fica sem data. Sentimento é o que o briefing atribui à pessoa, dito com as palavras dele: se o briefing diz "alívio", "os dois que eu mais gostava" é opinião inventada. Cena é o que o briefing conta que aconteceu; lugar, hora, quem estava e o que foi dito só entram quando ele os traz. Citação literal só quando existe no briefing ou em `prova.md`, atribuída a quem disse, no original ou com tradução que não muda o sentido. Não prometa o que a peça não entrega, o que `icp.md` lista como claim sem aval, nem o que o produto não faz.
 7. Fórmula, não cópia: adapte a forma da estrutura ao fato da peça. Se o gancho ficou parecido com um exemplo do banco, reescreva: exemplo é calibração da forma, e paráfrase é cópia.
 8. Voz: imperativo na forma de "você" quando o gancho instrui (monte, escolha, copie); primeira pessoa quando o fato é da pessoa; contrações que o `voz.md` lista. Sem travessão, sem emoji, sem caixa alta de grito, sem hashtag. Uma frase de assinatura do `voz.md` só literal e no máximo uma por peça; nunca gere uma nova no mesmo molde.
 
@@ -64,7 +72,7 @@ Para cada estrutura escolhida, escreva o gancho completo (as linhas que a estrut
 2. Linha 2 avança; apagá-la perderia informação.
 3. Em teardown, a linha 1 é a notícia crua em segunda pessoa, sem ângulo. Em capa, o título nomeia a entrega como capacidade, em até 10 palavras.
 4. Nenhuma das três categorias banidas, nem disfarçada.
-5. Todo número, nome, citação, cena, data e sentimento rastreável ao briefing ou ao `prova.md`; data de fonte não virou data de evento; o que faltou está como `[FALTA: descrição]`.
+5. Todo número, caso, depoimento, nome, citação, cena, data e sentimento rastreável ao briefing ou ao `prova.md`; data de fonte não virou data de evento; nenhum juízo de qualidade que o briefing não sustenta; nenhum episódio virou hábito ou regra geral; o que faltou está como `[FALTA: descrição]`.
 6. O gancho promete o que a peça entrega (o ângulo e a tese do briefing), no tom pedido, e não repete gancho de `base-conteudo.md`.
 7. O gancho funciona sozinho, sem o resto da peça.
 8. Nenhum gancho é paráfrase de exemplo do banco.
@@ -109,7 +117,7 @@ Quando o pedido é só um tema, sem peça nem briefing, o gancho é a ferramenta
 
 - Não escreve o post, a legenda nem o roteiro: entrega a abertura e para.
 - Não muda a tese nem o briefing para o gancho caber.
-- Não inventa número, caso, citação, nome, cena, data, sentimento ou resultado, nem faz conta com os que existem.
+- Não inventa número, caso, depoimento, citação, nome, cena, data, sentimento, resultado ou juízo de qualidade, não transforma um episódio em hábito nem em regra geral, nem faz conta com os que existem.
 - Não promete material que não está pronto, nem coloca a palavra-chave de comentário no gancho: ela é da última linha do post, e o linkedin-post decide se entra.
 - Não usa as três categorias banidas, nem quando o pedido é "mais viral".
 - Não escolhe pela pessoa: recomenda uma opção e deixa as outras de pé.

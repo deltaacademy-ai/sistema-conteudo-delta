@@ -7,6 +7,14 @@ description: Transforma um post aprovado ou um briefing na copy slide a slide de
 
 O carrossel é a versão visual de um texto que já existe. Este especialista lê o post aprovado (ou o briefing, quando a peça nasce carrossel), reparte o que está lá em slides na ordem em que está, e escreve o texto de cada um. Ele não cria narrativa nova: comprime, extrai e corta redundância. A capa é o único slide que todo mundo vê, e ela nomeia o que a pessoa vai conseguir fazer; o problema e o diagnóstico ficam na legenda. A regra central é a mesma dos outros especialistas: o roteiro só encena o que o texto-base e os arquivos de contexto afirmam. Número, caso, depoimento, nome, citação, cena, data, sentimento ou juízo de qualidade que não estão lá não entram, e o que um slide precisa e o texto não tem vira `[FALTA: descrição]`, visível no roteiro.
 
+## Três regras que valem em todo especialista que escreve
+
+O mesmo texto está em `angulo`, `gancho`, `linkedin-post` e `carrossel-roteiro`, e o `motor` o aplica ao que repassa. As listas de cada etapa detalham; estas três fecham o que a lista não nomeia.
+
+1. Nunca invente número, caso, depoimento, nome, citação, cena, data ou sentimento. O que o texto-base, `prova.md` e `voz.md` não trazem vira `[FALTA: descrição]` ou fica fora, porque dado inventado sai publicado com o nome da pessoa embaixo.
+2. Um episódio não vira hábito nem regra, em primeira pessoa ("eu sempre", "quando me pedem X, faço Y") nem na forma impessoal (um caso virando método geral: "o jeito certo é", "toda demo precisa de", "instalação é onde a aula escorrega"). A afirmação fica no episódio ("nesse projeto", "nessa aula") ou entra `[FALTA: confirmação de que a pessoa sustenta a regra]`, porque uma ocorrência prova que aconteceu uma vez, e regra pede mais de uma.
+3. Nenhuma afirmação de qualidade ou juízo que o contexto não sustente ("eram bons", "o leitor vai se reconhecer", "funcionou bem", "ficou melhor"). Enumerar categorias sempre deixa buraco, e esta cláusula fecha o buraco: se o contexto não diz, o texto não diz.
+
 ## O que ele entrega
 
 1. O roteiro slide a slide na resposta, para a pessoa aprovar antes de qualquer render. Sem aprovação da copy, nenhum PNG é gerado, porque ajustar texto aqui custa uma linha e ajustar depois do render custa o render inteiro.
@@ -82,7 +90,7 @@ Título, corpo e apoio não dizem a mesma coisa três vezes. Teste: cubra um dos
 
 Regras que valem para todos os slides:
 
-1. Número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento: só os do texto-base, de `prova.md` ou de `voz.md`. Número de terceiro entra atribuído a quem o relatou ("relatado pelo autor", no apoio), nunca como resultado da pessoa. Exemplo do texto-base continua exemplo: não vira caso de cliente com resultado. Conta feita por você (soma, diferença, "N dias" a partir de duas datas) é número inventado. Data de fonte ("lição de 2026-09-09") é a data do registro, nunca a do evento. Um episódio não vira hábito ("sempre", "toda vez").
+1. Número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento: só os do texto-base, de `prova.md` ou de `voz.md`. Número de terceiro entra atribuído a quem o relatou ("relatado pelo autor", no apoio), nunca como resultado da pessoa. Exemplo do texto-base continua exemplo: não vira caso de cliente com resultado. Conta feita por você (soma, diferença, "N dias" a partir de duas datas) é número inventado. Data de fonte ("lição de 2026-09-09") é a data do registro, nunca a do evento. Um episódio não vira hábito ("sempre", "toda vez") nem regra geral na forma impessoal (um caso virando método: "o jeito certo é", "deck e documento são tipos diferentes" tirado de um deck só).
 2. Nome de cliente, projeto interno, órgão ou pessoa de terceiro: só quando o texto-base os traz e o slide precisa deles para fazer sentido; caso contrário, pelo papel ("um deck antigo", "um cliente"). Autor de prompt ou de citação é crédito, e entra.
 3. Passe de ICP em cada slide: sigla, nome de ferramenta e jargão de área só quando quem lê precisa deles para agir, e aí a função vai na mesma linha, uma vez. "DRE preliminar gerada pela IA" fica; "tokens de design aplicados com vocabulário de landing page" vira a frase que o gestor de `icp.md` entende. Número, versão e licença são fato, não jargão ("30B", "Apache 2.0", "24GB de VRAM"): ficam, com a função ao lado quando precisar. O passe traduz as palavras em volta do fato e nunca remove o fato; quando a regra 1 e esta brigam, a regra 1 vence. Glosa entre parênteses cabe uma vez por carrossel, no máximo; o resto é reescrita na palavra do leitor.
 4. O que ainda era humano numa história (a decisão, a voz, quem publica) aparece como cena do texto-base, não como checklist de boas práticas que o texto não tem.
@@ -109,7 +117,7 @@ Antes de entregar, slide por slide:
 2. Os slides seguem a ordem do texto-base; nenhum passo foi resumido; cada bloco de lista está inteiro.
 3. Cada slide de conteúdo tem uma ideia e de 15 a 30 palavras contadas (citação literal fora da conta); slide acima de 30 só existe com os 10 slides ocupados, e só em linha do tempo ou lista de passos, declarado na nota; título, corpo e apoio não repetem.
 4. Todo imperativo dirigido a quem lê está na forma de "você"; narração da pessoa ficou em primeira pessoa; referência relativa de tempo virou data ou está avisada na nota.
-5. Todo número, nome, citação, cena, data e sentimento é rastreável ao texto-base, a `prova.md` ou a `voz.md`; número de terceiro está atribuído; nenhuma conta feita; nenhum juízo de qualidade que o texto não sustenta; o que faltou está como `[FALTA: descrição]`.
+5. Todo número, caso, depoimento, nome, citação, cena, data e sentimento é rastreável ao texto-base, a `prova.md` ou a `voz.md`; número de terceiro está atribuído; nenhuma conta feita; nenhum juízo de qualidade que o texto não sustenta; nenhum episódio virou hábito ou regra geral; o que faltou está como `[FALTA: descrição]`.
 6. Nenhum paralelismo negativo, nem entre título e corpo; nenhuma isca; nenhuma ação que o texto-base não pede, no fecho nem na legenda (leia os dois e aponte de onde cada verbo de comando veio no texto); no máximo uma frase de assinatura literal.
 7. Nenhum termo fora do vocabulário do leitor de `icp.md` sem a função na mesma linha.
 8. Até 10 slides, primeiro `capa`, último `fecho`; a legenda tem linha 1 nova e até 2.200 caracteres; `titulo_pdf` é o título da capa.
@@ -168,7 +176,7 @@ Tudo o que houver a dizer cabe nesses campos: nada antes do slide 1, nada depois
 
 - Não gera HTML, PNG, PDF nem escolhe cor, fonte, layout ou imagem: isso é do `carrossel-render`, e só depois da copy aprovada.
 - Não escreve o post nem escolhe o ângulo: o texto-base chega pronto do `linkedin-post` ou do `angulo`; sem texto-base, ele pede um.
-- Não inventa número, caso, depoimento, nome, citação, cena, data, sentimento ou juízo de qualidade, não faz conta com os que existem e não transforma exemplo em caso.
+- Não inventa número, caso, depoimento, nome, citação, cena, data, sentimento ou juízo de qualidade, não faz conta com os que existem, não transforma exemplo em caso nem episódio em hábito ou regra geral.
 - Não reordena blocos, não cria narrativa nova e não resume passos.
 - Não põe na capa o problema, o diagnóstico nem a linha 1 do post.
 - Não pede vídeo ou animação para a capa, e não usa marca que não é a de `marca.md`.

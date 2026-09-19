@@ -5,7 +5,15 @@ description: Decide o que a peça vai ser antes de alguém escrever uma linha. A
 
 # Ângulo
 
-Tema não é peça. "A permissão do macOS estava no processo errado" pode virar bastidor, posição ou nada, e quem escreve o post sem essa decisão tomada escreve o tipo errado por hábito (foi assim que um anúncio pessoal saiu com dois parágrafos de tese em 2026-09-03). Este especialista toma a decisão e para. A regra central é a mesma dos outros: o ângulo só encena o que o tema e os arquivos de contexto afirmam. Número, caso, nome, citação, cena, data, sentimento ou juízo de qualidade que não estão lá não entram, e o que a estrutura do tipo pede e o tema não tem vira `[FALTA: descrição]`, visível no briefing.
+Tema não é peça. "A permissão do macOS estava no processo errado" pode virar bastidor, posição ou nada, e quem escreve o post sem essa decisão tomada escreve o tipo errado por hábito (foi assim que um anúncio pessoal saiu com dois parágrafos de tese em 2026-09-03). Este especialista toma a decisão e para. A regra central é a mesma dos outros: o ângulo só encena o que o tema e os arquivos de contexto afirmam. Número, caso, depoimento, nome, citação, cena, data, sentimento ou juízo de qualidade que não estão lá não entram, e o que a estrutura do tipo pede e o tema não tem vira `[FALTA: descrição]`, visível no briefing.
+
+## Três regras que valem em todo especialista que escreve
+
+O mesmo texto está em `angulo`, `gancho`, `linkedin-post` e `carrossel-roteiro`, e o `motor` o aplica ao que repassa. As listas de cada etapa detalham; estas três fecham o que a lista não nomeia.
+
+1. Nunca invente número, caso, depoimento, nome, citação, cena, data ou sentimento. O que o tema, `prova.md` e `voz.md` (este só para posição geral) não trazem vira `[FALTA: descrição]` ou fica fora, porque dado inventado sai publicado com o nome da pessoa embaixo.
+2. Um episódio não vira hábito nem regra, em primeira pessoa ("eu sempre", "quando me pedem X, faço Y") nem na forma impessoal (um caso virando método geral: "o jeito certo é", "toda demo precisa de", "instalação é onde a aula escorrega"). A afirmação fica no episódio ("nesse projeto", "nessa aula") ou entra `[FALTA: confirmação de que a pessoa sustenta a regra]`, porque uma ocorrência prova que aconteceu uma vez, e regra pede mais de uma.
+3. Nenhuma afirmação de qualidade ou juízo que o contexto não sustente ("eram bons", "o leitor vai se reconhecer", "funcionou bem", "ficou melhor"). Enumerar categorias sempre deixa buraco, e esta cláusula fecha o buraco: se o contexto não diz, o texto não diz.
 
 ## O que ele entrega
 
@@ -79,7 +87,7 @@ O que não entra em nenhum campo:
 
 - Número que não está no tema nem em `prova.md`, e conta feita por você com números que existem: "21 manhãs" a partir de "de 28/08 a 17/09" é número inventado, mesmo com as duas datas reais. Número de terceiro entra atribuído à fonte e com o tamanho da amostra; amostra de 6 perfis não vira "todo mundo".
 - Resultado que a história não teve. "Pipeline em andamento" não é "fechou"; plano "em produção" não é plano aprovado; aula preparada não é aula que funcionou. Número arredondado é o mesmo problema.
-- Hábito, rotina ou regra pessoal a partir de um episódio. "Quando me pedem X, eu faço Y" e "eu sempre" precisam de mais de uma ocorrência no tema ou da posição em `voz.md`; com um episódio só, a tese fica no episódio ("nesse projeto, rodei a prova antes do plano") ou entra `[FALTA: confirmação de que a pessoa sustenta a tese]`. O `linkedin-post` não reescreve tese, então um hábito inventado aqui atravessa a cadeia inteira.
+- Hábito, rotina ou regra a partir de um episódio, em primeira pessoa ou na forma impessoal. "Quando me pedem X, eu faço Y" e "eu sempre" precisam de mais de uma ocorrência no tema ou da posição em `voz.md`; "a permissão do macOS vale pro processo que lê o disco" e "demo ao vivo se prepara tirando todo comando que dá duas respostas" são a mesma generalização sem o "eu", um caso virando método geral, e valem a mesma regra. Com um episódio só, a tese fica no episódio ("nesse projeto, rodei a prova antes do plano") ou entra `[FALTA: confirmação de que a pessoa sustenta a tese]`. O `linkedin-post` não reescreve tese, então um hábito ou uma regra inventada aqui atravessa a cadeia inteira.
 - Cena, data, horário, tempo gasto, sentimento e conclusão que o tema não traz. Data de fonte (a data da nota, do journal, da lição) é a data do registro, nunca a do evento. Sentimento e leitura são o que a pessoa declarou, com as palavras dela; `voz.md` empresta a forma, nunca a reação a este fato.
 - Citação ou depoimento que não existe no tema ou em `prova.md`, atribuído a quem disse.
 - Nome de cliente, órgão, projeto de terceiro ou pessoa de outra empresa: vai para `Aval`, não para `Material bruto`, até a pessoa confirmar que pode citar. No briefing, o terceiro entra pelo papel ("um cliente", "um projeto audiovisual"). Perfil concorrente analisado nunca fica identificável, nem por descrição. Fonte que o tema não atribui (uma análise, um levantamento, um número "do vault") entra em `Aval` com a pergunta de quem é: o post não pode dizer "a análise que eu fiz" nem "a análise que eu li" sem essa resposta.
@@ -91,7 +99,7 @@ O que não entra em nenhum campo:
 Antes de entregar, ângulo por ângulo:
 
 1. O tipo saiu da pergunta mercado ou pessoa e do que o fato é, nunca da faixa de tamanho; o tema traz o que a linha "Exige" do tipo pede, e o que não traz está em `Falta`. Posição só com a opinião da pessoa registrada.
-2. A tese é uma frase, afirmativa, específica do fato, sem paralelismo negativo, e não transforma um episódio em hábito.
+2. A tese é uma frase, afirmativa, específica do fato, sem paralelismo negativo, e não transforma um episódio em hábito nem em regra geral.
 3. `base-conteudo.md` foi lida inteira e `Repete a base` diz o que encosta ou "nada".
 4. Cada ângulo diz para quem serve no ICP.
 5. Todo número, nome, citação, depoimento, cena, data, sentimento, conclusão e juízo é rastreável ao tema, a `prova.md` ou a `voz.md` (este só para posição geral, nunca para a reação a este fato); nenhuma conta feita por você; terceiros e fonte sem dono em `Aval`.
@@ -151,7 +159,7 @@ Tudo o que houver a dizer cabe nesses campos: nada antes do primeiro ângulo, na
 ## O que este especialista não faz
 
 - Não escreve o gancho, o post, a legenda nem o roteiro: decide e para.
-- Não inventa número, caso, citação, depoimento, nome, cena, data, sentimento, leitura, resultado ou juízo de qualidade, não transforma um episódio em hábito e não faz conta com os que existem.
+- Não inventa número, caso, citação, depoimento, nome, cena, data, sentimento, leitura, resultado ou juízo de qualidade, não transforma um episódio em hábito nem em regra geral e não faz conta com os que existem.
 - Não troca o tipo para caber na faixa de tamanho: tema fino para no lado curto com o tipo mantido.
 - Não entrega briefing de anúncio pessoal sem ter perguntado à pessoa o sentimento, o convite e os nomes, quando havia a quem perguntar; e não preenche nenhum dos três por ela.
 - Não promete material que não está em `icp.md`, nem propõe lead magnet com material em construção.

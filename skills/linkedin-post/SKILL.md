@@ -9,6 +9,14 @@ Este especialista escreve a peça principal do sistema: o post inteiro, com o no
 
 O marcador `[FALTA: descrição]` fica no lugar do dado que uma frase precisa e o briefing não tem (o número de um resultado, o link prometido, a data de um evento anunciado). Elemento da estrutura que o briefing não traz (a frase de sentimento, o custo do experimento, a cena, o que continua humano) sai do post e vai para a nota como falta: marcador no meio de um texto em que quem lê não sentiria falta de nada só denuncia o processo. Contexto que o post não precisa (quem é a empresa ou o projeto que o briefing nomeia) não é falta: entra como está.
 
+## Três regras que valem em todo especialista que escreve
+
+O mesmo texto está em `angulo`, `gancho`, `linkedin-post` e `carrossel-roteiro`, e o `motor` o aplica ao que repassa. As listas de cada etapa detalham; estas três fecham o que a lista não nomeia.
+
+1. Nunca invente número, caso, depoimento, nome, citação, cena, data ou sentimento. O que o briefing e `prova.md` não trazem vira `[FALTA: descrição]` ou fica fora, porque dado inventado sai publicado com o nome da pessoa embaixo.
+2. Um episódio não vira hábito nem regra, em primeira pessoa ("eu sempre", "quando me pedem X, faço Y") nem na forma impessoal (um caso virando método geral: "o jeito certo é", "toda demo precisa de", "instalação é onde a aula escorrega"). A afirmação fica no episódio ("nesse projeto", "nessa aula") ou entra `[FALTA: confirmação de que a pessoa sustenta a regra]`, porque uma ocorrência prova que aconteceu uma vez, e regra pede mais de uma.
+3. Nenhuma afirmação de qualidade ou juízo que o contexto não sustente ("eram bons", "o leitor vai se reconhecer", "funcionou bem", "ficou melhor"). Enumerar categorias sempre deixa buraco, e esta cláusula fecha o buraco: se o contexto não diz, o texto não diz.
+
 ## O que ele entrega
 
 1. O post pronto para colar, entre cercas de código sem linguagem (as quebras de linha sobrevivem ao copiar), gravado também em `saida/post-AAAA-MM-DD-<tema>.md` na pasta de contexto, só o texto do post.
@@ -84,7 +92,7 @@ Antes de entregar, item por item:
 1. As duas primeiras linhas, lidas sozinhas, sustentam o clique; a linha 2 avança.
 2. O post segue a estrutura do tipo, com o item obrigatório dele (o que não funcionou no bastidor, a pergunta na posição, o como receber no lead magnet, e no anúncio pessoal o convite quando o briefing dá um, ou a nota registrando a falta).
 3. Tamanho contado no arquivo, no lado do tipo, nunca entre 900 e 1.400.
-4. Todo número, caso, depoimento, nome, citação, cena, data, tempo gasto, sentimento e reação é rastreável ao briefing ou a `prova.md`; toda opinião no post é do briefing ou é uma posição declarada no `voz.md`, nomeada na nota; dado que uma frase precisa e não existe está como `[FALTA: descrição]`; elemento sem dado saiu do post e está na nota; nenhuma conta feita por você; nenhum convite ou oferta que o briefing não sustenta.
+4. Todo número, caso, depoimento, nome, citação, cena, data, tempo gasto, sentimento e reação é rastreável ao briefing ou a `prova.md`; toda opinião no post é do briefing ou é uma posição declarada no `voz.md`, nomeada na nota; nenhum juízo de qualidade que o briefing não sustenta; nenhum episódio virou hábito ou regra geral, em primeira pessoa ou na forma impessoal; dado que uma frase precisa e não existe está como `[FALTA: descrição]`; elemento sem dado saiu do post e está na nota; nenhuma conta feita por você; nenhum convite ou oferta que o briefing não sustenta.
 5. Nenhum termo do rascunho ficou sem passar pelo passe de ICP, e no máximo uma definição entre parênteses no post.
 6. Itens com `→`, parágrafos de 1 a 3 frases, sem hashtag, emoji, negrito, travessão ou caixa alta fora da palavra-chave.
 7. Nenhum paralelismo negativo, nenhuma pergunta retórica de abertura, nenhuma isca; no máximo uma frase de assinatura literal, ligada ao fato, fora da última linha e ausente das duas últimas peças de `base-conteudo.md`.
@@ -130,7 +138,7 @@ Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto
 ## O que este especialista não faz
 
 - Não escolhe ângulo nem tese: isso é do `angulo`. Não gera opções de gancho: isso é do `gancho`. Não dá nota nem revisa post de outra origem: isso é do `revisor`.
-- Não inventa número, caso, depoimento, nome, citação, cena, data, tempo gasto nem sentimento, e não faz conta com os que existem.
+- Não inventa número, caso, depoimento, nome, citação, cena, data, tempo gasto, sentimento nem juízo de qualidade, não transforma um episódio em hábito nem em regra geral, e não faz conta com os que existem.
 - Não promete material que não está em `icp.md`, nem anuncia primeiro comentário sem link no briefing.
 - Não tira do `voz.md` experiência, reação, sentimento nem fato deste episódio: dele vêm as palavras e as posições que a pessoa já declarou, aplicadas ao fato como posição e nomeadas na nota.
 - Não entrega post entre 900 e 1.400 caracteres sem marcar `TAMANHO FORA DA REGRA` na Checagem.
