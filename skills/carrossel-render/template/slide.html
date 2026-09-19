@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>{{titulo_pdf}}</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* Contrato do template:
+     - cada .slide mede 1080x1350 e vira uma pagina do PDF e um PNG;
+     - as cores e fontes vem so de tokens.css (var(--fundo), var(--destaque), var(--claro),
+       var(--fonte-display), var(--fonte-texto), var(--fonte-mono)); nenhum hex aqui;
+     - o texto vem de carrossel.json; o render preenche os <template> abaixo;
+     - --escala e ajustada pelo render por slide ate o miolo caber no quadro. */
+  @page { size: 1080px 1350px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--fundo); }
+  body { font-synthesis: none; -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+  :root {
+    --texto: var(--claro);
+    --texto-suave: color-mix(in srgb, var(--claro) 70%, transparent);
+    --texto-apagado: color-mix(in srgb, var(--claro) 45%, transparent);
+    --linha: color-mix(in srgb, var(--claro) 14%, transparent);
+    --trilho: color-mix(in srgb, var(--claro) 9%, transparent);
+    --brilho: color-mix(in srgb, var(--destaque) 18%, transparent);
+    --margem: 80px;
+  }
+  .slide {
+    width: 1080px; height: 1350px; position: relative; overflow: hidden;
+    background: var(--fundo); color: var(--texto);
+    font-family: var(--fonte-texto), sans-serif;
+    --escala: 1;
+    break-after: page; page-break-after: always;
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .slide.capa { background: radial-gradient(820px 700px at 12% 8%, var(--brilho), transparent 66%), var(--fundo); }
+  .slide.fecho { background: radial-gradient(820px 700px at 88% 94%, var(--brilho), transparent 66%), var(--fundo); }
+
+  .area { position: absolute; inset: 0; padding: var(--margem); display: flex; flex-direction: column; }
+  .topo, .rodape-linha {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--fonte-mono), monospace; font-size: 22px; letter-spacing: .12em;
+    color: var(--texto-apagado); text-transform: uppercase; white-space: nowrap;
+  }
+  .topo .marca { color: var(--destaque); }
+  .miolo { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; padding: 48px 0; overflow: hidden; }
+  .rodape { display: flex; flex-direction: column; gap: 26px; }
+  .progresso { height: 4px; background: var(--trilho); border-radius: 2px; overflow: hidden; }
+  .progresso > i { display: block; height: 100%; background: var(--destaque); width: var(--avanco, 0%); }
+
+  .traco { width: 96px; height: 6px; background: var(--destaque); border-radius: 3px; margin-bottom: 40px; }
+  .titulo {
+    font-family: var(--fonte-display), sans-serif; font-weight: 600;
+    line-height: 1.06; letter-spacing: -0.02em; word-spacing: 0.1em; text-wrap: balance; overflow-wrap: break-word;
+  }
+  .capa .titulo { font-size: calc(92px * var(--escala)); }
+  .conteudo .titulo { font-size: calc(64px * var(--escala)); }
+  .fecho .titulo { font-size: calc(78px * var(--escala)); }
+
+  .apoio {
+    font-family: var(--fonte-mono), monospace; color: var(--texto-suave);
+    line-height: 1.5; text-wrap: pretty; overflow-wrap: break-word;
+  }
+  .capa .apoio { font-family: var(--fonte-texto), sans-serif; font-size: calc(36px * var(--escala)); margin-top: 44px; max-width: 880px; }
+  .conteudo .apoio { font-size: calc(24px * var(--escala)); margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--linha); max-width: 880px; }
+  .fecho .apoio { font-size: calc(30px * var(--escala)); color: var(--destaque); margin-top: 56px; }
+
+  .corpo { display: flex; flex-direction: column; gap: 28px; margin-top: 48px; }
+  .linha {
+    font-size: calc(36px * var(--escala)); line-height: 1.42; font-weight: 400;
+    padding-left: 34px; border-left: 5px solid var(--destaque); text-wrap: pretty; overflow-wrap: break-word;
+  }
+  .fecho .corpo { margin-top: 40px; }
+  .fecho .linha { border-left: 0; padding-left: 0; font-size: calc(38px * var(--escala)); color: var(--texto-suave); }
+</style>
+</head>
+<body>
+<!--SLIDES-->
+
+<template id="capa">
+  <section class="slide capa" style="--avanco:{{avanco}}">
+    <div class="area">
+      <div class="topo"><span class="marca">{{handle}}</span><span>{{pagina}}</span></div>
+      <div class="miolo">
+        <div class="traco"></div>
+        <h1 class="titulo">{{titulo}}</h1>
+        <p class="apoio">{{apoio}}</p>
+      </div>
+      <div class="rodape"><div class="rodape-linha"><span>{{dominio}}</span></div><div class="progresso"><i></i></div></div>
+    </div>
+  </section>
+</template>
+
+<template id="conteudo">
+  <section class="slide conteudo" style="--avanco:{{avanco}}">
+    <div class="area">
+      <div class="topo"><span class="marca">{{handle}}</span><span>{{pagina}}</span></div>
+      <div class="miolo">
+        <h2 class="titulo">{{titulo}}</h2>
+        <div class="corpo">{{corpo_linhas}}</div>
+        <p class="apoio">{{apoio}}</p>
+      </div>
+      <div class="rodape"><div class="rodape-linha"><span>{{dominio}}</span></div><div class="progresso"><i></i></div></div>
+    </div>
+  </section>
+</template>
+
+<template id="fecho">
+  <section class="slide fecho" style="--avanco:{{avanco}}">
+    <div class="area">
+      <div class="topo"><span class="marca">{{handle}}</span><span>{{pagina}}</span></div>
+      <div class="miolo">
+        <div class="traco"></div>
+        <h2 class="titulo">{{titulo}}</h2>
+        <div class="corpo">{{corpo_linhas}}</div>
+        <p class="apoio">{{apoio}}</p>
+      </div>
+      <div class="rodape"><div class="rodape-linha"><span>{{dominio}}</span></div><div class="progresso"><i></i></div></div>
+    </div>
+  </section>
+</template>
+</body>
+</html>

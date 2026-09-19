@@ -1,0 +1,13 @@
+{
+  "name": "sistema-conteudo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plugin do Claude Code para o sistema de conteudo: voz, pauta, gancho, post de LinkedIn e carrossel de Instagram",
+  "scripts": {
+    "render": "node scripts/render-carrossel.mjs",
+    "portao:render": "bash evals/cases/carrossel-render/portao.sh"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}

@@ -1,0 +1,25 @@
+/* tokens.css: a camada de marca do carrossel.
+   O scripts/render-carrossel.mjs gera este arquivo na pasta da peca a partir de marca.md.
+   Esta copia em template/ documenta o contrato e traz os valores padrao, que so entram
+   quando marca.md nao declara o item; o render avisa cada padrao aplicado.
+   Sao 3 cores e 3 fontes. Tudo o mais (tons suaves, linhas, brilho) deriva no slide.html
+   por color-mix(), entao a marca inteira mora aqui e nada de hex fica solto no template. */
+
+:root {
+  --fundo: #141414;    /* padrao: marca.md sem cor de fundo */
+  --destaque: #9aa4b2; /* padrao: marca.md sem cor de destaque */
+  --claro: #f2f2ee;    /* padrao: marca.md sem cor clara */
+  --fonte-display: 'Cal Sans';       /* padrao: marca.md sem fonte display */
+  --fonte-texto: 'DM Sans';          /* padrao: marca.md sem fonte de texto */
+  --fonte-mono: 'JetBrains Mono';    /* padrao: marca.md sem fonte de rotulo */
+}
+
+/* Fontes locais, caminho relativo a esta pasta. Nunca folha externa nem Google Fonts:
+   o Chromium headless nao busca folha externa e cai em fonte de sistema sem avisar.
+   Arquivo com um peso so recebe a faixa 100 900, assim nenhum peso pedido vira negrito sintetico. */
+@font-face { font-family: 'Cal Sans'; font-weight: 100 900; font-style: normal; font-display: block; src: url('fonts/cal-sans.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-weight: 400; font-style: normal; font-display: block; src: url('fonts/dm-sans-400.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-weight: 500; font-style: normal; font-display: block; src: url('fonts/dm-sans-500.woff2') format('woff2'); }
+@font-face { font-family: 'DM Sans'; font-weight: 700; font-style: normal; font-display: block; src: url('fonts/dm-sans-700.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 400; font-style: normal; font-display: block; src: url('fonts/jetbrains-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-weight: 500; font-style: normal; font-display: block; src: url('fonts/jetbrains-mono-500.woff2') format('woff2'); }
