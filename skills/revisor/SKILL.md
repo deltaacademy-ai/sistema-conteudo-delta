@@ -25,7 +25,7 @@ Um bloco JSON, sempre com os mesmos campos, seguido de uma linha de veredito em 
 ```
 
 - `nota` é a soma dos cinco críticos, cada um de 0 a 20, pelo painel de `references/painel.md`.
-- `veredito`: 90 ou mais `aprovar`; 70 a 89 `reescrever`, com as correções dizendo o que falta para 90; abaixo de 70 `descartar`, com o problema de raiz na primeira correção.
+- `veredito`: 85 ou mais com nenhum crítico abaixo de 15 `aprovar`; 65 a 84 (ou 85 ou mais com um crítico abaixo de 15) `reescrever`, com as correções dizendo o que falta para aprovar; abaixo de 65 `descartar`, com o problema de raiz na primeira correção.
 - `correcoes`: uma por achado, na ordem do que mais pesa. Cada `sugestao` é uma ação ou uma frase substituta para aquele trecho, nunca a peça reescrita.
 - `check_voz`: o resultado do script, com `rodou: false` e a contagem feita por leitura quando o script não pôde rodar. Quem lê precisa saber se a checagem foi mecânica ou de olho.
 - `contexto_limpo`: `true` quando a revisão rodou em conversa nova ou em subagente que não viu a escrita da peça; `false` quando a pessoa mandou revisar na mesma conversa em que a peça foi escrita. O `motor` e a pessoa precisam distinguir a nota de um contexto limpo da nota do próprio autor, que é o que esta skill existe para separar.
@@ -88,14 +88,14 @@ Leia `references/painel.md` e passe pela peça cinco vezes, uma por crítico, na
 Regras que não podem falhar:
 
 - Número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md` zera o cético. Não procure uma justificativa para o número: se não está em `prova.md` e não veio no briefing, é sem lastro. Número de cena (hora, duração, quantos agentes) é narrativa, não prova, e não zera. Número externo tem lastro quando está atribuído no corpo, no primeiro comentário que a peça anuncia, em `prova.md` ou no briefing; o lastro não precisa estar no corpo.
-- Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual, até 14. Eixo sem achado fica em 20: partir de menos torna `aprovar` impossível na conta. Só duas regras são tendência forte, e custam pontos sem teto: linha 1 com mais de 15 palavras e instrução na forma "tu" em vez do imperativo em "você". Todo o resto que o painel lista como teto é teto, inclusive paralelismo negativo em qualquer forma ("X, não Y" e concessão seguida de virada incluídas), linha 1 sem fato, cena nem número, fecho de moral e assunto fora do leitor. A âncora é forma e substância: peça que segue o painel e tem substância real soma 90 ou mais; ter sido publicada não vale nota.
+- Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual, até 14. Eixo sem achado fica em 20: partir de menos torna `aprovar` impossível na conta. Só duas regras são tendência forte, e custam pontos sem teto: linha 1 com mais de 15 palavras e instrução na forma "tu" em vez do imperativo em "você". Todo o resto que o painel lista como teto é teto, inclusive paralelismo negativo em qualquer forma da seção 3F do `dna-da-voz.md` ("X, não Y" incluído; contraste que não nega, como dimensão acrescentada ou concessão em que o primeiro termo segue valendo, não é), linha 1 sem fato, cena nem número, fecho de moral e assunto fora do leitor. A âncora é forma e substância: peça que segue o painel e tem substância real soma 85 ou mais; ter sido publicada não vale nota.
 - Cada defeito é cobrado do crítico dono dele, uma vez. Um termo banido custa ao editor, não ao editor e ao concorrente.
 - `[FALTA: ...]` na peça não é defeito de quem escreveu: é a lacuna marcada como o sistema manda. Só impede o `aprovar`.
 - Sem base para avaliar um eixo (arquivo ausente), o painel diz o teto; não invente o que o arquivo diria.
 
 ## Etapa 3: veredito e correções
 
-Some os cinco. Aplique a faixa do painel e as regras que passam por cima da soma (`[FALTA]` nunca aprova; cético em zero nunca aprova).
+Some os cinco. Aplique a faixa do painel (85 aprova se nenhum crítico está abaixo de 15; 65 a 84 reescreve; abaixo de 65 descarta) e as regras que passam por cima da soma (`[FALTA]` nunca aprova; cético em zero nunca aprova; crítico abaixo de 15 nunca aprova).
 
 Monte as correções na ordem do que mais pesa: primeiro o que derrubou um teto, depois os achados de 8 a 13, depois os pontuais. Cada uma com o trecho literal (a menor citação que identifique o lugar), o problema em uma frase, com o nome do crítico, e a sugestão concreta. Em `descartar`, a primeira correção nomeia o problema de raiz (tese, ângulo ou prova) e as demais podem ficar de fora.
 

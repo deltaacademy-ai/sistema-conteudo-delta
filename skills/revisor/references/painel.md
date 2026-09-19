@@ -21,9 +21,9 @@ Os tetos abaixo limitam a nota de um crítico quando um defeito específico apar
 
 Calibração, que vale para os cinco:
 
-- Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual (2 quando o achado se repete pela peça), até o piso de 14. Eixo sem achado nenhum fica em 20, sem desconto por cautela: nota de partida menor que 20 torna `aprovar` impossível na conta (cinco críticos em 18 somam 90, o piso do `aprovar`, e qualquer achado de 1 ponto já derruba). Achado pontual é tendência forte não seguida, gosto, ritmo, ajuste que a pessoa faz em um minuto. Por mais que sejam, eles não levam um crítico abaixo de 14: isso é reservado a teto derrubado.
+- Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual (2 quando o achado se repete pela peça), até o piso de 14. Eixo sem achado nenhum fica em 20, sem desconto por cautela: nota de partida menor que 20 estreita a escala e faz `aprovar` depender de conta em vez de leitura. Achado pontual é tendência forte não seguida, gosto, ritmo, ajuste que a pessoa faz em um minuto. Por mais que sejam, eles não levam um crítico abaixo de 14: isso é reservado a teto derrubado.
 - Com teto derrubado, o crítico começa no teto e desce pelos achados pontuais do mesmo jeito.
-- `aprovar` a 90 significa: no máximo 10 pontos de achados pontuais somados nos cinco eixos e nenhum teto derrubado. Uma peça excelente chega a 95 ou mais; isso é alcançável e esperado quando a peça segue o painel.
+- `aprovar` (85 ou mais, nenhum crítico abaixo de 15) significa: no máximo 15 pontos de achados pontuais somados nos cinco eixos, nenhum teto derrubado e nenhum eixo com problema que atravesse a peça. Uma peça excelente chega a 95 ou mais; isso é alcançável e esperado quando a peça segue o painel.
 - A âncora é forma e substância, não o histórico: uma peça que segue este painel e carrega substância real (cena própria, número com lastro, tese do autor, leitor certo) soma entre 80 e 90. Ter sido publicada não prova nada; uma peça publicada com defeito real recebe a nota do defeito.
 - Se os cinco críticos ficaram abaixo de 14 numa peça sem teto derrubado, você cobrou o mesmo achado em mais de um crítico ou usou a faixa 8 a 13 para ajuste pontual. Refaça. A nota existe para comparar duas versões da mesma peça, e isso só funciona se um defeito custa o mesmo em toda rodada.
 
@@ -128,7 +128,7 @@ O 20 do editor: nenhuma frase sai sem perda, o tamanho está no lado certo, e ne
 Ele lê frase por frase, cortando mentalmente cada uma para ver se algo se perde. Confere:
 
 - Tamanho, medido em caracteres pelo script ou por `wc -m`. Post de LinkedIn vive em dois lados: abaixo de 900 ou acima de 1.400. Entre 900 e 1.400 é a faixa morta: longo demais para ser lido inteiro no feed e curto demais para recompensar o "ver mais". Quando o tipo de peça foi informado, vale também a faixa do tipo (teardown de 1.400 a 2.500, caso de 1.500 a 2.500, build ou bastidor de 1.500 a 2.900, educativo acima de 1.400, posição abaixo de 900, lead magnet acima de 1.400, anúncio pessoal abaixo de 900).
-- Padrão de máquina: travessão, emoji, termo de `banidas.txt` (o resultado da checagem mecânica entra aqui), paralelismo negativo em qualquer forma, tríade automática de adjetivos ou benefícios, hedge defensivo, cadência de metrônomo (toda frase do mesmo tamanho). Paralelismo negativo é toda frase que instala uma ideia negando outra, em qualquer ordem e com qualquer conector; os exemplos ilustram e não fecham a lista: "não é X, é Y", "X, não Y", "não só X, mas Y", "menos X, mais Y", "X? Não. Y.", "você não precisa de X, precisa de Y", "X morreu", "pare de X, comece Y", e a concessão seguida de virada ("claro, X. Mas Y", "dá pra ler como X, e é. Mas Y").
+- Padrão de máquina: travessão, emoji, termo de `banidas.txt` (o resultado da checagem mecânica entra aqui), paralelismo negativo em qualquer forma, tríade automática de adjetivos ou benefícios, hedge defensivo, cadência de metrônomo (toda frase do mesmo tamanho). A fonte da regra é o arquivo do autor, `hugo-os/resources/dna-da-voz.md`, seção 3F ("A FATAL"): "qualquer frase que nega um enquadramento e afirma outro corrigido, qualquer frase que rejeita uma premissa e substitui por outra". Os padrões listados lá ilustram e não fecham a lista: "Não é X. É Y.", "Não X, mas Y.", "Menos X, mais Y.", "Não apenas X, mas também Y.", "X? Não. Y.", "Pare de pensar X. Comece a pensar Y.", "X morreu. Y é o futuro.", "A pergunta não é X. A pergunta é Y.", "Você não precisa de X. Você precisa de Y.", e a forma despersonalizada "X, não Y". A seção 3F inclui as versões disfarçadas em que a concessão só existe para ser descartada ("Claro, X funciona. Mas Y é onde mora...", "X recebe toda a atenção, mas Y é o que de fato..."): o esqueleto é o mesmo, X entra para ser rejeitado. A fronteira, para o teto ser auditável: é enquadramento negado quando um termo é negado ou rejeitado para afirmar o outro. Teste: apague o primeiro termo; se a frase que sobra diz tudo o que a original queria dizer, o primeiro termo só existia para ser negado, e o teto vale. Contraste que não nega não é enquadramento negado e não derruba o teto: acrescentar uma dimensão ("você avalia A, B e C; a pergunta que falta é D", com A, B e C continuando verdadeiros e necessários), ou uma concessão com "mas" em que o primeiro termo segue valendo ("a ferramenta resolve o rascunho. Mas quem assina continua sendo você", em que a ferramenta continua resolvendo o rascunho e a frase passa a outro ponto). Nesses casos o editor pode cobrar ritmo ou repetição como achado pontual, nunca o teto.
 - Fecho: resumo do que já foi dito, moral da história, frase filosófica, pedido de aprovação ("legal, né?").
 - Parágrafos de 2 a 4 frases; frase com mais de 3 vírgulas vira duas; bloco de texto sem respiro.
 - Formatação de LinkedIn: bullet com `→`, sem hashtag, sem negrito unicode, sem caixa alta fora de sigla e de palavra-chave de CTA.
@@ -138,7 +138,7 @@ Ele lê frase por frase, cortando mentalmente cada uma para ver se algo se perde
 Tetos:
 
 - Travessão ou emoji: no máximo 10. É a digital mais confiável de texto de máquina, e o leitor do nicho já aprendeu a reconhecer.
-- Paralelismo negativo em qualquer forma, inclusive "X, não Y" e a concessão seguida de virada: no máximo 10.
+- Paralelismo negativo em qualquer forma da seção 3F do `dna-da-voz.md`, inclusive "X, não Y" e a concessão que só existe para ser descartada: no máximo 10. Contraste que não nega (dimensão acrescentada, concessão em que o primeiro termo segue valendo) não derruba este teto.
 - Tamanho na faixa morta (900 a 1.400), ou fora da faixa do tipo quando o tipo foi informado: no máximo 12.
 - Termo de `banidas.txt`: no máximo 14 no primeiro, menos 2 por termo adicional.
 - Fecho de resumo ou moral: no máximo 14.
@@ -149,14 +149,16 @@ Tetos:
 
 Some os cinco e aplique a faixa:
 
-- 90 ou mais: `aprovar`. A peça sai como está; as correções que sobrarem são opcionais e ficam marcadas assim.
-- 70 a 89: `reescrever`. As correções dizem o que falta para chegar a 90, na ordem do que mais pesa. Quem escreveu aplica; o revisor não toca na peça.
-- Abaixo de 70: `descartar`. O problema está na tese, no ângulo ou na prova, e retocar frase não resolve. A primeira correção diz qual é o problema de raiz; as demais podem ser omitidas.
+- 85 ou mais, com nenhum crítico abaixo de 15: `aprovar`. A peça sai como está; as correções que sobrarem são opcionais e ficam marcadas assim. Um crítico abaixo de 15 com a soma em 85 ou mais é `reescrever`: um eixo com problema real não é compensado pelos outros quatro.
+- 65 a 84, ou 85 ou mais com um crítico abaixo de 15: `reescrever`. As correções dizem o que falta para chegar ao `aprovar`, na ordem do que mais pesa. Quem escreveu aplica; o revisor não toca na peça.
+- Abaixo de 65: `descartar`. O problema está na tese, no ângulo ou na prova, e retocar frase não resolve. A primeira correção diz qual é o problema de raiz; as demais podem ser omitidas.
+
+Estes limiares vêm de decisão do autor do sistema (2026-09-18): com 90 como piso, nenhuma peça foi aprovada em 34 revisões de teste, inclusive uma que seguia o painel inteiro e ficou em 89; um revisor que nunca aprova é desligado por quem o usa, e aí não protege nada. O teste cego contra as skills atuais do autor e a leitura dele continuam sendo a rede de fora.
 
 Regras que passam por cima da soma:
 
-- Peça com `[FALTA: ...]` nunca recebe `aprovar`, mesmo acima de 90: vira `reescrever` com a lacuna na primeira correção. A marca existe para a lacuna ser preenchida antes de publicar, e aprovar com ela é publicar buraco.
-- Cético em zero nunca resulta em `aprovar`, porque a soma já não chega a 90. Se chegar por erro de conta, refaça a conta.
+- Peça com `[FALTA: ...]` nunca recebe `aprovar`, mesmo acima de 85: vira `reescrever` com a lacuna na primeira correção. A marca existe para a lacuna ser preenchida antes de publicar, e aprovar com ela é publicar buraco.
+- Cético em zero nunca resulta em `aprovar`: a soma já não chega a 85 e a condição de nenhum crítico abaixo de 15 já falhou. Se chegar por erro de conta, refaça a conta.
 
 ## Correções
 
