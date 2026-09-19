@@ -4,8 +4,9 @@
 # Turno 1: run-case.sh com prompt_novo (o tema). Precisa parar na aprovacao da peca
 #   principal: post em saida/, linha `rascunho` em base-conteudo.md com tantas celulas
 #   quanto o cabecalho, pedido de aprovacao na resposta, linha Revisor dizendo se a
-#   checagem mecanica do revisor rodou ou foi por leitura, nenhum carrossel e nenhuma
-#   pasta publicar/.
+#   checagem mecanica do revisor rodou ou foi por leitura, linha "Checagem da peca" com
+#   o check-voz.sh rodado pelo proprio motor no arquivo do post (codigo 0), nenhum
+#   carrossel e nenhuma pasta publicar/.
 # Turno 2: run-case.sh com prompt_turno_2 ("aprovado, segue ate o pacote") sobre uma
 #   fixture temporaria que e a copia do que o turno 1 deixou em disco (a conversa nao
 #   e retomada; o estado do motor vive em saida/ e na base). Precisa entregar
@@ -78,6 +79,7 @@ confere_t1() { # confere_t1 <arquivos> <saida.md> -> imprime achados (vazio = ok
   grep -qi 'aprova' "$s" || m="$m sem-pedido-de-aprovacao"
   grep -qi 'contexto limpo' "$s" || m="$m sem-linha-revisor"
   grep -iE '^\**Revisor' "$s" | grep -qiE 'mecânica|rodou|leitura' || m="$m sem-rodou-do-revisor"
+  grep -iE '^\**Checagem da peça' "$s" | grep -qiE 'c[oó]digo 0' || m="$m sem-checagem-do-motor-na-peca"
   echo "$m"
 }
 
