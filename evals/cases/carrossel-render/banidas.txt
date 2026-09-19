@@ -1,0 +1,8 @@
+# Banidas da fixture de fumaca do carrossel-render (recorte da lista do Hugo).
+alavancar
+sinergia
+disruptivo
+robusto
+escalavel
+escalável
+jornada

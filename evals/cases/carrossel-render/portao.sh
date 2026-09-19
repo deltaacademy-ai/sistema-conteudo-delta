@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # Portao mecanico do carrossel-render, sem juiz.
 # Renderiza cada carrossel.json que o portao do carrossel-roteiro gravou (evals/results/nova/carrossel-roteiro/**),
-# com a marca.md da propria pasta de fixture, e imprime uma linha por caso: slides, PNGs e tamanho,
-# paginas e fontes do PDF, escala aplicada e check-voz do HTML e do CSS gerados.
+# com a marca.md e a banidas.txt da propria pasta de fixture (o render confere o carrossel.json em
+# modo --json e o slides.html com essa lista, e para no primeiro acerto), e imprime uma linha por
+# caso: slides, PNGs e tamanho, paginas e fontes do PDF, escala aplicada e check-voz do HTML e do
+# CSS gerados, de novo com a lista da fixture.
 # Passa quando toda linha termina em "ok". Olhar as imagens continua sendo passo manual: o script
 # so prova contagem, medida e fonte, nao legibilidade.
 #
@@ -18,6 +20,7 @@ while IFS= read -r json; do
   total=$((total+1))
   run="$(basename "$(echo "$json" | sed -E 's#/saida/.*##')" .md.arquivos)"   # ex.: 01-claude-opus-5
   marca="$(echo "$json" | sed -E 's#/saida/.*##')/marca.md"
+  banidas="$(dirname "$marca")/banidas.txt"
   dest="$SAIDA/$run"
   rm -rf "$dest"; mkdir -p "$dest"
   log="$dest/render.log"
@@ -29,7 +32,7 @@ while IFS= read -r json; do
   fontes=$(grep -o 'fontes embutidas: .*' "$log" | sed 's/fontes embutidas: //; s/[A-Z]\{6\}+//g')
   escala=$(grep -o 'escala por slide: .*' "$log" | sed 's/escala por slide: //')
   for g in "$dest/slides.html" "$dest/tokens.css"; do
-    if [ -f "$g" ] && ! bash "$RAIZ/scripts/check-voz.sh" "$g" >/dev/null; then r="$r check-voz:$(basename "$g")"; falhas=$((falhas+1)); fi
+    if [ -f "$g" ] && ! bash "$RAIZ/scripts/check-voz.sh" "$g" "$banidas" >/dev/null; then r="$r check-voz:$(basename "$g")"; falhas=$((falhas+1)); fi
   done
   printf '%-20s %-6s %-14s %-8s %-52s %-28s %s\n' "$run" "$slides" "$pngs@$medidas" "${paginas:-?}p" "${fontes:-?}" "${escala:-?}" "$r"
 done < <(find "$ORIGEM" -name carrossel.json | sort)

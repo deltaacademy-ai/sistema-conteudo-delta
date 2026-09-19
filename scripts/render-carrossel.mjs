@@ -3,22 +3,28 @@
 // tudo do mesmo HTML, com fontes locais. Confere o proprio resultado antes de declarar sucesso.
 //
 // uso:
-//   node scripts/render-carrossel.mjs <carrossel.json> [pasta-saida] [--marca marca.md] [--fontes pasta] [--so-html]
-//   node scripts/render-carrossel.mjs <slides.html> <pasta-saida>
+//   node scripts/render-carrossel.mjs <carrossel.json> [pasta-saida] [--marca marca.md] [--banidas banidas.txt] [--fontes pasta] [--so-html]
+//   node scripts/render-carrossel.mjs <slides.html> <pasta-saida> [--banidas banidas.txt]
 //
 // Sem pasta-saida, a saida e a pasta do carrossel.json (a pasta da peca).
 // Sem --marca, procura marca.md subindo ate 4 niveis a partir do json; sem achar, aplica os
-// padroes de template/tokens.css e diz isso na saida.
-// Saida 0: tudo conferido. Saida 1: falha (fonte ausente, contraste, tamanho, PDF com fonte
-// estranha, texto fora do quadro). Saida 2: sem Playwright ou Chromium; o HTML ficou pronto
-// na pasta e a mensagem diz como abrir e exportar.
+// padroes de template/tokens.css e diz isso na saida. Sem --banidas, usa o banidas.txt que
+// estiver ao lado de marca.md; sem ele, a checagem de voz roda so travessao e emoji.
+// Antes de abrir o navegador, roda scripts/check-voz.sh --json no carrossel.json e, depois de
+// montar, no slides.html, os dois com a lista banida: um acerto bloqueia o render nomeando o
+// termo e o slide, porque imagem publicada e mais cara de corrigir que uma linha de texto.
+// Saida 0: tudo conferido. Saida 1: falha (voz, fonte ausente, contraste, tamanho, PDF com
+// fonte estranha, texto fora do quadro). Saida 2: sem Playwright ou Chromium; o HTML ficou
+// pronto na pasta e a mensagem diz como abrir e exportar.
 
-import { readFile, writeFile, mkdir, copyFile, readdir, stat } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const AQUI = path.dirname(fileURLToPath(import.meta.url));
+const CHECK_VOZ = path.join(AQUI, 'check-voz.sh');
 const SKILL = path.join(AQUI, '..', 'skills', 'carrossel-render');
 const TEMPLATE = path.join(SKILL, 'template', 'slide.html');
 const FONTES_SKILL = path.join(SKILL, 'fonts');
@@ -32,10 +38,11 @@ const PADRAO = {
 // ---------- argumentos ----------
 
 function lerArgs(argv) {
-  const a = { posicionais: [], marca: null, fontes: [], soHtml: false };
+  const a = { posicionais: [], marca: null, banidas: null, fontes: [], soHtml: false };
   for (let i = 0; i < argv.length; i++) {
     const x = argv[i];
     if (x === '--marca') a.marca = argv[++i];
+    else if (x === '--banidas') a.banidas = argv[++i];
     else if (x === '--fontes') a.fontes.push(argv[++i]);
     else if (x === '--so-html') a.soHtml = true;
     else a.posicionais.push(x);
@@ -46,6 +53,20 @@ function lerArgs(argv) {
 function falhar(msg) {
   console.error('FALHA: ' + msg);
   process.exit(1);
+}
+
+// ---------- voz: travessao, emoji e lista banida ----------
+
+// Roda scripts/check-voz.sh (modo --json para o carrossel.json, prosa para o HTML) e devolve
+// o resumo. Acerto e falha: o render para antes de gerar imagem com o defeito.
+function checarVoz(arquivo, banidas, json) {
+  const args = [CHECK_VOZ, ...(json ? ['--json'] : []), arquivo, ...(banidas ? [banidas] : [])];
+  const r = spawnSync('bash', args, { encoding: 'utf8' });
+  const saida = ((r.stdout || '') + (r.stderr || '')).trim();
+  const escopo = banidas ? `travessao, emoji e lista ${path.basename(banidas)}` : 'travessao e emoji (sem banidas.txt)';
+  const nome = path.basename(arquivo);
+  if (r.status === 0) { console.log(`voz: ${nome} conferido (${escopo}): limpo`); return { arquivo: nome, escopo, resultado: 'limpo' }; }
+  falhar(`${nome} acusou na checagem de voz (${escopo}). Corrija no carrossel.json (via carrossel-roteiro) e renderize de novo:\n${saida}`);
 }
 
 // ---------- marca.md -> tokens ----------
@@ -182,7 +203,9 @@ async function montarTokens(marca, pastasFonte, saida) {
 
 // ---------- carrossel.json -> HTML ----------
 
-const escapar = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Aspas retas ficam como estao: os campos so entram em texto de elemento, e a checagem de voz
+// no HTML precisa ver a citacao marcada do mesmo jeito que viu no JSON.
+const escapar = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function validarCarrossel(j) {
   if (!j || !Array.isArray(j.slides) || !j.slides.length) falhar('carrossel.json sem lista "slides"');
@@ -316,7 +339,7 @@ async function renderizar(htmlPath, saida, familias) {
 async function main() {
   const args = lerArgs(process.argv.slice(2));
   const [entrada, saidaArg] = args.posicionais;
-  if (!entrada) { console.error('uso: node scripts/render-carrossel.mjs <carrossel.json|slides.html> [pasta-saida] [--marca marca.md] [--fontes pasta] [--so-html]'); process.exit(1); }
+  if (!entrada) { console.error('uso: node scripts/render-carrossel.mjs <carrossel.json|slides.html> [pasta-saida] [--marca marca.md] [--banidas banidas.txt] [--fontes pasta] [--so-html]'); process.exit(1); }
   if (!existsSync(entrada)) falhar(`entrada nao existe: ${entrada}`);
 
   const ehJson = entrada.toLowerCase().endsWith('.json');
@@ -344,11 +367,16 @@ async function main() {
         dir = acima;
       }
     }
+    let banidas = args.banidas ? path.resolve(args.banidas) : (marcaPath ? path.join(path.dirname(marcaPath), 'banidas.txt') : null);
+    if (banidas && !existsSync(banidas)) { if (args.banidas) falhar(`banidas.txt nao existe: ${banidas}`); banidas = null; }
+    const voz = [checarVoz(path.resolve(entrada), banidas, true)];
+
     const marca = marcaPath ? lerMarca(await readFile(marcaPath, 'utf8')) : { cores: {}, fontes: {}, handle: '', dominio: '', avisos: ['marca.md nao encontrado; cores e fontes sairam do padrao'] };
     const pastasFonte = [marcaPath ? path.join(path.dirname(marcaPath), 'fonts') : null, ...args.fontes.map((p) => path.resolve(p)), FONTES_SKILL];
     tokens = await montarTokens(marca, pastasFonte, saida);
     html = await montarHtml(j, marca, saida);
-    Object.assign(relatorio, { marca: marcaPath || null, handle: marca.handle || null, dominio: marca.dominio || null, cores: tokens.cores, fontes: tokens.fontes, padroes: tokens.padroes, avisos: tokens.avisos });
+    voz.push(checarVoz(html, banidas, false));
+    Object.assign(relatorio, { marca: marcaPath || null, banidas, voz, handle: marca.handle || null, dominio: marca.dominio || null, cores: tokens.cores, fontes: tokens.fontes, padroes: tokens.padroes, avisos: tokens.avisos });
     console.log(`html: ${html}`);
     console.log(`marca: ${marcaPath || 'nenhum (padrao)'}`);
     console.log(`cores: fundo ${tokens.cores.fundo.valor}, destaque ${tokens.cores.destaque.valor}, claro ${tokens.cores.claro.valor}`);
@@ -364,6 +392,9 @@ async function main() {
     for (const m of (css + extra).matchAll(/@font-face\s*\{[^}]*font-family:\s*['"]([^'"]+)['"]/g)) fam.add(m[1]);
     tokens = { familias: [...fam] };
     totalEsperado = (css.match(/class="slide[\s"]/g) || []).length || null;
+    const banidas = args.banidas ? path.resolve(args.banidas) : null;
+    if (banidas && !existsSync(banidas)) falhar(`banidas.txt nao existe: ${banidas}`);
+    relatorio.voz = [checarVoz(html, banidas, false)];
   }
 
   if (args.soHtml) { console.log('so-html: render nao executado.'); return; }
