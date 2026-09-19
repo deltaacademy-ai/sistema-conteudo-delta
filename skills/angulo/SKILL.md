@@ -25,9 +25,9 @@ Na pasta de contexto (a pasta atual, a que tem `voz.md`; se a pessoa apontar out
 - `prova.md`: os números, casos e nomes que podem entrar além do tema. Caso só é caso com número, prazo e permissão de uso registrados.
 - `voz.md`: as posições que a pessoa sustenta (um post de posição só existe com tese que está aqui ou no tema), as recusas duras e as frases de assinatura.
 - `learnings.md`, se existir: cada correção anterior da pessoa vale como regra aqui.
-- O pedido: o tema, com as fontes e os links que ele traz.
+- O pedido: o tema, com as fontes e os links que ele traz, e o que a pessoa disse sobre o fato (o que ela viu, concluiu ou sentiu), que é o único lugar de onde a leitura dela pode sair.
 
-Sem tema, peça em uma pergunta o fato principal (o que aconteceu, quando, com que número). Sem turno de resposta, decida com o que houver e marque `[FALTA]`.
+Sem tema, peça em uma pergunta o fato principal (o que aconteceu, quando, com que número). Com tema e sem a leitura da pessoa, e com alguém do outro lado, peça em uma pergunta o que ela concluiu do fato (ou, se o fato é sobre ela, o que sentiu): é o item que faz teardown, bastidor e caso ganharem do resto, e ninguém além dela pode dar. Sem turno de resposta, decida com o que houver e marque `[FALTA]`.
 
 ## Etapa 1: o tipo
 
@@ -42,16 +42,18 @@ No lado do mercado, o tipo é o que o tema sustenta sem inventar, conferido cont
 2. Algo que a pessoa montou, testou ou operou: build ou bastidor. O que não funcionou é obrigatório na estrutura; se o tema não traz, o tipo entra com `[FALTA: o que não funcionou]` e a nota diz que sem isso o post vira vitrine.
 3. História com problema, o que foi feito, resultado com número e prazo, e permissão de uso (em `prova.md` ou no tema): caso. Sem número e prazo não é caso, é bastidor ou posição, e o briefing diz o que falta para virar caso.
 4. Método que a pessoa usa de verdade, com exemplo real, que quem lê aplica hoje: educativo.
-5. Uma tese só, que está em `voz.md` ou no tema, com exemplo concreto: posição. É o único tipo que dispensa produto ou material atrás, e o único do lado do mercado que fica no lado curto.
+5. Uma tese só, que a pessoa sustenta como opinião dela (está em `voz.md`, ou o tema a registra como o que ela concluiu), com exemplo concreto: posição. É o único tipo que dispensa produto ou material atrás. Fato que a pessoa viveu sem a opinião dela registrada não é posição, é bastidor com `[FALTA: leitura da pessoa]`.
 6. Material pronto listado em `icp.md` na seção "O que a oferta entrega": lead magnet. Material em construção não entra: prometer o que não está feito é a promessa que a voz recusa.
 
-Quando dois tipos cabem, os dois viram ângulos separados, com o trade-off dito em uma linha. Quando nenhum cabe sem inventar (um fato de terceiro sem data, uma história sem número), o ângulo mais honesto é o que menos exige: posição ou bastidor, com o `[FALTA]` visível.
+Tamanho não desclassifica tipo. A faixa é consequência do tipo, nunca critério para escolhê-lo: o lado longo se sustenta com os fatos do tema contados inteiros (ordem, consequência, leitura da pessoa), e um tema de 8 ou 10 fatos dá 1.500 caracteres sem cena nova. Só quando o tema tem 2 ou 3 fatos o lado longo pediria invenção, e aí o post para no lado curto, com o tipo mantido e a nota dizendo o que faltou (é a regra de `tipos-de-post.md`, e o `linkedin-post` a aplica). Bastidor com material curto é bastidor no lado curto, e continua obrigado a dizer o que não funcionou; rotulá-lo posição para caber na faixa entrega ao escritor uma peça sem essa obrigação.
+
+Quando dois tipos cabem, os dois viram ângulos separados, com o trade-off dito em uma linha. Quando nenhum cabe sem inventar (um fato de terceiro sem data, uma história sem número, um episódio sem a opinião da pessoa), o tipo é o que o fato é (bastidor para o que ela operou, teardown para o fato externo), com o `[FALTA]` visível no lugar do que a estrutura pede.
 
 Recorte: um tema costuma trazer três ou quatro fatos, e o post só carrega um. Cada ângulo escolhe um recorte e nomeia o que fica de fora; listar tudo é o que produz post sem tese.
 
 ## Etapa 2: a base, o leitor e o formato
 
-Repetição. Compare o tema com cada linha de `base-conteudo.md`: mesmo fato, mesma cena, mesma tese ou mesmo tipo sobre o mesmo assunto. Se encostar, abra a peça em `materiais/` e leia o que ela já disse. Aí o ângulo faz uma de duas coisas: diz o que a peça anterior não disse (outro recorte, outro tipo, o que mudou desde então) e registra isso em `Repete a base`, ou recomenda adiar, com o motivo. Repetir a cena de um post publicado há um mês é o que faz quem lê parar de ler, e a pessoa só percebe depois de publicar.
+Repetição. Compare o tema com cada linha de `base-conteudo.md`: mesmo fato, mesma cena, mesma tese ou mesmo tipo sobre o mesmo assunto. Se encostar e a linha apontar para um arquivo em `materiais/`, abra a peça e leia o que ela já disse; sem arquivo, compare pelo tema e pelo gancho registrados. Aí o ângulo faz uma de duas coisas: diz o que a peça anterior não disse (outro recorte, outro tipo, o que mudou desde então) e registra isso em `Repete a base`, ou recomenda adiar, com o motivo e o que precisaria mudar (um fato novo, outro tipo) para o tema voltar. Ao recomendar adiar, entregue os ângulos e a linha `Repete a base` e pare antes do briefing e do arquivo em `saida/`; se a pessoa mandar seguir mesmo assim, o briefing sai do ângulo que menos repete. Repetir a cena de um post publicado há um mês é o que faz quem lê parar de ler, e a pessoa só percebe depois de publicar.
 
 Leitor. Cada ângulo diz para quem serve em `icp.md` e com o que esse leitor sai. Tema técnico (um daemon, um comando, uma permissão de sistema) só serve ao gestor descrito no ICP quando a tese é sobre a decisão dele, e o briefing diz qual tradução o post precisa fazer. Quando o tema só serve a leitor técnico, o ângulo diz isso e recomenda não publicar ou trocar o recorte.
 
@@ -69,13 +71,16 @@ Tese: uma frase, afirmativa, que a pessoa sustenta com o que está no tema, em `
 
 Ângulo: o que o post afirma, com o dado que sustenta, em 3 a 5 frases. Quem escreve precisa poder redigir só com isso. "Fale sobre a dor de perder tempo" não é ângulo; "a permissão foi dada ao processo visível e quem lia o disco era outro, que já tinha subido" é.
 
+Leitura da pessoa: o que ela viu, concluiu ou sentiu sobre este fato, com as palavras dela, tirado do tema ou do que ela respondeu. É o item 4 do teardown, o item 5 do bastidor e o princípio do caso, e o `linkedin-post` lê este campo por nome e não completa com `voz.md`: sem registro, o campo fica `[FALTA: leitura da pessoa sobre X]` (no anúncio pessoal, `[FALTA: sentimento da pessoa]`), o post sai sem o item e a nota pede a frase. Ângulo e tese não substituem este campo: são o que o post afirma, e a leitura é o que a pessoa disse.
+
 O que não entra em nenhum campo:
 
 - Número que não está no tema nem em `prova.md`, e conta feita por você com números que existem: "21 manhãs" a partir de "de 28/08 a 17/09" é número inventado, mesmo com as duas datas reais. Número de terceiro entra atribuído à fonte e com o tamanho da amostra; amostra de 6 perfis não vira "todo mundo".
 - Resultado que a história não teve. "Pipeline em andamento" não é "fechou"; plano "em produção" não é plano aprovado; aula preparada não é aula que funcionou. Número arredondado é o mesmo problema.
-- Cena, data, horário, tempo gasto e sentimento que o tema não traz. Data de fonte (a data da nota, do journal, da lição) é a data do registro, nunca a do evento. Sentimento é o que a pessoa declarou, com as palavras dela.
-- Citação que não existe no tema ou em `prova.md`, atribuída a quem disse.
-- Nome de cliente, órgão, projeto de terceiro ou pessoa de outra empresa: vai para `Aval`, não para `Material bruto`, até a pessoa confirmar que pode citar. No briefing, o terceiro entra pelo papel ("um cliente", "um projeto audiovisual"). Perfil concorrente analisado nunca fica identificável, nem por descrição.
+- Hábito, rotina ou regra pessoal a partir de um episódio. "Quando me pedem X, eu faço Y" e "eu sempre" precisam de mais de uma ocorrência no tema ou da posição em `voz.md`; com um episódio só, a tese fica no episódio ("nesse projeto, rodei a prova antes do plano") ou entra `[FALTA: confirmação de que a pessoa sustenta a tese]`. O `linkedin-post` não reescreve tese, então um hábito inventado aqui atravessa a cadeia inteira.
+- Cena, data, horário, tempo gasto, sentimento e conclusão que o tema não traz. Data de fonte (a data da nota, do journal, da lição) é a data do registro, nunca a do evento. Sentimento e leitura são o que a pessoa declarou, com as palavras dela; `voz.md` empresta a forma, nunca a reação a este fato.
+- Citação ou depoimento que não existe no tema ou em `prova.md`, atribuído a quem disse.
+- Nome de cliente, órgão, projeto de terceiro ou pessoa de outra empresa: vai para `Aval`, não para `Material bruto`, até a pessoa confirmar que pode citar. No briefing, o terceiro entra pelo papel ("um cliente", "um projeto audiovisual"). Perfil concorrente analisado nunca fica identificável, nem por descrição. Fonte que o tema não atribui (uma análise, um levantamento, um número "do vault") entra em `Aval` com a pergunta de quem é: o post não pode dizer "a análise que eu fiz" nem "a análise que eu li" sem essa resposta.
 - Juízo de qualidade que o contexto não sustenta ("os slides eram bons", "o leitor vai se reconhecer"). Enumerar categorias sempre deixa buraco; esta cláusula fecha o buraco.
 - Tese que contradiz a própria peça: ângulo que critica um mecanismo (CTA de palavra-chave, paralelismo negativo, isca) não usa o mecanismo. O fecho e o CTA são os do tipo em `tipos-de-post.md`.
 
@@ -83,12 +88,12 @@ O que não entra em nenhum campo:
 
 Antes de entregar, ângulo por ângulo:
 
-1. O tipo saiu da pergunta mercado ou pessoa, e o tema traz o que a linha "Exige" do tipo pede; o que não traz está em `Falta`.
-2. A tese é uma frase, afirmativa, específica do fato, sem paralelismo negativo.
+1. O tipo saiu da pergunta mercado ou pessoa e do que o fato é, nunca da faixa de tamanho; o tema traz o que a linha "Exige" do tipo pede, e o que não traz está em `Falta`. Posição só com a opinião da pessoa registrada.
+2. A tese é uma frase, afirmativa, específica do fato, sem paralelismo negativo, e não transforma um episódio em hábito.
 3. `base-conteudo.md` foi lida inteira e `Repete a base` diz o que encosta ou "nada".
 4. Cada ângulo diz para quem serve no ICP.
-5. Todo número, nome, citação, cena, data, sentimento e juízo é rastreável ao tema, a `prova.md` ou a `voz.md`; nenhuma conta feita por você; terceiros em `Aval`.
-6. Os campos do briefing têm os nomes do formato abaixo, porque o `gancho` e o `linkedin-post` leem por nome.
+5. Todo número, nome, citação, depoimento, cena, data, sentimento, conclusão e juízo é rastreável ao tema, a `prova.md` ou a `voz.md` (este só para posição geral, nunca para a reação a este fato); nenhuma conta feita por você; terceiros e fonte sem dono em `Aval`.
+6. Os campos do briefing têm os nomes do formato abaixo, porque o `gancho` e o `linkedin-post` leem por nome. `Leitura da pessoa` está preenchido só com o que ela disse, ou marcado `[FALTA: leitura da pessoa sobre X]`; em teardown, bastidor e caso o campo nunca está vazio, e no anúncio pessoal ele traz a frase de sentimento ou `[FALTA: sentimento da pessoa]`.
 7. Sem travessão, sem emoji e sem termo de `banidas.txt`, nos ângulos, no briefing e na sua mensagem final. Quando puder rodar script, grave o texto inteiro da resposta em `angulo-rascunho.md` na pasta atual e rode a checagem e a remoção num comando só: `bash [raiz do plugin]/scripts/check-voz.sh angulo-rascunho.md banidas.txt; echo "codigo $?"; rm -f angulo-rascunho.md` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita `banidas.txt` se não existe). O rascunho é temporário porque a pasta atual é a pasta de contexto da pessoa, e ela não recebe arquivo que não pediu. Na linha `Checagem`, reporte o código de saída (0 limpo, 1 acusou, com o que acusou) e que o rascunho foi apagado; se a remoção falhou, diga que ele ficou e onde. Paralelismo negativo, conta feita e juízo sem lastro são conferidos por leitura, e a linha `Checagem` separa o que foi mecânico do que foi de olho. Sem script, confira tudo na leitura e diga isso.
 
 Falhou em algum item: corrija aquele ângulo, não regenere o conjunto.
@@ -115,15 +120,16 @@ Briefing do ângulo [letra]
 Tipo: [um dos sete]
 Tese: [a mesma frase]
 Ângulo: [3 a 5 frases com o dado que sustenta, e o recorte que ficou de fora]
+Leitura da pessoa: [o que ela viu, concluiu ou sentiu sobre este fato, com as palavras dela | [FALTA: leitura da pessoa sobre X] | no anúncio pessoal, a frase de sentimento ou [FALTA: sentimento da pessoa]]
 Funil: [topo | meio | fundo]
 Tom: [duas ou três palavras]
 Tipo de gancho: [número | história | contradição | acusação]
 Formato: [post | carrossel | post e carrossel]
-Tamanho: [a faixa do tipo, e se o material sustenta o lado longo ou o post para no curto]
+Tamanho: [a faixa do tipo; se o tema tem só 2 ou 3 fatos, "para no lado curto, tipo mantido" e o que faltou para o longo]
 Fechamento: [o fecho do tipo: decisão para quem lê, pergunta genuína, convite, como receber, frase de posicionamento, no conteúdo]
 Fontes e links: [uma linha por fonte, com link quando o tema traz, ou "nenhum link no tema"]
 Material bruto: [os fatos do tema, um por linha, como o tema os dá, mais o que prova.md acrescenta, com a fonte de cada um]
-Aval: [nomes de terceiro, projeto ou dado interno que precisam de um sim antes de publicar; ou "nada"]
+Aval: [nomes de terceiro, projeto, dado interno ou fonte sem dono declarado que precisam de um sim antes de publicar; ou "nada"]
 Falta: [lista de FALTA, ou "nada"]
 Checagem: check-voz.sh código [0 ou 1, com o que acusou], rascunho apagado; paralelismo negativo, conta feita e juízo sem lastro por leitura. Briefing gravado em saida/briefing-AAAA-MM-DD-<tema>.md.
 ```
@@ -143,7 +149,8 @@ Tudo o que houver a dizer cabe nesses campos: nada antes do primeiro ângulo, na
 ## O que este especialista não faz
 
 - Não escreve o gancho, o post, a legenda nem o roteiro: decide e para.
-- Não inventa número, caso, citação, nome, cena, data, sentimento, resultado ou juízo de qualidade, e não faz conta com os que existem.
+- Não inventa número, caso, citação, depoimento, nome, cena, data, sentimento, leitura, resultado ou juízo de qualidade, não transforma um episódio em hábito e não faz conta com os que existem.
+- Não troca o tipo para caber na faixa de tamanho: tema fino para no lado curto com o tipo mantido.
 - Não promete material que não está em `icp.md`, nem propõe lead magnet com material em construção.
 - Não cita cliente, projeto de terceiro ou pessoa de outra empresa sem aval, nem deixa concorrente identificável.
 - Não monta calendário nem distribui a semana: isso é do `radar-pautas`.
