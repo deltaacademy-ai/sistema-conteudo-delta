@@ -1,29 +1,36 @@
 #!/usr/bin/env bash
-# Portao do motor, sem juiz: cada caso e um fluxo completo em dois turnos, por modelo.
+# Portao do motor, sem juiz: cada caso e um fluxo completo em dois (ou tres) turnos, por modelo.
 #
 # Turno 1: run-case.sh com prompt_novo (o tema). Precisa parar na aprovacao da peca
-#   principal: post em saida/, linha `rascunho` em base-conteudo.md, pedido de aprovacao
-#   na resposta, nenhum carrossel e nenhuma pasta publicar/.
+#   principal: post em saida/, linha `rascunho` em base-conteudo.md com tantas celulas
+#   quanto o cabecalho, pedido de aprovacao na resposta, linha Revisor dizendo se a
+#   checagem mecanica do revisor rodou ou foi por leitura, nenhum carrossel e nenhuma
+#   pasta publicar/.
 # Turno 2: run-case.sh com prompt_turno_2 ("aprovado, segue ate o pacote") sobre uma
 #   fixture temporaria que e a copia do que o turno 1 deixou em disco (a conversa nao
 #   e retomada; o estado do motor vive em saida/ e na base). Precisa entregar
 #   publicar/<data>-<tema>/ com post.txt, primeiro-comentario.txt, legenda-instagram.txt,
 #   NN.png em 1080x1350, carrossel.pdf e passo-a-passo.md; check-voz limpo nos .txt;
-#   base com a mesma linha do turno 1 e so a celula Status trocada para `aprovado`
-#   (coluna CTA intacta).
+#   base com a mesma linha do turno 1 e so a celula Status trocada para `aprovado`.
+# COPY=1: o turno 2 usa prompt_turno_2_copy ("aprovado, com carrossel", sem "segue ate o
+#   pacote") e precisa parar na copy do carrossel: base `aprovado`, carrossel.json
+#   gravado, nenhum PNG, nenhuma pasta publicar/, resposta terminando em "Aprova a copy?".
+#   O turno 3 usa prompt_turno_3 sobre o estado do turno 2 e passa pelos criterios do
+#   turno 2 direto.
+# ENCURTA=1: tira a ultima celula da linha rascunho antes do turno 2 e exige que o motor
+#   complete a linha (so com celula vazia) e diga isso na resposta.
+# ESTADO_DE=<rodada>: reaproveita o turno 1 daquela rodada (so os turnos seguintes rodam).
+#
+# A linha da peca e ancorada por Data e Tema (as duas primeiras celulas da linha rascunho
+# do turno 1), nao pela primeira linha que casa. Celulas sao contadas pelos `|` da linha
+# depois de remover trechos entre aspas (o Gancho e citado entre aspas e pode conter `|`).
+# `sips` (medida dos PNG) e do macOS, como o `perl -e alarm` que substitui o `timeout`
+# que o macOS nao tem; em Linux troque por `identify` ou `file`.
 #
 # Duas faixas em paralelo (uma por modelo, casos em sequencia), ate 3 tentativas por
-# execucao, alarm do perl no lugar do `timeout` que o macOS nao tem. Log em
-# evals/results/nova/motor-<rodada>/_log.txt e placar em _placar.txt.
+# execucao. Log em evals/results/nova/motor-<rodada>/_log.txt e placar em _placar.txt.
 #
-# Contagem de celulas: em cada turno a linha que o fluxo escreveu (rascunho no turno 1,
-#   aprovado no turno 2) precisa ter o mesmo numero de celulas que o cabecalho, porque a
-#   base carrega colunas de controle (CTA, Assinatura) que uma linha curta quebra em
-#   silencio. Com ENCURTA=1 o portao tira a ultima celula da linha rascunho antes do
-#   turno 2 e passa a exigir que o motor complete a linha e diga isso na resposta.
-# Com ESTADO_DE=<rodada> o turno 1 e reaproveitado daquela rodada (so o turno 2 roda).
-#
-# uso: bash evals/cases/motor/portao.sh [rodada]      (env: CASOS, MODELOS, LIMITE, ESTADO_DE, ENCURTA)
+# uso: bash evals/cases/motor/portao.sh [rodada]   (env: CASOS, MODELOS, LIMITE, ESTADO_DE, ENCURTA, COPY)
 #   nohup bash evals/cases/motor/portao.sh r1 > /dev/null 2>&1 &
 set -u
 raiz=$(cd "$(dirname "$0")/../../.." && pwd); cd "$raiz"
@@ -44,31 +51,65 @@ roda() { # roda <caso.md> <modelo> <saida.md>
        && [ -s "$s" ] && ! grep -qx null "$s" && ! grep -qi 'rate.limit\|too many requests\|"429"' "$s.log"; then
       log "ok $(basename "$s") $(wc -c < "$s" | tr -d ' ') bytes"; return 0
     fi
-    log "retentativa $(basename "$s") motivo=$(tail -c 200 "$s.log" 2>/dev/null | tr '\n' ' ')"; sleep 120
+    log "retentativa $(basename "$s") motivo=$(tail -c 200 "$s.log" 2>/dev/null | tr '\n' ' ')"
+    [ "$t" -lt 3 ] && sleep 120
   done
   log "FALHOU $(basename "$s")"; return 1
 }
 
-pipes() { awk '{print gsub(/\|/,"|")}' <<< "$1"; }
+pipes() { sed 's/"[^"]*"//g' <<< "$1" | awk '{print gsub(/\|/,"|")}'; }
+norm() { sed -E 's/ *\| */|/g; s/[[:space:]]+$//' <<< "$1"; }
+cabecalho() { grep -m1 '^| *Data' "$1"; }
+ancora() { grep -m1 '| *rascunho *|' "$1" | sed -E 's/^(\|[^|]*\|[^|]*\|).*/\1/'; }   # "| Data | Tema |" da peca nova
+linha() { grep -m1 -F -- "$2" "$1"; }                                                # linha da peca em <base> pela ancora
 
 confere_t1() { # confere_t1 <arquivos> <saida.md> -> imprime achados (vazio = ok)
-  local a="$1" s="$2" m="" post
+  local a="$1" s="$2" m="" post lin
   [ -d "$a/publicar" ] && m="$m publicar-antes-da-aprovacao"
   ls -d "$a"/saida/carrossel-* >/dev/null 2>&1 && m="$m carrossel-antes-da-aprovacao"
   post=$(ls "$a"/saida/post-*.md 2>/dev/null | head -1)
   if [ -z "$post" ]; then m="$m sem-post"; else
     bash scripts/check-voz.sh "$post" "$a/banidas.txt" >/dev/null || m="$m check-voz-post"
   fi
-  grep -q '| *rascunho *|' "$a/base-conteudo.md" || m="$m base-sem-rascunho"
-  [ "$(pipes "$(grep -m1 '^| *Data' "$a/base-conteudo.md")")" = "$(pipes "$(grep -m1 '| *rascunho *|' "$a/base-conteudo.md")")" ] || m="$m celulas-diferem-do-cabecalho"
-  head -20 "$a/base-conteudo.md" | grep -q 'CTA' || m="$m base-sem-coluna-cta"
+  lin=$(grep -m1 '| *rascunho *|' "$a/base-conteudo.md")
+  [ -n "$lin" ] || m="$m base-sem-rascunho"
+  cabecalho "$a/base-conteudo.md" | grep -q 'CTA' || m="$m base-sem-coluna-cta"
+  [ "$(pipes "$(cabecalho "$a/base-conteudo.md")")" = "$(pipes "$lin")" ] || m="$m celulas-diferem-do-cabecalho"
   grep -qi 'aprova' "$s" || m="$m sem-pedido-de-aprovacao"
   grep -qi 'contexto limpo' "$s" || m="$m sem-linha-revisor"
+  grep -iE '^\**Revisor' "$s" | grep -qiE 'mecânica|rodou|leitura' || m="$m sem-rodou-do-revisor"
   echo "$m"
 }
 
-confere_t2() { # confere_t2 <fixture-t2> <arquivos-t2> <saida-t2> -> imprime achados (vazio = ok)
-  local a1="$1" a="$2" s="$3" m="" pk f n cab lin1 esperada post
+confere_base() { # confere_base <fixture-de-entrada> <arquivos-de-saida> <saida.md> -> achados sobre a linha da peca
+  local a1="$1" a="$2" s="$3" m="" anc lin1 lin2 cab esperada
+  anc=$(ancora "$a1/base-conteudo.md"); [ -n "$anc" ] || anc=$(grep -m1 '| *aprovado *|' "$a1/base-conteudo.md" | sed -E 's/^(\|[^|]*\|[^|]*\|).*/\1/')
+  lin1=$(linha "$a1/base-conteudo.md" "$anc"); lin2=$(linha "$a/base-conteudo.md" "$anc"); cab=$(cabecalho "$a/base-conteudo.md")
+  echo "$cab" | grep -q 'CTA' || m="$m base-sem-coluna-cta"
+  [ -n "$lin2" ] || { echo "$m linha-da-peca-sumiu"; return; }
+  grep -q '| *aprovado *|' <<< "$lin2" || m="$m base-sem-aprovado"
+  esperada=$(norm "$(sed 's/| *rascunho *|/| aprovado |/' <<< "$lin1")")
+  if [ "${ENCURTA:-0}" = 1 ]; then
+    esperada="$esperada|"                       # a celula cortada volta vazia, no fim
+    grep -qi 'curta' "$s" || m="$m linha-curta-nao-acusada"
+  fi
+  [ "$(norm "$lin2")" = "$esperada" ] || m="$m linha-mudou-alem-do-status"
+  [ "$(pipes "$cab")" = "$(pipes "$lin2")" ] || m="$m celulas-diferem-do-cabecalho"
+  echo "$m"
+}
+
+confere_copy() { # confere_copy <fixture-de-entrada> <arquivos> <saida.md> -> parada da copy do carrossel
+  local a1="$1" a="$2" s="$3" m=""
+  [ -d "$a/publicar" ] && m="$m publicar-antes-da-copy"
+  ls "$a"/saida/carrossel-*/carrossel.json >/dev/null 2>&1 || m="$m sem-carrossel-json"
+  ls "$a"/saida/carrossel-*/[0-9][0-9].png >/dev/null 2>&1 && m="$m png-antes-da-copy-aprovada"
+  grep -qi 'aprova a copy' "$s" || m="$m sem-parada-da-copy"
+  m="$m$(confere_base "$a1" "$a" "$s")"
+  echo "$m"
+}
+
+confere_pacote() { # confere_pacote <fixture-de-entrada> <arquivos> <saida.md> -> pacote completo
+  local a1="$1" a="$2" s="$3" m="" pk f n post
   pk=$(ls -d "$a"/publicar/*/ 2>/dev/null | head -1)
   if [ -z "$pk" ]; then echo " sem-pasta-publicar"; return; fi
   for f in post.txt primeiro-comentario.txt legenda-instagram.txt carrossel.pdf passo-a-passo.md; do
@@ -85,44 +126,49 @@ confere_t2() { # confere_t2 <fixture-t2> <arquivos-t2> <saida-t2> -> imprime ach
   done
   post=$(ls "$a"/saida/post-*.md 2>/dev/null | head -1)
   [ -n "$post" ] && [ -f "$pk/post.txt" ] && { cmp -s "$post" "$pk/post.txt" || m="$m post.txt-difere-da-origem"; }
-  cab=$(grep -m1 '^| *Data' "$a/base-conteudo.md")
-  echo "$cab" | grep -q 'CTA' || m="$m base-sem-coluna-cta"
-  lin1=$(grep -m1 '| *rascunho *|' "$a1/base-conteudo.md")
-  esperada=$(sed 's/| *rascunho *|/| aprovado |/' <<< "$lin1")
-  if [ "${ENCURTA:-0}" = 1 ]; then
-    grep -q '| *aprovado *|' "$a/base-conteudo.md" || m="$m base-sem-aprovado"
-    grep -qi 'curta' "$s" || m="$m linha-curta-nao-acusada"
-  elif ! grep -qF -- "$esperada" "$a/base-conteudo.md"; then
-    grep -q '| *aprovado *|' "$a/base-conteudo.md" && m="$m linha-mudou-alem-do-status" || m="$m base-sem-aprovado"
-  fi
-  [ "$(pipes "$cab")" = "$(pipes "$(grep -m1 '| *aprovado *|' "$a/base-conteudo.md")")" ] || m="$m celulas-diferem-do-cabecalho"
+  m="$m$(confere_base "$a1" "$a" "$s")"
   echo "$m"
 }
 
+prepara_turno() { # prepara_turno <arquivos-de-origem> <nome-da-fixture> <caso.md> <campo-do-prompt> -> imprime o caso temporario
+  local a="$1" fx="$2" caso="$3" campo_prompt="$4" p caso2
+  rm -rf "$R/estado/fixtures/$fx"; mkdir -p "$R/estado/fixtures/$fx"; cp -R "$a/." "$R/estado/fixtures/$fx/"
+  p=$(campo "$caso" "$campo_prompt"); caso2="$R/estado/cases/motor/$fx.md"
+  awk -v fx="$fx" -v p2="$p" -F': ' '$1=="fixture"{print "fixture: " fx; next} $1=="prompt_novo"{print "prompt_novo: " p2; next} {print}' "$caso" > "$caso2"
+  echo "$caso2"
+}
+
 job() { # job <caso> <modelo>
-  local c="$1" m="$2" n="$1-$2" caso="evals/cases/motor/$1.md" t1 t2 a1 a2 f1 f2 p2 fx caso2
-  t1="$R/$n-t1.md"; t2="$R/$n-t2.md"; a1="$t1.arquivos"; a2="$t2.arquivos"
+  local c="$1" m="$2" n="$1-$2" caso="evals/cases/motor/$1.md" t1 t2 t3 a1 a2 a3 f1 f2 f3 fx caso2
+  t1="$R/$n-t1.md"; t2="$R/$n-t2.md"; t3="$R/$n-t3.md"; a1="$t1.arquivos"; a2="$t2.arquivos"; a3="$t3.arquivos"
   if [ ! -s "$t1" ] && [ -n "${ESTADO_DE:-}" ] && [ -s "evals/results/nova/motor-$ESTADO_DE/$n-t1.md" ]; then
     cp "evals/results/nova/motor-$ESTADO_DE/$n-t1.md" "$t1"; rm -rf "$a1"; cp -R "evals/results/nova/motor-$ESTADO_DE/$n-t1.md.arquivos" "$a1"
     log "t1 $n reaproveitado de $ESTADO_DE"
   fi
   if [ ! -s "$t1" ]; then roda "$caso" "$m" "$t1" || { echo "$n | turno 1 FALHOU (sem saida) | | NAO PASSA" >> "$PL"; return; }; fi
   f1=$(confere_t1 "$a1" "$t1"); log "t1 $n:${f1:- ok}"
-  fx="$n-t2"; rm -rf "$R/estado/fixtures/$fx"; mkdir -p "$R/estado/fixtures/$fx"; cp -R "$a1/." "$R/estado/fixtures/$fx/"
+  fx="$n-t2"
+  if [ "${COPY:-0}" = 1 ]; then caso2=$(prepara_turno "$a1" "$fx" "$caso" prompt_turno_2_copy); else caso2=$(prepara_turno "$a1" "$fx" "$caso" prompt_turno_2); fi
   if [ "${ENCURTA:-0}" = 1 ]; then  # tira a ultima celula da linha rascunho: o motor precisa completar e avisar
     perl -i -pe 'if (/\| *rascunho *\|/ && !$f) { s/\|[^|]*\|\s*$/|\n/; $f=1 }' "$R/estado/fixtures/$fx/base-conteudo.md"
     log "t2 $n fixture com linha rascunho encurtada: $(grep -m1 '| *rascunho *|' "$R/estado/fixtures/$fx/base-conteudo.md" | cut -c1-80)..."
   fi
-  p2=$(campo "$caso" prompt_turno_2); caso2="$R/estado/cases/motor/$fx.md"
-  awk -v fx="$fx" -v p2="$p2" -F': ' '$1=="fixture"{print "fixture: " fx; next} $1=="prompt_novo"{print "prompt_novo: " p2; next} {print}' "$caso" > "$caso2"
   if [ ! -s "$t2" ]; then roda "$caso2" "$m" "$t2" || { echo "$n | t1:${f1:- ok} | turno 2 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi
-  f2=$(confere_t2 "$R/estado/fixtures/$fx" "$a2" "$t2"); log "t2 $n:${f2:- ok}"
-  if [ -z "$f1" ] && [ -z "$f2" ]; then echo "$n | t1: ok | t2: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2:${f2:- ok} | NAO PASSA" >> "$PL"; fi
+  if [ "${COPY:-0}" = 1 ]; then
+    f2=$(confere_copy "$R/estado/fixtures/$fx" "$a2" "$t2"); log "t2 (parada da copy) $n:${f2:- ok}"
+    fx="$n-t3"; caso2=$(prepara_turno "$a2" "$fx" "$caso" prompt_turno_3)
+    if [ ! -s "$t3" ]; then roda "$caso2" "$m" "$t3" || { echo "$n | t1:${f1:- ok} | t2 copy:${f2:- ok} | turno 3 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi
+    f3=$(confere_pacote "$R/estado/fixtures/$fx" "$a3" "$t3"); log "t3 (pacote) $n:${f3:- ok}"
+    if [ -z "$f1$f2$f3" ]; then echo "$n | t1: ok | t2 copy: ok | t3: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2 copy:${f2:- ok} | t3:${f3:- ok} | NAO PASSA" >> "$PL"; fi
+  else
+    f2=$(confere_pacote "$R/estado/fixtures/$fx" "$a2" "$t2"); log "t2 $n:${f2:- ok}"
+    if [ -z "$f1$f2" ]; then echo "$n | t1: ok | t2: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2:${f2:- ok} | NAO PASSA" >> "$PL"; fi
+  fi
 }
 
 faixa() { local m="$1" c; for c in $CASOS; do job "$c" "$m"; done; log "faixa $m encerrada"; }
 
-log "inicio rodada=$rodada casos=$CASOS modelos=$MODELOS"
+log "inicio rodada=$rodada casos=$CASOS modelos=$MODELOS copy=${COPY:-0} encurta=${ENCURTA:-0} estado_de=${ESTADO_DE:-}"
 for m in $MODELOS; do faixa "$m" & done
 wait
 log "fim"; sort "$PL"

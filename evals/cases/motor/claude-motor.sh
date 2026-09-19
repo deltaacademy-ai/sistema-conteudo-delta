@@ -13,6 +13,14 @@
 # inserindo-as antes de --permission-mode (a lista e variadica e termina na
 # proxima flag), e delega ao claude-isolado.sh, que continua isolando a
 # configuracao pessoal do dono da maquina.
+#
+# Limite conhecido: a liberacao e por prefixo, e comando composto (a cadeia
+# `check-voz.sh ...; echo "codigo $?"; rm -f rascunho` que os especialistas
+# prescrevem) nao casa com prefixo nenhum quando o host avalia cada parte.
+# Em r1 duas execucoes registraram "o comando com echo nao foi autorizado" e
+# rodaram o script sozinho, lendo o codigo pela saida. E o mesmo que o
+# comprador ve numa sessao real quando recusa o composto; as skills dizem o
+# que fazer nesse caso (motor, "O que a pessoa precisa liberar").
 dir=$(cd "$(dirname "$0")" && pwd); raiz=$(cd "$dir/../../.." && pwd)
 args=(); plugin=""; prev=""
 for a in "$@"; do
