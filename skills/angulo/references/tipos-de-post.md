@@ -28,7 +28,7 @@ Quando: fato externo do dia (lançamento, mudança de regra, aquisição, prazo)
 
 Estrutura:
 
-1. Linha 1: a notícia crua, em segunda pessoa, com quem lê como alvo (quem fez o quê, o que muda, desde quando). O ângulo fica para o corpo, porque quem lê já viu o anúncio; o que ainda não viu é a notícia chegando nele.
+1. Linha 1: a notícia crua, em segunda pessoa, com quem lê como alvo: o que muda para ele e desde quando. "A empresa X publicou o artigo Y" é o anúncio, e quem lê já viu; o que ainda não viu é a notícia chegando nele. O ângulo fica para o corpo.
 2. Duas ou três linhas de contexto concreto: datas, valores, quem disse.
 3. Bloco de 3 ou 4 itens com `→`, um por linha: o que quebrou ou o que mudou.
 4. A leitura própria: o que quem opera vê que o release não diz, com o caso ou o número que a pessoa tem. Aqui é onde o post ganha do resto, e por isso é a leitura dela, registrada no briefing; sem registro, o item sai, o post vai do bloco direto ao que muda para quem lê, e a nota leva `[FALTA: leitura da pessoa sobre a notícia]`.

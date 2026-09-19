@@ -42,7 +42,7 @@ O tamanho é o do tipo, e o post nunca fica entre 900 e 1.400 caracteres: o nich
 
 ## Etapa 2: escrita
 
-Abertura. Com gancho aprovado no pedido, ele é a linha 1 e a linha 2, sem reescrita: quem chamou já escolheu. Sem gancho, escreva um só, pelas regras do especialista de gancho: linha 1 com até 15 palavras e um fato, uma cena ou um número; linha 2 avança (traz dado novo ou a consequência para quem lê) e nunca explica a linha 1; no teardown, a notícia crua em segunda pessoa; no anúncio pessoal, cena. O mapa por tipo de peça em `../gancho/references/banco-de-ganchos.md` diz que estrutura serve a cada tipo. Registre na nota que o gancho não veio aprovado.
+Abertura. Com gancho aprovado no pedido, ele é a linha 1 e a linha 2, sem reescrita: quem chamou já escolheu. Sem gancho, escreva um só, pelas regras do especialista de gancho: linha 1 com até 15 palavras e um fato, uma cena ou um número; linha 2 avança (traz dado novo ou a consequência para quem lê) e nunca explica a linha 1; no teardown, a notícia crua em segunda pessoa, o que muda para quem lê e desde quando ("agora o X vai fazer Y com o que você gera"), nunca "a empresa X publicou Z", que é o anúncio que quem lê já viu; no anúncio pessoal, cena. O mapa por tipo de peça em `../gancho/references/banco-de-ganchos.md` diz que estrutura serve a cada tipo. Registre na nota que o gancho não veio aprovado.
 
 Corpo. Siga a estrutura do tipo em `tipos-de-post.md`, na ordem, e as regras abaixo, que valem para os sete tipos:
 
