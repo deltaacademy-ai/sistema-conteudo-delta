@@ -282,7 +282,14 @@ async function renderizar(htmlPath, saida, familias) {
     document.querySelectorAll('.slide').forEach((slide, i) => {
       const miolo = slide.querySelector('.miolo');
       let escala = 1;
-      const cabe = () => miolo.scrollHeight <= miolo.clientHeight && slide.scrollWidth <= slide.clientWidth;
+      // Mede com o conteudo encostado no topo: com justify-content center, o scrollHeight
+      // do Chromium ignora o que transborda por cima e daria "cabe" com o topo cortado.
+      const cabe = () => {
+        miolo.style.justifyContent = 'flex-start';
+        const ok = miolo.scrollHeight <= miolo.clientHeight && slide.scrollWidth <= slide.clientWidth;
+        miolo.style.justifyContent = '';
+        return ok;
+      };
       while (!cabe() && escala > 0.6) { escala = +(escala - 0.05).toFixed(2); slide.style.setProperty('--escala', String(escala)); }
       r.push({ slide: i + 1, escala, cabe: cabe() });
     });
