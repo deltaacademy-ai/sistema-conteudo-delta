@@ -5,8 +5,10 @@
 # modo --json e o slides.html com essa lista, e para no primeiro acerto), e imprime uma linha por
 # caso: slides, PNGs e tamanho, paginas e fontes do PDF, escala aplicada e check-voz do HTML e do
 # CSS gerados, de novo com a lista da fixture.
-# Passa quando toda linha termina em "ok". Olhar as imagens continua sendo passo manual: o script
-# so prova contagem, medida e fonte, nao legibilidade.
+# Passa quando toda linha termina em "ok". O portao confia na conferencia interna do render
+# (paginas do PDF contra slides, fontes do PDF, piso de escala) e so re-mede os PNGs por fora.
+# Olhar as imagens continua sendo passo manual: o script so prova contagem, medida e fonte, nao
+# legibilidade.
 #
 # uso: bash evals/cases/carrossel-render/portao.sh [pasta-de-resultados-do-roteiro] [pasta-de-saida]
 set -u
@@ -24,7 +26,7 @@ while IFS= read -r json; do
   dest="$SAIDA/$run"
   rm -rf "$dest"; mkdir -p "$dest"
   log="$dest/render.log"
-  if node "$RAIZ/scripts/render-carrossel.mjs" "$json" "$dest" --marca "$marca" >"$log" 2>&1; then r=ok; else r=FALHOU; falhas=$((falhas+1)); fi
+  if node "$RAIZ/scripts/render-carrossel.mjs" "$json" "$dest" --marca "$marca" >"$log" 2>&1; then r=ok; else r=FALHOU; fi
   slides=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).slides.length)' "$json")
   pngs=$(ls "$dest"/[0-9][0-9].png 2>/dev/null | wc -l | tr -d ' ')
   medidas=$(for p in "$dest"/[0-9][0-9].png; do sips -g pixelWidth -g pixelHeight "$p" 2>/dev/null | awk '/pixelWidth/{w=$2}/pixelHeight/{h=$2}END{print w"x"h}'; done | sort -u | paste -sd, -)
@@ -32,8 +34,9 @@ while IFS= read -r json; do
   fontes=$(grep -o 'fontes embutidas: .*' "$log" | sed 's/fontes embutidas: //; s/[A-Z]\{6\}+//g')
   escala=$(grep -o 'escala por slide: .*' "$log" | sed 's/escala por slide: //')
   for g in "$dest/slides.html" "$dest/tokens.css"; do
-    if [ -f "$g" ] && ! bash "$RAIZ/scripts/check-voz.sh" "$g" "$banidas" >/dev/null; then r="$r check-voz:$(basename "$g")"; falhas=$((falhas+1)); fi
+    if [ -f "$g" ] && ! bash "$RAIZ/scripts/check-voz.sh" "$g" "$banidas" >/dev/null; then r="$r check-voz:$(basename "$g")"; fi
   done
+  case "$r" in ok) ;; *) falhas=$((falhas+1));; esac   # uma falha por caso, nao por arquivo
   printf '%-20s %-6s %-14s %-8s %-52s %-28s %s\n' "$run" "$slides" "$pngs@$medidas" "${paginas:-?}p" "${fontes:-?}" "${escala:-?}" "$r"
 done < <(find "$ORIGEM" -name carrossel.json | sort)
 echo "casos: $total, falhas: $falhas"

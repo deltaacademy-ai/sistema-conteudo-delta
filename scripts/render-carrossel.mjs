@@ -17,9 +17,10 @@
 // fonte estranha, texto fora do quadro). Saida 2: sem Playwright ou Chromium; o HTML ficou
 // pronto na pasta e a mensagem diz como abrir e exportar.
 
-import { readFile, writeFile, mkdir, copyFile, readdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile, readdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -29,6 +30,10 @@ const SKILL = path.join(AQUI, '..', 'skills', 'carrossel-render');
 const TEMPLATE = path.join(SKILL, 'template', 'slide.html');
 const FONTES_SKILL = path.join(SKILL, 'fonts');
 const LARGURA = 1080, ALTURA = 1350;
+// Piso de legibilidade: corpo abaixo de 28px no canvas de 1080 nao se le no feed (regra herdada do
+// popcode-instagram e do Da Vinci). O corpo nasce a 36px, entao a escala nunca desce de 28/36.
+const CORPO_PX = 36, PISO_CORPO_PX = 28;
+const ESCALA_MIN = Math.ceil((PISO_CORPO_PX / CORPO_PX) * 100) / 100; // 0.78
 
 const PADRAO = {
   cores: { fundo: '#141414', destaque: '#9aa4b2', claro: '#f2f2ee' },
@@ -57,16 +62,36 @@ function falhar(msg) {
 
 // ---------- voz: travessao, emoji e lista banida ----------
 
-// Roda scripts/check-voz.sh (modo --json para o carrossel.json, prosa para o HTML) e devolve
-// o resumo. Acerto e falha: o render para antes de gerar imagem com o defeito.
-function checarVoz(arquivo, banidas, json) {
+// Roda scripts/check-voz.sh (modo --json para o carrossel.json, prosa para o texto dos slides) e
+// devolve o resumo. Acerto e falha: o render para antes de gerar imagem com o defeito.
+// Com prefixo=true cada linha do arquivo e "rotulo<TAB>texto" e o checador ignora o rotulo.
+function checarVoz(arquivo, banidas, { json = false, prefixo = false, rotulo = null } = {}) {
   const args = [CHECK_VOZ, ...(json ? ['--json'] : []), arquivo, ...(banidas ? [banidas] : [])];
-  const r = spawnSync('bash', args, { encoding: 'utf8' });
-  const saida = ((r.stdout || '') + (r.stderr || '')).trim();
+  const r = spawnSync('bash', args, { encoding: 'utf8', env: { ...process.env, ...(prefixo ? { CHECK_VOZ_PREFIXO: '1' } : {}) } });
+  // Sai como "rotulo: [termo] texto", igual ao modo --json.
+  const saida = ((r.stdout || '') + (r.stderr || '')).trim().replace(/^\d+: /gm, '').replace(/^(\[[^\]]*\] )([^\t]*)\t/gm, '$2: $1').replace(/\t/g, ': ');
   const escopo = banidas ? `travessao, emoji e lista ${path.basename(banidas)}` : 'travessao e emoji (sem banidas.txt)';
-  const nome = path.basename(arquivo);
+  const nome = rotulo || path.basename(arquivo);
   if (r.status === 0) { console.log(`voz: ${nome} conferido (${escopo}): limpo`); return { arquivo: nome, escopo, resultado: 'limpo' }; }
   falhar(`${nome} acusou na checagem de voz (${escopo}). Corrija no carrossel.json (via carrossel-roteiro) e renderize de novo:\n${saida}`);
+}
+
+// Confere so o texto que chega a quem le: os nos de texto de cada .slide do HTML gerado, nunca a
+// marcacao, as classes ou o CSS (um termo banido que coincida com um identificador do template,
+// como "escala", nao pode travar o render de uma copy limpa). Cada linha vai rotulada pelo slide.
+async function checarVozDoHtml(html, banidas) {
+  const doc = await readFile(html, 'utf8');
+  const semCabeca = doc.replace(/[\s\S]*?<\/head>/, '').replace(/<style[\s\S]*?<\/style>/g, '').replace(/<template[\s\S]*?<\/template>/g, '');
+  const secoes = semCabeca.split(/<section class="slide/).slice(1);
+  const linhas = [];
+  secoes.forEach((s, i) => {
+    const texto = s.replace(/<[^>]+>/g, '\n').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    for (const l of texto.split('\n').map((x) => x.trim()).filter(Boolean)) linhas.push(`slide ${i + 1}\t${l}`);
+  });
+  const tmp = path.join(os.tmpdir(), `carrossel-texto-${process.pid}.txt`);
+  await writeFile(tmp, linhas.join('\n') + '\n');
+  try { return checarVoz(tmp, banidas, { prefixo: true, rotulo: 'slides.html (texto renderizado)' }); }
+  finally { await rm(tmp, { force: true }); }
 }
 
 // ---------- marca.md -> tokens ----------
@@ -81,9 +106,14 @@ function limparValor(v) {
 function lerMarca(texto) {
   const marca = { cores: {}, fontes: {}, handle: '', dominio: '', avisos: [] };
   let secao = '';
+  const vistas = { cor: false, font: false, identi: false };
   for (const bruta of texto.split('\n')) {
     const linha = bruta.trim();
-    if (/^#{1,6}\s/.test(linha)) { secao = kebab(linha.replace(/^#+\s*/, '')); continue; }
+    if (/^#{1,6}\s/.test(linha)) {
+      secao = kebab(linha.replace(/^#+\s*/, ''));
+      for (const k of Object.keys(vistas)) if (secao.startsWith(k)) vistas[k] = true;
+      continue;
+    }
     if (!linha) continue;
     const semMarcador = linha.replace(/^[-*]\s+/, '');
     const dois = semMarcador.indexOf(':');
@@ -108,7 +138,7 @@ function lerMarca(texto) {
       const nome = limparValor(valor);
       if (!papel || falta || !nome) { if (papel) marca.avisos.push(`marca.md: fonte "${papel}" sem nome`); continue; }
       if (!marca.fontes[papel]) marca.fontes[papel] = nome;
-    } else if (secao.startsWith('identifica')) {
+    } else if (secao.startsWith('identi')) {
       const h = semMarcador.match(/@[A-Za-z0-9_.]+/);
       if (h && !marca.handle) marca.handle = h[0];
       if (/dominio|site|url/.test(chave) && !falta) {
@@ -117,6 +147,12 @@ function lerMarca(texto) {
       }
     }
   }
+  // Nada encontrado nunca e silencio: cada secao ausente e cada token nao achado vira aviso, e a
+  // marca vazia (@ e dominio) entra em "padroes aplicados" como padrao declarado.
+  const nomes = { cor: 'Cores', font: 'Fontes', identi: 'Identificacao' };
+  for (const k of Object.keys(vistas)) if (!vistas[k]) marca.avisos.push(`marca.md: secao "${nomes[k]}" nao encontrada (titulos lidos: ${[...texto.matchAll(/^#{1,6}\s+(.+)$/gm)].map((m) => m[1].trim()).join(', ') || 'nenhum'})`);
+  if (!marca.handle) marca.avisos.push('marca.md: @ (handle) nao encontrado na secao Identificacao; os slides saem sem @ no topo');
+  if (!marca.dominio) marca.avisos.push('marca.md: dominio nao encontrado na secao Identificacao; os slides saem sem dominio no rodape');
   return marca;
 }
 
@@ -164,6 +200,8 @@ async function montarTokens(marca, pastasFonte, saida) {
     if (marca.fontes[k]) fontes[k] = { valor: marca.fontes[k], origem: 'marca.md' };
     else { fontes[k] = { valor: PADRAO.fontes[k], origem: 'padrao' }; padroes.push(`fonte ${k} = ${PADRAO.fontes[k]}`); }
   }
+  if (!marca.handle) padroes.push('@ = vazio (topo dos slides sem @)');
+  if (!marca.dominio) padroes.push('dominio = vazio (rodape dos slides sem dominio)');
 
   const razaoTexto = contraste(cores.fundo.valor, cores.claro.valor);
   if (razaoTexto < 4.5) falhar(`contraste entre fundo ${cores.fundo.valor} e claro ${cores.claro.valor} e ${razaoTexto.toFixed(2)}:1, abaixo de 4.5:1; o texto nao vai dar para ler. Ajuste as cores em marca.md.`);
@@ -203,8 +241,9 @@ async function montarTokens(marca, pastasFonte, saida) {
 
 // ---------- carrossel.json -> HTML ----------
 
-// Aspas retas ficam como estao: os campos so entram em texto de elemento, e a checagem de voz
-// no HTML precisa ver a citacao marcada do mesmo jeito que viu no JSON.
+// Aspas retas ficam como estao: os campos vindos do JSON so entram em texto de elemento (o unico
+// placeholder em atributo, {{avanco}}, e um percentual calculado aqui, nunca texto da pessoa), e a
+// checagem de voz do texto renderizado precisa ver a citacao marcada do mesmo jeito que viu no JSON.
 const escapar = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function validarCarrossel(j) {
@@ -240,7 +279,10 @@ async function montarHtml(j, marca, saida) {
       pagina: `${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`,
       avanco: `${((i + 1) / total * 100).toFixed(1)}%`,
     };
-    let html = blocos[s.tipo].replace(/\{\{(\w+)\}\}/g, (_, k) => campos[k] ?? '');
+    let html = blocos[s.tipo].replace(/\{\{(\w+)\}\}/g, (_, k) => {
+      if (!(k in campos)) falhar(`template/slide.html usa o placeholder {{${k}}}, que o render nao conhece (conhecidos: ${Object.keys(campos).join(', ')})`);
+      return campos[k];
+    });
     // paragrafo vazio nao ocupa lugar
     html = html.replace(/<p class="apoio"><\/p>/, '').replace(/<div class="corpo"><\/div>/, '');
     return html;
@@ -299,25 +341,28 @@ async function renderizar(htmlPath, saida, familias) {
   const faltando = familias.filter((f) => !fontes.some((x) => x.familia === f));
   if (faltando.length) { await browser.close(); falhar(`tokens.css nao declara @font-face para: ${faltando.join(', ')}`); }
 
-  // Ajusta --escala por slide ate o miolo caber; registra o que nao coube mesmo assim.
-  const ajuste = await page.evaluate(() => {
+  // Ajusta --escala por slide ate o miolo caber, sem descer do piso de legibilidade; registra a
+  // sobra em px do que nao coube nem no piso.
+  const ajuste = await page.evaluate((escalaMin) => {
     const r = [];
     document.querySelectorAll('.slide').forEach((slide, i) => {
       const miolo = slide.querySelector('.miolo');
       let escala = 1;
       // Mede com o conteudo encostado no topo: com justify-content center, o scrollHeight
       // do Chromium ignora o que transborda por cima e daria "cabe" com o topo cortado.
-      const cabe = () => {
+      const sobra = () => {
         miolo.style.justifyContent = 'flex-start';
-        const ok = miolo.scrollHeight <= miolo.clientHeight && slide.scrollWidth <= slide.clientWidth;
+        const s = Math.max(miolo.scrollHeight - miolo.clientHeight, slide.scrollWidth - slide.clientWidth, 0);
         miolo.style.justifyContent = '';
-        return ok;
+        return s;
       };
-      while (!cabe() && escala > 0.6) { escala = +(escala - 0.05).toFixed(2); slide.style.setProperty('--escala', String(escala)); }
-      r.push({ slide: i + 1, escala, cabe: cabe() });
+      while (sobra() > 0 && escala > escalaMin) { escala = Math.max(escalaMin, +(escala - 0.05).toFixed(2)); slide.style.setProperty('--escala', String(escala)); }
+      const s = sobra();
+      const caracteres = [...slide.querySelectorAll('.linha')].map((e) => e.textContent).join('\n').length;
+      r.push({ slide: i + 1, escala, cabe: s === 0, sobraPx: s, caracteres });
     });
     return r;
-  });
+  }, ESCALA_MIN);
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(150);
 
@@ -367,15 +412,27 @@ async function main() {
         dir = acima;
       }
     }
-    let banidas = args.banidas ? path.resolve(args.banidas) : (marcaPath ? path.join(path.dirname(marcaPath), 'banidas.txt') : null);
-    if (banidas && !existsSync(banidas)) { if (args.banidas) falhar(`banidas.txt nao existe: ${banidas}`); banidas = null; }
-    const voz = [checarVoz(path.resolve(entrada), banidas, true)];
+    // banidas.txt: --banidas, senao ao lado de marca.md, senao subindo a partir da pasta da peca.
+    let banidas = args.banidas ? path.resolve(args.banidas) : null;
+    if (banidas && !existsSync(banidas)) falhar(`banidas.txt nao existe: ${banidas}`);
+    if (!banidas && marcaPath && existsSync(path.join(path.dirname(marcaPath), 'banidas.txt'))) banidas = path.join(path.dirname(marcaPath), 'banidas.txt');
+    if (!banidas) {
+      let dir = path.dirname(path.resolve(entrada));
+      for (let n = 0; n < 5 && !banidas; n++) {
+        const cand = path.join(dir, 'banidas.txt');
+        if (existsSync(cand)) banidas = cand;
+        const acima = path.dirname(dir);
+        if (acima === dir) break;
+        dir = acima;
+      }
+    }
+    const voz = [checarVoz(path.resolve(entrada), banidas, { json: true })];
 
     const marca = marcaPath ? lerMarca(await readFile(marcaPath, 'utf8')) : { cores: {}, fontes: {}, handle: '', dominio: '', avisos: ['marca.md nao encontrado; cores e fontes sairam do padrao'] };
     const pastasFonte = [marcaPath ? path.join(path.dirname(marcaPath), 'fonts') : null, ...args.fontes.map((p) => path.resolve(p)), FONTES_SKILL];
     tokens = await montarTokens(marca, pastasFonte, saida);
     html = await montarHtml(j, marca, saida);
-    voz.push(checarVoz(html, banidas, false));
+    voz.push(await checarVozDoHtml(html, banidas));
     Object.assign(relatorio, { marca: marcaPath || null, banidas, voz, handle: marca.handle || null, dominio: marca.dominio || null, cores: tokens.cores, fontes: tokens.fontes, padroes: tokens.padroes, avisos: tokens.avisos });
     console.log(`html: ${html}`);
     console.log(`marca: ${marcaPath || 'nenhum (padrao)'}`);
@@ -394,10 +451,14 @@ async function main() {
     totalEsperado = (css.match(/class="slide[\s"]/g) || []).length || null;
     const banidas = args.banidas ? path.resolve(args.banidas) : null;
     if (banidas && !existsSync(banidas)) falhar(`banidas.txt nao existe: ${banidas}`);
-    relatorio.voz = [checarVoz(html, banidas, false)];
+    relatorio.voz = [await checarVozDoHtml(html, banidas)];
   }
 
-  if (args.soHtml) { console.log('so-html: render nao executado.'); return; }
+  if (args.soHtml) {
+    await writeFile(path.join(saida, 'render-relatorio.json'), JSON.stringify({ ...relatorio, soHtml: true }, null, 2) + '\n');
+    console.log(`so-html: render nao executado. relatorio: ${path.join(saida, 'render-relatorio.json')}`);
+    return;
+  }
 
   const r = await renderizar(html, saida, tokens.familias);
   if (r.semMotor) {
@@ -418,11 +479,20 @@ async function main() {
   const pdfInfo = fontesDoPdf(await readFile(r.pdf));
   if (pdfInfo.paginas !== r.pngs.length) problemas.push(`PDF com ${pdfInfo.paginas} paginas para ${r.pngs.length} slides`);
   const declaradas = tokens.familias.map(normalizar);
+  // Compara o nome PostScript normalizado com a familia por prefixo (DMSans9pt-Regular casa com
+  // DM Sans). Fonte estranha cujo nome comece pelo nome de uma familia declarada passaria; o risco
+  // e baixo porque toda fonte do render vem de arquivo local que o script mesmo copiou.
   const estranhas = pdfInfo.nomes.filter((n) => !declaradas.some((d) => normalizar(n).startsWith(d)));
   if (estranhas.length) problemas.push(`PDF embute fonte fora da declarada: ${estranhas.join(', ')}`);
   const ausentes = tokens.familias.filter((f) => !pdfInfo.nomes.some((n) => normalizar(n).startsWith(normalizar(f))));
   if (ausentes.length) problemas.push(`fonte declarada e ausente do PDF: ${ausentes.join(', ')}`);
-  for (const a of r.ajuste) if (!a.cabe) problemas.push(`slide ${a.slide}: texto nao coube no quadro nem na escala ${a.escala}; encurte a copy no carrossel.json`);
+  for (const a of r.ajuste) {
+    if (a.cabe) continue;
+    // Estimativa do corte: linhas que sobram vezes uns 60 caracteres por linha de corpo a 28px.
+    const linhasSobrando = a.sobraPx / (PISO_CORPO_PX * 1.42);
+    const cortar = Math.ceil(linhasSobrando * 60);
+    problemas.push(`slide ${a.slide}: texto nao coube no quadro sem descer do piso de ${PISO_CORPO_PX}px no corpo (escala minima ${ESCALA_MIN}); sobram ${a.sobraPx}px, cerca de ${cortar} caracteres a menos no corpo (${a.caracteres} hoje). Encurte a copy no carrossel.json via carrossel-roteiro`);
+  }
   for (const e of r.erros) problemas.push(e);
 
   Object.assign(relatorio, { pngs, pdf: { arquivo: path.basename(r.pdf), paginas: pdfInfo.paginas, fontes: pdfInfo.nomes }, escala: r.ajuste, problemas });

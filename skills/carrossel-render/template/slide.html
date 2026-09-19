@@ -10,7 +10,8 @@
      - as cores e fontes vem so de tokens.css (var(--fundo), var(--destaque), var(--claro),
        var(--fonte-display), var(--fonte-texto), var(--fonte-mono)); nenhum hex aqui;
      - o texto vem de carrossel.json; o render preenche os <template> abaixo;
-     - --escala e ajustada pelo render por slide ate o miolo caber no quadro. */
+     - --escala e ajustada pelo render por slide ate o miolo caber no quadro, nunca abaixo de
+       0.78 (corpo de 36px no piso de 28px); o que nao cabe nem assim e falha, nao slide menor. */
   @page { size: 1080px 1350px; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--fundo); }
@@ -60,9 +61,10 @@
     font-family: var(--fonte-mono), monospace; color: var(--texto-suave);
     line-height: 1.5; text-wrap: pretty; overflow-wrap: break-word;
   }
+  /* O apoio nao escala: e rotulo curto e ja esta no piso de rotulo (24px); quem cede espaco e o corpo e o titulo. */
   .capa .apoio { font-family: var(--fonte-texto), sans-serif; font-size: calc(36px * var(--escala)); margin-top: 44px; max-width: 880px; }
-  .conteudo .apoio { font-size: calc(24px * var(--escala)); margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--linha); max-width: 880px; }
-  .fecho .apoio { font-size: calc(30px * var(--escala)); color: var(--destaque); margin-top: 56px; }
+  .conteudo .apoio { font-size: 24px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--linha); max-width: 880px; }
+  .fecho .apoio { font-size: 30px; color: var(--destaque); margin-top: 56px; }
 
   .corpo { display: flex; flex-direction: column; gap: 28px; margin-top: 48px; }
   .linha {
