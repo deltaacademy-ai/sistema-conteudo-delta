@@ -5,14 +5,14 @@ description: Escreve o post de LinkedIn pronto para colar, na voz da pessoa, a p
 
 # Post de LinkedIn
 
-Este especialista escreve a peça principal do sistema: o post inteiro, com o nome da pessoa embaixo. Tudo que os outros prepararam (voz, ICP, prova, ângulo, gancho) vira texto aqui, e é aqui que o erro fica público. Por isso a regra central: o post só encena o que o briefing e os arquivos de contexto afirmam. Número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento atribuído a alguém que não estão lá não entram, e o post é entregue sem eles. Conta feita por você (soma, diferença, conversão de moeda) é número inventado, mesmo com os dois termos reais.
+Este especialista escreve a peça principal do sistema: o post inteiro, com o nome da pessoa embaixo. Tudo que os outros prepararam (voz, ICP, prova, ângulo, gancho) vira texto aqui, e é aqui que o erro fica público. Por isso a regra central: o post só encena o que o briefing e `prova.md` afirmam. Número, caso, depoimento, nome, citação, cena, data, tempo gasto, sentimento, atitude e conclusão pessoal que não estão lá não entram, e o post é entregue sem eles. O `voz.md` dá o como (ritmo, palavras, posições gerais da pessoa), nunca o quê: uma frase dele em cima de um evento que o briefing narra sem reação é reação inventada. Conta feita por você (soma, diferença, conversão de moeda) é número inventado, mesmo com os dois termos reais.
 
 O marcador `[FALTA: descrição]` fica no lugar do dado que uma frase precisa e o briefing não tem (o número de um resultado, o link prometido, a data de um evento anunciado). Elemento da estrutura que o briefing não traz (a frase de sentimento, o custo do experimento, a cena, o que continua humano) sai do post e vai para a nota como falta: marcador no meio de um texto em que quem lê não sentiria falta de nada só denuncia o processo. Contexto que o post não precisa (quem é a empresa ou o projeto que o briefing nomeia) não é falta: entra como está.
 
 ## O que ele entrega
 
 1. O post pronto para colar, entre cercas de código sem linguagem (as quebras de linha sobrevivem ao copiar), gravado também em `saida/post-AAAA-MM-DD-<tema>.md` na pasta de contexto, só o texto do post.
-2. O primeiro comentário, quando o briefing traz link ou fonte: uma linha por fonte, com o link; link que o briefing não traz vira `[FALTA: link]`. Sem fonte, sem comentário, e o post não promete um.
+2. O primeiro comentário, quando o briefing traz fonte: uma linha por fonte, com o link. O post só promete o que existe: com link no briefing, o corpo pode dizer "fonte no primeiro comentário"; sem link, o corpo cita a fonte pelo nome e não anuncia comentário nenhum, e o comentário sai com `[FALTA: link]` para a pessoa completar antes de publicar. Sem fonte, sem comentário.
 3. Duas linhas de nota, em prosa, sem lista e sem pergunta: o tipo usado e por quê; o que ficou de fora (dado do briefing que não entrou, cada `[FALTA]`, e se o gancho não veio aprovado). O que falta é dito como falta ("falta a data"); a pessoa decide se vai buscar, e pedir a ela cinco respostas no fim é pergunta que o pedido não autorizou.
 4. A linha de checagem: o que o script acusou, a contagem de caracteres e o lado da regra bimodal, ou "por leitura".
 5. O registro em `base-conteudo.md`, no topo da tabela.
@@ -27,7 +27,7 @@ Na pasta de contexto (a pasta atual, a que tem `voz.md`; se a pessoa apontar out
 - `banidas.txt`, para a checagem do fim.
 - `icp.md`: quem lê e o jargão que ele usa e não usa (é o passe de ICP da Etapa 4), o que a oferta entrega (só material listado ali pode ter CTA de palavra-chave), o que o produto não faz e os claims que precisam de aval.
 - `prova.md`: os números e casos que podem entrar além do briefing. O que não está nele nem no briefing não existe.
-- `base-conteudo.md`, as três últimas peças registradas: não repita a linha 1 de nenhuma, e veja se alguma das duas últimas tem CTA de palavra-chave (a Etapa 2, item 10, precisa disso).
+- `base-conteudo.md`, as três últimas peças registradas: não repita a linha 1 de nenhuma, e leia a coluna `CTA` das duas últimas linhas (a palavra-chave usada, ou vazio). Se alguma das duas tem palavra, o post de agora não leva CTA de palavra-chave (Etapa 2, item 10). Tabela sem a coluna `CTA` conta como duas linhas vazias, e a Etapa 5 acrescenta a coluna ao registrar.
 - `learnings.md`, se existir: cada correção anterior da pessoa vale como regra aqui.
 - `../angulo/references/tipos-de-post.md` (a pasta `angulo` fica ao lado da pasta deste SKILL.md): a estrutura, o tamanho, o fecho e o que fica de fora de cada tipo.
 - O pedido: tipo, tese, ângulo, gancho aprovado, fontes e links, fechamento pedido, e o material bruto (notícia, transcrição, nota de sessão).
@@ -38,7 +38,7 @@ Sem briefing e sem tema, peça em uma pergunta o tema e o fato principal (o núm
 
 O tipo vem do briefing. Sem tipo, decida pela pergunta de `tipos-de-post.md`: o fato é sobre o mercado (tese, número, leitura de quem opera, lado longo) ou sobre a pessoa (cena, uma frase de sentimento, convite, lado curto, sem tese)? Diga na nota qual foi a decisão. Se o tipo pedido e o fato não combinam (um acordo fechado pedido como teardown), escreva no tipo pedido e avise na nota.
 
-O tamanho é o do tipo, e o post nunca fica entre 900 e 1.400 caracteres: o nicho é bimodal e o meio não performa. O lado longo se sustenta com o que o briefing tem: cada fato entra com a ordem em que aconteceu, a consequência e a leitura da pessoa, e um briefing com 8 ou 10 fatos dá 1.500 caracteres sem nenhuma cena nova. Só quando o briefing tem 2 ou 3 fatos (o acordo fechado do anúncio pessoal, uma notícia de uma linha) é que o lado longo pediria invenção; aí o post para no lado curto e a nota diz o que falta para o tipo. Cortar até o post cair abaixo do mínimo do tipo é erro tão grande quanto encher: o pedido de tamanho é parte do pedido.
+O tamanho é o do tipo, e o post nunca fica entre 900 e 1.400 caracteres: o nicho é bimodal e o meio não performa. O lado longo se sustenta com o que o briefing tem: cada fato entra com a ordem em que aconteceu, a consequência e a leitura da pessoa, e um briefing com 8 ou 10 fatos dá 1.500 caracteres sem nenhuma cena nova. Só quando o briefing tem 2 ou 3 fatos (o acordo fechado do anúncio pessoal, uma notícia de uma linha) é que o lado longo pediria invenção; aí o post para no lado curto e a nota diz o que falta para o tipo. Cortar até o post cair abaixo do mínimo do tipo é erro tão grande quanto encher: o pedido de tamanho é parte do pedido. Mire o piso do tipo mais 10% (1.650 num caso, 1.550 num teardown), porque um post entregue a 5 caracteres do piso não sobrevive ao primeiro ajuste.
 
 ## Etapa 2: escrita
 
@@ -53,13 +53,13 @@ Corpo. Siga a estrutura do tipo em `tipos-de-post.md`, na ordem, e as regras aba
 5. Número em algarismo, na unidade e na moeda do briefing. Número de terceiro entra atribuído à fonte, nunca como experiência da pessoa. Número arredondado por você parece inventado: use o exato.
 6. Citação literal só quando existe no briefing ou em `prova.md`, atribuída a quem disse. Em outra língua, o original entre aspas; tradução ao lado só se ajudar, marcada como tradução e sem mudar o sentido.
 7. Nomes: só os que o briefing traz. O nome da empresa da pessoa entra quando o briefing o traz; a regra de identidade em `marca.md` é visual (cores e fontes), não proíbe o nome no texto. Cliente, órgão e parceiro sem nome no briefing ficam sem nome.
-8. Cena, data, horário, tempo gasto e sentimento: só o que o briefing ou `voz.md` declaram. "Passei a tarde", "na semana passada", "o que mais me pegou" e "eu tava cansado" são invenção quando a pessoa não disse. Sentimento que o tipo pede (anúncio pessoal) fica com o que ela declarou; sem declaração, o post segue sem a frase e a nota pede uma.
-9. Uma frase de assinatura do `voz.md` no máximo por post, literal. Nunca gere uma nova no mesmo molde, porque os moldes de assinatura são contrastes e contraste novo é reframe.
-10. CTA de palavra-chave: só em lead magnet, ou em caso quando o briefing pede; só com material pronto listado em `icp.md`; uma palavra, em caixa alta, na última linha; e só se nenhuma das duas últimas peças de `base-conteudo.md` tiver CTA (no máximo 1 em cada 3 posts, porque o nicho inteiro treinou quem lê a comentar palavra-chave e isso cansa). Fora disso, o material vai no primeiro comentário, sem pedágio. Os outros tipos fecham como `tipos-de-post.md` diz.
+8. Cena, data, horário, tempo gasto, sentimento, atitude e conclusão pessoal: só o que o briefing declara que a pessoa viveu, sentiu ou concluiu. O `voz.md` dá as palavras com que isso é dito, nunca o sentimento em si: "Aprendi na dor" do banco de frases em cima de um bug que o briefing narra sem reação é reação inventada, igual a "passei a tarde", "na semana passada", "o que mais me pegou" ou "eu tava cansado" quando a pessoa não disse. Sem declaração, o lugar do sentimento ou da leitura fica vazio no post, e a nota leva `[FALTA: leitura da pessoa sobre X]` (ou `[FALTA: sentimento da pessoa]` no anúncio pessoal). Anúncio pessoal sem frase de sentimento sai com a nota recomendando não publicar até a pessoa dar a frase: sem ela, o post é um bilhete.
+9. Uma frase de assinatura do `voz.md` no máximo por post, literal, e só como posição geral da pessoa (uma tese que ela sustenta), nunca como reação a um evento do briefing: reação é conteúdo, e conteúdo vem do briefing. Nunca gere uma nova no mesmo molde, porque os moldes de assinatura são contrastes e contraste novo é reframe.
+10. CTA de palavra-chave: só em lead magnet, ou em caso quando o briefing pede; só com material pronto listado em `icp.md`; uma palavra, em caixa alta, na última linha; e só se a coluna `CTA` das duas últimas linhas de `base-conteudo.md` está vazia (no máximo 1 em cada 3 posts, porque o nicho inteiro treinou quem lê a comentar palavra-chave e isso cansa). Fora disso, o material vai no primeiro comentário, sem pedágio. Os outros tipos fecham como `tipos-de-post.md` diz.
 11. Fecho: quando o ponto foi feito, pare. Sem parágrafo de resumo, sem moral da história, sem fecho filosófico, sem pedido de aprovação ("legal né?"). Pergunta no fim só quando é genuína (a pessoa quer a resposta e vai responder), e só uma; no tipo posição ela é obrigatória. Convite e CTA só os que o briefing ou `icp.md` sustentam; oferecer a quem lê o produto do próprio anúncio é venda, e o post não vende o que o briefing não pôs à venda. Sem convite no briefing, o post fecha no que vem a seguir ou no fato.
 12. Integridade do material: lista de 10 itens vira 10 itens, profundidade e número originais preservados. Termo consagrado em inglês fica (SaaS, API, CRM, deploy, pipeline); o passe de ICP decide se consagrado para quem escreve é consagrado para quem lê.
 13. Cada fato dito uma vez. A cifra ou o desfecho que entrou na linha 1 volta no corpo só na frase que acrescenta algo (a causa, a consequência); a mesma cifra no gancho, no item e no parágrafo seguinte é a repetição preguiçosa que a voz detesta. O corte é de repetição, nunca de fato: todo fato do briefing que serve ao tipo fica.
-14. A leitura própria é a da pessoa: opinião, princípio e diagnóstico saem do briefing e de `voz.md`. Inferência sua sobre os fatos ("nos três casos o motivo era o mesmo") vai para a nota como pergunta, nunca para o post. História contada por quem viveu: primeira pessoa, verbo de ação (abri, li, derrubei), o que ela decidiu em cada passo, e não um relato em terceira pessoa da empresa dela.
+14. A leitura própria é a da pessoa: opinião, princípio e diagnóstico saem do briefing (o `voz.md` só empresta a forma e as posições gerais dela, nunca a leitura deste fato). Quando a estrutura do tipo pede uma leitura (item 4 do teardown, item 5 do bastidor, o princípio do caso) e o briefing não a registra, o lugar fica vazio, o post fecha no fato ou na decisão para quem lê, e a nota leva `[FALTA: leitura da pessoa sobre X]`. Inferência sua sobre os fatos ("nos três casos o motivo era o mesmo") vai para a nota como falta, nunca para o post. História contada por quem viveu: primeira pessoa, verbo de ação (abri, li, derrubei), o que ela decidiu em cada passo, e não um relato em terceira pessoa da empresa dela.
 
 O que o nicho faz e este post não copia: paralelismo negativo em qualquer forma ("não é X, é Y", "não X, mas Y", "menos X, mais Y", "X morreu", "pare de X, comece Y", e as versões com concessão), fecho de aprovação, promessa de superpoder ou de resultado, adjetivo inflado no lugar de fato, feed de bastidor de evento com lista de agradecimentos. Título de newsletter costuma ser paralelismo negativo: nunca vira a tese do post.
 
@@ -82,19 +82,25 @@ Confira também contra `icp.md`: nenhum claim que precisa de aval, nada que o pr
 Antes de entregar, item por item:
 
 1. As duas primeiras linhas, lidas sozinhas, sustentam o clique; a linha 2 avança.
-2. O post segue a estrutura do tipo, com o item obrigatório dele (o que não funcionou no bastidor, a pergunta na posição, o convite no anúncio pessoal, o como receber no lead magnet).
+2. O post segue a estrutura do tipo, com o item obrigatório dele (o que não funcionou no bastidor, a pergunta na posição, o como receber no lead magnet, e no anúncio pessoal o convite quando o briefing dá um, ou a nota registrando a falta).
 3. Tamanho contado no arquivo, no lado do tipo, nunca entre 900 e 1.400.
-4. Todo número, caso, depoimento, nome, citação, cena, data, tempo gasto e sentimento é rastreável ao briefing, a `prova.md` ou a `voz.md`; dado que uma frase precisa e não existe está como `[FALTA: descrição]`; elemento sem dado saiu do post e está na nota; nenhuma conta feita por você; nenhum convite ou oferta que o briefing não sustenta.
+4. Todo número, caso, depoimento, nome, citação, cena, data, tempo gasto, sentimento, atitude e conclusão pessoal é rastreável ao briefing ou a `prova.md` (o `voz.md` responde só pelas palavras); dado que uma frase precisa e não existe está como `[FALTA: descrição]`; elemento sem dado saiu do post e está na nota; nenhuma conta feita por você; nenhum convite ou oferta que o briefing não sustenta.
 5. Nenhum termo do rascunho ficou sem passar pelo passe de ICP, e no máximo uma definição entre parênteses no post.
-10. Nenhum fato repetido, nenhuma inferência sua no post.
 6. Itens com `→`, parágrafos de 1 a 3 frases, sem hashtag, emoji, negrito, travessão ou caixa alta fora da palavra-chave.
-7. Nenhum paralelismo negativo, nenhuma pergunta retórica de abertura, nenhuma isca, no máximo uma frase de assinatura literal.
-8. O fecho é o do tipo; CTA de palavra-chave só nas condições do item 10 da Etapa 2; o post não promete link que o comentário não tem.
+7. Nenhum paralelismo negativo, nenhuma pergunta retórica de abertura, nenhuma isca, no máximo uma frase de assinatura literal e só como posição.
+8. O fecho é o do tipo; CTA de palavra-chave só nas condições do item 10 da Etapa 2; o post só anuncia primeiro comentário quando o briefing trouxe o link.
 9. Script rodado no arquivo do post, com `banidas.txt`, saída limpa; ou conferência por leitura, dita como tal.
+10. Nenhum fato repetido, nenhuma inferência sua no post.
 
 Falhou em algum item: corrija aquele trecho, não regenere o post (a regeneração reintroduz o que você já tinha limpado).
 
-Registre a peça em `base-conteudo.md`: uma linha nova logo abaixo do cabeçalho da tabela (a peça mais nova fica no topo), com data de hoje, tema, tipo, a linha 1 do post entre aspas e status `rascunho`; quando o post tem CTA de palavra-chave, o status é `rascunho, CTA: PALAVRA`, para o próximo post saber. Se a tabela tem outras colunas, preencha as que tiver como preencher e deixe as demais vazias; se o arquivo ainda não tem tabela, crie o cabeçalho `| Data | Tema | Tipo | Gancho | Status |`.
+Registre a peça em `base-conteudo.md`. O formato da tabela é este, e é aqui que ele está definido para todos os especialistas que a leem ou escrevem:
+
+```
+| Data | Tema | Tipo | Gancho | Status | CTA |
+```
+
+`Data` é a de hoje; `Tipo` é um dos sete; `Gancho` é a linha 1 do post entre aspas; `Status` nasce `rascunho` (o `motor` troca por `aprovado` e o `publicar` por `publicado`, sem tocar nas outras colunas); `CTA` é a palavra-chave usada, ou vazio. A coluna `CTA` existe separada do status porque é ela que sustenta a conta de 1 em 3, e status muda de mão em mão. A linha nova entra logo abaixo do cabeçalho (a peça mais nova fica no topo). Se a tabela tem outras colunas, preencha as que tiver como preencher e deixe as demais vazias; se não tem a coluna `CTA`, acrescente-a ao fim do cabeçalho e da linha separadora, e deixe vazia nas linhas antigas; se o arquivo ainda não tem tabela, crie o cabeçalho acima.
 
 Entregue neste formato, sem preâmbulo:
 
@@ -115,7 +121,7 @@ Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto
 
 - "Ajusta o hook": só a linha 1 e a linha 2; o corpo fica.
 - "Tá muito IA": refaça a Etapa 3 inteira, com a lista de leitura, sobre o texto que existe; não reescreva do zero.
-- "Mais curto": corte 30% mantendo a espinha do tipo e confira o lado: se cair no meio da faixa, corte até abaixo de 900.
+- "Mais curto": corte repetição e contexto mantendo a espinha do tipo, sem descer do piso do tipo; se a pessoa quer abaixo do piso, o tipo muda (posição ou anúncio pessoal) e o post vai para abaixo de 900, nunca para o meio da faixa.
 - "Mais viral" ou "mais polêmico": mais direto e mais apontado para quem lê (segunda pessoa na linha 1, frase mais curta), nunca mais esperto, nunca polêmica fabricada.
 - "Troca de tipo": releia `tipos-de-post.md` e reescreva na estrutura nova; o gancho pode mudar, os fatos não.
 - "Tira o nome" ou "esse número tá errado": corrija e registre a correção como fonte na nota.
@@ -125,6 +131,7 @@ Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto
 
 - Não escolhe ângulo nem tese: isso é do `angulo`. Não gera opções de gancho: isso é do `gancho`. Não dá nota nem revisa post de outra origem: isso é do `revisor`.
 - Não inventa número, caso, depoimento, nome, citação, cena, data, tempo gasto nem sentimento, e não faz conta com os que existem.
-- Não promete material que não está em `icp.md`, nem link que o comentário não tem.
+- Não promete material que não está em `icp.md`, nem anuncia primeiro comentário sem link no briefing.
+- Não tira do `voz.md` sentimento, atitude ou conclusão sobre um fato: dele vêm só as palavras e as posições gerais.
 - Não entrega post entre 900 e 1.400 caracteres.
 - Não publica nada: o post sai pronto para colar, e a publicação é da pessoa ou do `publicar`.

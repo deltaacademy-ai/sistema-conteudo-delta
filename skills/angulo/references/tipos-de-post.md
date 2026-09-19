@@ -31,13 +31,13 @@ Estrutura:
 1. Linha 1: a notícia crua, em segunda pessoa, com quem lê como alvo (quem fez o quê, o que muda, desde quando). O ângulo fica para o corpo, porque quem lê já viu o anúncio; o que ainda não viu é a notícia chegando nele.
 2. Duas ou três linhas de contexto concreto: datas, valores, quem disse.
 3. Bloco de 3 ou 4 itens com `→`, um por linha: o que quebrou ou o que mudou.
-4. A leitura própria: o que quem opera vê que o release não diz, com o caso ou o número que a pessoa tem. Aqui é onde o post ganha do resto.
+4. A leitura própria: o que quem opera vê que o release não diz, com o caso ou o número que a pessoa tem. Aqui é onde o post ganha do resto, e por isso é a leitura dela, registrada no briefing; sem registro, o item sai, o post vai do bloco direto ao que muda para quem lê, e a nota leva `[FALTA: leitura da pessoa sobre a notícia]`.
 5. O que isso muda na operação de quem lê.
 6. Fecho em decisão para quem lê (o que conferir, o que cortar, o que perguntar ao fornecedor), nunca moral da história. Pergunta só quando é genuína.
 
 Tamanho: 1.400 a 2.500 caracteres.
 
-Fecho: decisão para quem lê. Fonte e link no primeiro comentário.
+Fecho: decisão para quem lê. Fonte citada pelo nome no corpo; link no primeiro comentário quando o briefing o traz, e só então o post o anuncia.
 
 Exige: fato com data e fonte no briefing. Número de terceiro entra atribuído à fonte, nunca como experiência da pessoa. A experiência própria fica no que o briefing dá.
 
@@ -72,7 +72,7 @@ Estrutura:
 2. As peças do sistema, listadas e traduzidas para quem lê (nome de ferramenta fica quando quem lê precisa dele para agir).
 3. O que rolou, afirmado, com número quando o briefing traz.
 4. O que não funcionou. Obrigatório, como parte da história e nunca como nota de rodapé: é o que separa bastidor de vitrine.
-5. O que continua sendo trabalho humano.
+5. O que continua sendo trabalho humano, quando o briefing diz o que ficou com a pessoa; sem isso, o item sai e a nota registra a falta. Reação ao que quebrou ("aprendi", "me pegou") só a que o briefing declara.
 6. O custo real do experimento (tempo, dinheiro), só se o briefing dá; sem o dado, o item sai e a nota registra.
 
 Tamanho: 1.500 a 2.900 caracteres.
@@ -147,7 +147,7 @@ Estrutura:
 
 1. Linha 1: cena ou memória concreta, com lugar, hora ou objeto, ou o fato dito com o sentimento junto.
 2. O fato, numa frase: o que aconteceu e o que muda.
-3. Uma frase de sentimento, específica, que só a pessoa diria. Uma, não um parágrafo, e só quando ela a declarou: sem declaração, o post segue sem a frase e a nota pede uma.
+3. Uma frase de sentimento, específica, que só a pessoa diria. Uma, não um parágrafo, e só quando ela a declarou no briefing (o `voz.md` não é fonte de sentimento sobre este fato): sem declaração, o post segue sem a frase, a nota leva `[FALTA: sentimento da pessoa]` e recomenda não publicar antes de a pessoa dar a frase, porque anúncio sem reação é bilhete.
 4. O que segue (o que ela vai fazer, quando, onde), só o que o briefing confirma.
 5. Convite: o que quem lê pode fazer (chamar, aparecer, levar para a cidade dele), só o que o briefing sustenta. Sem convite no briefing, o post fecha no que vem a seguir.
 6. Agradecimento nominal em uma linha, só com os nomes que o briefing traz.
