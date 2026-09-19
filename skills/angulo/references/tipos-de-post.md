@@ -71,7 +71,7 @@ Estrutura:
 1. Linha 1: a cena ou a dor que motivou, ou o resultado com número.
 2. As peças do sistema, listadas e traduzidas para quem lê (nome de ferramenta fica quando quem lê precisa dele para agir).
 3. O que rolou, afirmado, com número quando o briefing traz.
-4. O que não funcionou. Obrigatório, como parte da história e nunca como nota de rodapé: é o que separa bastidor de vitrine.
+4. O que não funcionou. Obrigatório, como parte da história e nunca como nota de rodapé: é o que separa bastidor de vitrine. A sequência é a do briefing, passo a passo: tentativa que a pessoa não registrou não entra, nem para dar ritmo.
 5. O que continua sendo trabalho humano: o que o briefing diz que ficou com a pessoa, ou uma posição do `voz.md` sobre o que a máquina não decide, aplicada ao que quebrou nas palavras deste bastidor e nomeada na nota (o que a pessoa pensa, nunca o que ela teria feito ou sentido além do que o briefing registra); sem nenhuma das duas, o item sai e a nota registra a falta. Reação ao que quebrou ("aprendi", "me pegou") só a que o briefing declara.
 6. O custo real do experimento (tempo, dinheiro), só se o briefing dá; sem o dado, o item sai e a nota registra.
 
