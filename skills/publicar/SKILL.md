@@ -34,11 +34,13 @@ Leia `config.md` na pasta de contexto e procure a linha `destino_publicacao:`.
 
 Localize a peça pelo tema que a pessoa deu ou pela linha mais recente com status `aprovado` em `base-conteudo.md`. Peça com status `rascunho` não entra no pacote: avise que ela ainda não foi aprovada e pare; a aprovação é dada ao `motor`, e o pacote de um rascunho vira post publicado sem revisão.
 
-Depois olhe `saida/`:
+Depois olhe `saida/`. O que identifica os arquivos da peça é o `<tema>`; a data no nome é a do dia em que cada especialista rodou, e o carrossel de uma peça aprovada num dia pode ter sido roteirizado no seguinte. Procure pelo tema (`saida/*-<tema>.md`, `saida/carrossel-*-<tema>/`) e, se houver mais de uma pasta de carrossel para o mesmo tema, use a mais recente e diga isso:
 
 - `post-<data>-<tema>.md`: obrigatório. Sem ele, pare e diga o que falta; não monte `post.txt` a partir de mensagem antiga nem de memória.
 - `comentario-<data>-<tema>.md`: quando não existe, `primeiro-comentario.txt` recebe a frase "Sem primeiro comentário: a peça não traz link." e a resposta diz que o arquivo não existia.
 - `carrossel-<data>-<tema>/carrossel.json`, com os PNGs e `carrossel.pdf` ao lado: quando a pasta não existe, o pacote sai sem `legenda-instagram.txt`, sem PNG e sem PDF, e o passo a passo cobre só o LinkedIn. Quando o `carrossel.json` existe mas os PNGs ou o PDF não, o carrossel ainda não foi renderizado: diga que o `carrossel-render` precisa rodar antes, monte o que der (post, comentário, legenda) e liste o que faltou.
+
+A pasta do pacote leva a data da peça (a da linha em `base-conteudo.md`), mesmo quando o carrossel tem outra data no nome.
 
 Nada é gerado aqui para tapar buraco: arquivo que falta é dito como falta.
 
