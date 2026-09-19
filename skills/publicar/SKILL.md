@@ -44,7 +44,7 @@ Nada é gerado aqui para tapar buraco: arquivo que falta é dito como falta.
 
 ## Etapa 2: montar a pasta
 
-Crie `publicar/<data>-<tema>/` e copie cada arquivo pelo caminho, sem reescrever o conteúdo. Quando puder rodar comandos, use cópia de arquivo (`mkdir -p` e `cp`) para os PNGs e o PDF, que são binários, e para o post e o comentário, que precisam ficar letra por letra; para a legenda, extraia o campo do JSON (`jq -r .legenda_instagram`) e grave o resultado. Sem comandos, leia cada arquivo de texto e grave o `.txt` com o mesmo conteúdo, e diga na resposta que os PNGs e o PDF não puderam ser copiados e onde estão.
+Crie `publicar/<data>-<tema>/` e copie cada arquivo pelo caminho, sem reescrever o conteúdo. Quando puder rodar comandos, use cópia de arquivo (`mkdir -p` e `cp`) para os PNGs e o PDF, que são binários, e para o post e o comentário, que precisam ficar letra por letra; para a legenda, extraia o campo do JSON (`jq -r .legenda_instagram`) e grave o resultado. Sem `jq` (ele não vem instalado no macOS) mas com a ferramenta de leitura, leia o `carrossel.json`, copie o valor do campo `legenda_instagram` trocando cada `\n` por quebra de linha e cada `\"` por aspas, grave o `.txt` e diga na resposta que a legenda saiu por leitura do JSON, não por `jq`. Sem comandos, leia cada arquivo de texto e grave o `.txt` com o mesmo conteúdo, e diga na resposta que os PNGs e o PDF não puderam ser copiados e onde estão. Na primeira execução a pessoa vai ver os pedidos de permissão de `mkdir`, `cp`, `jq` e `cmp`; o `motor` ("O que a pessoa precisa liberar na primeira execução") diz o que cada um faz.
 
 Escreva `passo-a-passo.md` com esta estrutura, adaptada ao que existe no pacote:
 
@@ -73,7 +73,7 @@ Nada foi publicado. Esta pasta tem tudo o que você precisa para publicar à mã
 Volte aqui e diga "publicado": a peça muda para `publicado` em base-conteudo.md.
 ```
 
-Substitua `NN` pelo número real de slides, tire os passos entre colchetes que não se aplicam e não acrescente instrução que o pacote não sustenta (sem "melhor horário", sem "hashtags sugeridas": o post não usa hashtag e o horário é decisão da pessoa).
+Substitua `NN` pelo número real de slides, tire os passos entre colchetes que não se aplicam e não acrescente instrução que o pacote não sustenta (sem "melhor horário", sem hashtag sugerida: o texto é o dos especialistas, e o horário é decisão da pessoa).
 
 ## Etapa 3: conferência
 
@@ -87,7 +87,7 @@ Antes de responder:
 
 ## Etapa 4: o status
 
-Quando a pessoa disser "publicado" (com ou sem a rede e o link), leia o cabeçalho da tabela em `base-conteudo.md` e conte as colunas que ele declara; localize a linha da peça e troque só a célula `Status` de `aprovado` para `publicado`. Nenhuma outra célula muda, o cabeçalho não muda, e toda coluna que o cabeçalho declara fica com o valor que tinha. A lista de colunas é a do cabeçalho, nunca uma lista fixa deste arquivo: o `linkedin-post` grava colunas de controle (hoje `CTA`, que sustenta a conta de 1 em 3 posts, e `Assinatura`, que impede a mesma frase de assinatura em peças seguidas) e pode gravar outras, e uma célula perdida na troca de status quebra a regra daquela coluna sem ninguém perceber. Depois de gravar, releia a linha e conte as células: se ela tem menos células que o cabeçalho, corrija na hora (complete com as células que faltam, vazias, no lugar certo) e diga na resposta que a linha saiu curta e foi corrigida; nunca entregue com a linha curta em silêncio. Linha antiga que já estava curta antes de você tocar na tabela não é sua para corrigir: aponte na resposta qual linha e quantas células faltam. Se a pessoa deu o link do post, guarde-o na coluna de fonte ou de link se a tabela tiver uma; se não tiver, deixe na resposta e não crie coluna.
+Quando a pessoa disser "publicado" (com ou sem a rede e o link), troque o status da peça em `base-conteudo.md`. O formato da tabela, o que cada coluna sustenta e quem troca o status estão definidos no `linkedin-post` (Etapa 5, "Registre a peça"), e é lá que se lê; aqui só o que é do publicar: leia o cabeçalho e conte as colunas que ele declara (a lista é a do cabeçalho, nunca uma lista fixa deste arquivo); localize a linha da peça por data e tema; troque só a célula `Status` de `aprovado` para `publicado`, sem tocar em nenhuma outra célula, no cabeçalho nem em outra linha; releia a linha e conte as células. Linha com menos células que o cabeçalho é corrigida na hora (células que faltam entram vazias, no lugar certo) e dita na resposta; nunca entregue com a linha curta em silêncio, porque a célula perdida quebra a conta que aquela coluna sustenta sem ninguém perceber. Linha antiga que já estava curta antes de você tocar na tabela não é sua para corrigir: aponte na resposta qual linha e quantas células faltam. Se a pessoa deu o link do post, guarde-o na coluna de fonte ou de link se a tabela tiver uma; se não tiver, deixe na resposta e não crie coluna.
 
 ## Formato da resposta
 
