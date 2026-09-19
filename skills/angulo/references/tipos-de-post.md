@@ -31,7 +31,7 @@ Estrutura:
 1. Linha 1: a notícia crua, em segunda pessoa, com quem lê como alvo: o que muda para ele e desde quando. "A empresa X publicou o artigo Y" é o anúncio, e quem lê já viu; o que ainda não viu é a notícia chegando nele. O ângulo fica para o corpo. Padrão aprovado pelo Hugo e registrado em `linkedin-copy/SKILL.md`, seção "O hook", linha 51 ("Agora o Claude vai marcar todos os textos que você gerar com ele").
 2. Duas ou três linhas de contexto concreto: datas, valores, quem disse.
 3. Bloco de 3 ou 4 itens com `→`, um por linha: o que quebrou ou o que mudou.
-4. A leitura própria: o que quem opera vê que o release não diz, com o caso ou o número que a pessoa tem. Aqui é onde o post ganha do resto, e por isso é a leitura dela: a que o briefing registra, ou uma posição que ela já declarou no `voz.md` aplicada ao fato (dita como posição, nunca como experiência deste episódio), com a nota dizendo qual. Sem nenhuma das duas, o item sai, o post vai do bloco direto ao que muda para quem lê, e a nota leva `[FALTA: leitura da pessoa sobre a notícia]`.
+4. A leitura própria: o que quem opera vê que o release não diz, com o caso ou o número que a pessoa tem. Aqui é onde o post ganha do resto, e por isso é a leitura dela: a que o briefing registra, ou uma posição que ela já declarou no `voz.md` e que esta notícia confirma ou contradiz, aplicada nas palavras da notícia (dita como o que ela pensa, nunca como algo que ela fez, viveu ou sentiu neste episódio), com a nota dizendo qual. Sem nenhuma das duas, o item sai, o post vai do bloco direto ao que muda para quem lê, e a nota leva `[FALTA: leitura da pessoa sobre a notícia]`.
 5. O que isso muda na operação de quem lê.
 6. Fecho em decisão para quem lê (o que conferir, o que cortar, o que perguntar ao fornecedor), nunca moral da história. Pergunta só quando é genuína.
 
@@ -51,7 +51,7 @@ Estrutura:
 
 1. Linha 1: o resultado ou o número da história.
 2. A história em 4 a 6 parágrafos curtos, em primeira pessoa e na ordem em que aconteceu, com data e número: a situação, o que a pessoa fez, o que mudou. O número da linha 1 não volta no corpo. Sem IA nem oferta no meio, e sem glossário: o termo de área que a história não explica sozinha é reescrito na palavra de quem lê.
-3. O princípio que a história prova, nomeado numa frase: o que o briefing registra que a pessoa concluiu, ou uma posição declarada no `voz.md` que o caso confirma, dita como posição e nomeada na nota.
+3. O princípio que a história prova, nomeado numa frase: o que o briefing registra que a pessoa concluiu, ou uma posição declarada no `voz.md` que este caso confirma ou contradiz, dita nas palavras do caso (o que este edital, este cliente, este número mostram) e nomeada na nota. Frase de assinatura colada como última linha não é princípio: serve para qualquer post.
 4. Onde a oferta ou a IA entram hoje nesse mesmo problema, só quando o briefing pede; sem pedido, o post fecha no princípio.
 
 Tamanho: 1.500 a 2.500 caracteres.
@@ -72,7 +72,7 @@ Estrutura:
 2. As peças do sistema, listadas e traduzidas para quem lê (nome de ferramenta fica quando quem lê precisa dele para agir).
 3. O que rolou, afirmado, com número quando o briefing traz.
 4. O que não funcionou. Obrigatório, como parte da história e nunca como nota de rodapé: é o que separa bastidor de vitrine.
-5. O que continua sendo trabalho humano: o que o briefing diz que ficou com a pessoa, ou uma posição do `voz.md` sobre o que a máquina não decide, aplicada ao que quebrou e nomeada na nota; sem nenhuma das duas, o item sai e a nota registra a falta. Reação ao que quebrou ("aprendi", "me pegou") só a que o briefing declara.
+5. O que continua sendo trabalho humano: o que o briefing diz que ficou com a pessoa, ou uma posição do `voz.md` sobre o que a máquina não decide, aplicada ao que quebrou nas palavras deste bastidor e nomeada na nota (o que a pessoa pensa, nunca o que ela teria feito ou sentido além do que o briefing registra); sem nenhuma das duas, o item sai e a nota registra a falta. Reação ao que quebrou ("aprendi", "me pegou") só a que o briefing declara.
 6. O custo real do experimento (tempo, dinheiro), só se o briefing dá; sem o dado, o item sai e a nota registra.
 
 Tamanho: 1.500 a 2.900 caracteres.
