@@ -16,7 +16,14 @@
 # execucao, alarm do perl no lugar do `timeout` que o macOS nao tem. Log em
 # evals/results/nova/motor-<rodada>/_log.txt e placar em _placar.txt.
 #
-# uso: bash evals/cases/motor/portao.sh [rodada]      (env: CASOS, MODELOS, LIMITE)
+# Contagem de celulas: em cada turno a linha que o fluxo escreveu (rascunho no turno 1,
+#   aprovado no turno 2) precisa ter o mesmo numero de celulas que o cabecalho, porque a
+#   base carrega colunas de controle (CTA, Assinatura) que uma linha curta quebra em
+#   silencio. Com ENCURTA=1 o portao tira a ultima celula da linha rascunho antes do
+#   turno 2 e passa a exigir que o motor complete a linha e diga isso na resposta.
+# Com ESTADO_DE=<rodada> o turno 1 e reaproveitado daquela rodada (so o turno 2 roda).
+#
+# uso: bash evals/cases/motor/portao.sh [rodada]      (env: CASOS, MODELOS, LIMITE, ESTADO_DE, ENCURTA)
 #   nohup bash evals/cases/motor/portao.sh r1 > /dev/null 2>&1 &
 set -u
 raiz=$(cd "$(dirname "$0")/../../.." && pwd); cd "$raiz"
@@ -53,14 +60,15 @@ confere_t1() { # confere_t1 <arquivos> <saida.md> -> imprime achados (vazio = ok
     bash scripts/check-voz.sh "$post" "$a/banidas.txt" >/dev/null || m="$m check-voz-post"
   fi
   grep -q '| *rascunho *|' "$a/base-conteudo.md" || m="$m base-sem-rascunho"
+  [ "$(pipes "$(grep -m1 '^| *Data' "$a/base-conteudo.md")")" = "$(pipes "$(grep -m1 '| *rascunho *|' "$a/base-conteudo.md")")" ] || m="$m celulas-diferem-do-cabecalho"
   head -20 "$a/base-conteudo.md" | grep -q 'CTA' || m="$m base-sem-coluna-cta"
   grep -qi 'aprova' "$s" || m="$m sem-pedido-de-aprovacao"
   grep -qi 'contexto limpo' "$s" || m="$m sem-linha-revisor"
   echo "$m"
 }
 
-confere_t2() { # confere_t2 <arquivos-t1> <arquivos-t2> -> imprime achados (vazio = ok)
-  local a1="$1" a="$2" m="" pk f n cab lin1 esperada post
+confere_t2() { # confere_t2 <fixture-t2> <arquivos-t2> <saida-t2> -> imprime achados (vazio = ok)
+  local a1="$1" a="$2" s="$3" m="" pk f n cab lin1 esperada post
   pk=$(ls -d "$a"/publicar/*/ 2>/dev/null | head -1)
   if [ -z "$pk" ]; then echo " sem-pasta-publicar"; return; fi
   for f in post.txt primeiro-comentario.txt legenda-instagram.txt carrossel.pdf passo-a-passo.md; do
@@ -81,7 +89,10 @@ confere_t2() { # confere_t2 <arquivos-t1> <arquivos-t2> -> imprime achados (vazi
   echo "$cab" | grep -q 'CTA' || m="$m base-sem-coluna-cta"
   lin1=$(grep -m1 '| *rascunho *|' "$a1/base-conteudo.md")
   esperada=$(sed 's/| *rascunho *|/| aprovado |/' <<< "$lin1")
-  if ! grep -qF -- "$esperada" "$a/base-conteudo.md"; then
+  if [ "${ENCURTA:-0}" = 1 ]; then
+    grep -q '| *aprovado *|' "$a/base-conteudo.md" || m="$m base-sem-aprovado"
+    grep -qi 'curta' "$s" || m="$m linha-curta-nao-acusada"
+  elif ! grep -qF -- "$esperada" "$a/base-conteudo.md"; then
     grep -q '| *aprovado *|' "$a/base-conteudo.md" && m="$m linha-mudou-alem-do-status" || m="$m base-sem-aprovado"
   fi
   [ "$(pipes "$cab")" = "$(pipes "$(grep -m1 '| *aprovado *|' "$a/base-conteudo.md")")" ] || m="$m celulas-diferem-do-cabecalho"
@@ -91,13 +102,21 @@ confere_t2() { # confere_t2 <arquivos-t1> <arquivos-t2> -> imprime achados (vazi
 job() { # job <caso> <modelo>
   local c="$1" m="$2" n="$1-$2" caso="evals/cases/motor/$1.md" t1 t2 a1 a2 f1 f2 p2 fx caso2
   t1="$R/$n-t1.md"; t2="$R/$n-t2.md"; a1="$t1.arquivos"; a2="$t2.arquivos"
+  if [ ! -s "$t1" ] && [ -n "${ESTADO_DE:-}" ] && [ -s "evals/results/nova/motor-$ESTADO_DE/$n-t1.md" ]; then
+    cp "evals/results/nova/motor-$ESTADO_DE/$n-t1.md" "$t1"; rm -rf "$a1"; cp -R "evals/results/nova/motor-$ESTADO_DE/$n-t1.md.arquivos" "$a1"
+    log "t1 $n reaproveitado de $ESTADO_DE"
+  fi
   if [ ! -s "$t1" ]; then roda "$caso" "$m" "$t1" || { echo "$n | turno 1 FALHOU (sem saida) | | NAO PASSA" >> "$PL"; return; }; fi
   f1=$(confere_t1 "$a1" "$t1"); log "t1 $n:${f1:- ok}"
   fx="$n-t2"; rm -rf "$R/estado/fixtures/$fx"; mkdir -p "$R/estado/fixtures/$fx"; cp -R "$a1/." "$R/estado/fixtures/$fx/"
+  if [ "${ENCURTA:-0}" = 1 ]; then  # tira a ultima celula da linha rascunho: o motor precisa completar e avisar
+    perl -i -pe 'if (/\| *rascunho *\|/ && !$f) { s/\|[^|]*\|\s*$/|\n/; $f=1 }' "$R/estado/fixtures/$fx/base-conteudo.md"
+    log "t2 $n fixture com linha rascunho encurtada: $(grep -m1 '| *rascunho *|' "$R/estado/fixtures/$fx/base-conteudo.md" | cut -c1-80)..."
+  fi
   p2=$(campo "$caso" prompt_turno_2); caso2="$R/estado/cases/motor/$fx.md"
   awk -v fx="$fx" -v p2="$p2" -F': ' '$1=="fixture"{print "fixture: " fx; next} $1=="prompt_novo"{print "prompt_novo: " p2; next} {print}' "$caso" > "$caso2"
   if [ ! -s "$t2" ]; then roda "$caso2" "$m" "$t2" || { echo "$n | t1:${f1:- ok} | turno 2 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi
-  f2=$(confere_t2 "$a1" "$a2"); log "t2 $n:${f2:- ok}"
+  f2=$(confere_t2 "$R/estado/fixtures/$fx" "$a2" "$t2"); log "t2 $n:${f2:- ok}"
   if [ -z "$f1" ] && [ -z "$f2" ]; then echo "$n | t1: ok | t2: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2:${f2:- ok} | NAO PASSA" >> "$PL"; fi
 }
 
