@@ -24,7 +24,7 @@ Calibração, que vale para os cinco:
 - Sem teto derrubado, o crítico começa em 20 e desce 1 ponto por achado pontual (2 quando o achado se repete pela peça), até o piso de 14. Eixo sem achado nenhum fica em 20, sem desconto por cautela: nota de partida menor que 20 estreita a escala e faz `aprovar` depender de conta em vez de leitura. Achado pontual é tendência forte não seguida, gosto, ritmo, ajuste que a pessoa faz em um minuto. Por mais que sejam, eles não levam um crítico abaixo de 14: isso é reservado a teto derrubado.
 - Com teto derrubado, o crítico começa no teto e desce pelos achados pontuais do mesmo jeito.
 - `aprovar` (85 ou mais, nenhum crítico abaixo de 15) significa: no máximo 15 pontos de achados pontuais somados nos cinco eixos, nenhum teto derrubado e nenhum eixo com problema que atravesse a peça. Uma peça excelente chega a 95 ou mais; isso é alcançável e esperado quando a peça segue o painel.
-- A âncora é forma e substância, não o histórico: uma peça que segue este painel e carrega substância real (cena própria, número com lastro, tese do autor, leitor certo) soma entre 80 e 90. Ter sido publicada não prova nada; uma peça publicada com defeito real recebe a nota do defeito.
+- A âncora é forma e substância, não o histórico: uma peça que segue este painel e carrega substância real (cena própria, número com lastro, tese do autor, leitor certo) soma 85 ou mais. Ter sido publicada não prova nada; uma peça publicada com defeito real recebe a nota do defeito.
 - Se os cinco críticos ficaram abaixo de 14 numa peça sem teto derrubado, você cobrou o mesmo achado em mais de um crítico ou usou a faixa 8 a 13 para ajuste pontual. Refaça. A nota existe para comparar duas versões da mesma peça, e isso só funciona se um defeito custa o mesmo em toda rodada.
 
 ## 1. O cético
@@ -51,7 +51,7 @@ Tetos:
 - Zero automático: número que prova algo sobre o autor ou a oferta (credencial, operação ou resultado) sem lastro em `prova.md`. Zera porque o leitor cético que pega um número inventado descarta o resto da peça, e o autor que publica um número falso paga com o nome dele.
 - Número externo sem lastro em nenhum dos quatro lugares: no máximo 10.
 - Número em divergência sem aval, ou promessa sem aval: no máximo 12.
-- Contagem que não fecha com as datas da peça (dias até um prazo, "4 vezes" que a conta não dá): achado pontual, 1 a 2 pontos, sem teto. É erro de conta, não número inventado.
+- Conta ou data errada que muda um fato: no máximo 12. Entra aqui a soma que não bate, a diferença ou o múltiplo que a conta não dá ("4 vezes" com os dois valores na peça), a data trocada, e a contagem que a peça afirma sem ter o ponto de partida (dias "de aviso" sem a data do aviso, dias até um prazo que não fecham com a data de publicação). É erro de fato, não de gosto: o leitor que confere a conta e ela não fecha descarta o resto, igual ao número inventado. Com o cético em 12 a peça não chega a `aprovar` pela condição por crítico, e é isso que a regra quer.
 - Sem `prova.md` na pasta: no máximo 10, e todo número sobre o autor entra nas correções como "a confirmar".
 
 `[FALTA: ...]` na peça não é número inventado: o cético não pune. A peça com `[FALTA]` só não pode ser aprovada (ver Veredito).
