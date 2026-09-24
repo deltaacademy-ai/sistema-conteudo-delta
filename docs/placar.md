@@ -25,13 +25,13 @@ Decisão do Hugo em 24/09: sem voz passiva, sem relato neutro, meta 9/10. As dua
 
 | Especialista | Medido antes | Commit | Na versão entregue | Commit medido | Commit na branch |
 |---|---|---|---|---|---|
-| entrevista-voz | pareado 5/5 Sonnet, 5/5 Opus | `eccc92a` | pareado 4/4 Sonnet, 4/4 Opus nos casos que chegaram ao portão (01, 02, 03, 05; vitórias da voz sobre o perfil neutro em todos, 0 do neutro nos pares válidos, exceto 01 Sonnet com 2 a 1). Caso 04 parado na validação mecânica nos dois modelos | `ad2963e` | `ad2963e` |
+| entrevista-voz | pareado 5/5 Sonnet, 5/5 Opus | `eccc92a` | pareado 5/5 Sonnet, 5/5 Opus (a voz vence o perfil neutro em todos; o neutro só leva 1 par, no 01 Sonnet, 2 a 1) | `ad2963e`, validação em `8d0e0be` | `ad2963e` |
 | revisor | controle 07: 94 e 95 `aprovar` | `a8959ab` | igual (sem mudança na skill) | `a8959ab` | `a8959ab` |
 | carrossel-render | 10/10 mecânico | `c9a5b9f` | igual (sem mudança) | `c9a5b9f` | `c9a5b9f` |
 | contexto-negocio | 10/10 | `4ba865a` e `35d394f` | não rodou de novo (fora do escopo desta rodada; a skill não mudou desde `af5245f`) | | `af5245f` |
 | motor e publicar | 6/6 fluxos | `d8fe5cf` | 1 fluxo por modelo, dois turnos: Sonnet PASSA (r8), Opus PASSA (r9) | Sonnet `c3ec6ee`, Opus `3a88190` | `113edb5` |
 
-Caso 04 do `entrevista-voz`: os dois modelos puseram "comenta aqui" (a isca de comentário que o perfil do Hugo proíbe) em `banidas.txt`, e o `validar-voz.sh` reprova porque as duas palavras estão em `palavras-comuns.txt`. A compilação é de 19/09 (`ad2963e`), validada em 24/09 pela régua de `21a308a`. Não mexi na régua: a decisão é do Hugo.
+Caso 04 do `entrevista-voz`: os dois modelos puseram "comenta aqui" (a isca de comentário que o perfil do Hugo proíbe) em `banidas.txt`, e o `validar-voz.sh` reprovava porque as duas palavras estão em `palavras-comuns.txt`. Decisão do Hugo em 24/09: expressão de 2 ou mais palavras com verbo de plataforma passa (`8d0e0be`, com teste; expressão só de funcionais continua reprovando). Com a régua nova, os dois `voz.md` validaram e o portão deu 3 a 0 para a voz nos dois modelos.
 
 Motor: `113edb5` só muda texto de dois Menores da re-revisão 2 (repetir a checagem depois de ajuste na aprovação, e o `publicar` não gravar link na base), sem nova execução.
 
