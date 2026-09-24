@@ -52,14 +52,16 @@ Regras de execução aprendidas na marra: no máximo 2 execuções em paralelo, 
 | 9 | `angulo` | completa | 10/10, tipo dentro da rubrica 9/10 |
 | 10 | `carrossel-roteiro` | completa | 10/10 |
 | 11 | `carrossel-render` | completa | 10 casos, 0 falhas |
-| 12 | `motor` e `publicar` | **correção em andamento** | fluxos 6/6 antes da última correção |
-| 13 | validação consolidada | **em andamento** | ver abaixo |
+| 12 | `motor` e `publicar` | completa (24/09) | Sonnet PASSA r8 (`c3ec6ee`), Opus PASSA r9 (`3a88190`), re-revisão 2 APROVADA |
+| 13 | validação consolidada | completa (24/09) | `docs/placar.md` |
 | 14 | Hugo como cliente zero | não começou | depende do Hugo |
 | 15 | instalação limpa, Grok Bot, versão | não começou | |
 
 ## O que exatamente falta
 
 ### 1. Terminar a correção da Tarefa 12 (prioridade)
+
+**Feito em 24/09/2026**: ver o Adendo 2 de `task-12-report.md` e `task-12-rereview-2.md`. O texto abaixo é o estado de 19/09.
 
 A re-revisão (`task-12-rereview.md`) aprovou dois achados e reprovou um. O implementer chegou a commitar `7d1fb0e` e `9e7f060` antes do limite estourar, mas **não verificou por execução**. Falta:
 
@@ -69,6 +71,8 @@ A re-revisão (`task-12-rereview.md`) aprovou dois achados e reprovou um. O impl
 - gerar o pacote de revisão com a base certa (`git log` do primeiro commit da rodada, sufixo `^`) e disparar a re-revisão.
 
 ### 2. Terminar o portão de confirmação da Tarefa 13
+
+**Feito em 24/09/2026**: placar em `docs/placar.md`. O `linkedin-post` fechou 9/10 depois de duas voltas pedidas pelo Hugo (sem passiva, sem relato neutro). O texto abaixo é o estado de 19/09.
 
 Os especialistas foram medidos antes da varredura anti-invenção (`fba546c`), então o número vigente não é o da versão entregue. Já rodou:
 
