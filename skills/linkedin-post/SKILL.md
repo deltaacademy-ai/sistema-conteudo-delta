@@ -54,7 +54,7 @@ Abertura. Com gancho aprovado no pedido, ele é a linha 1 e a linha 2, sem reesc
 
 Corpo. Siga a estrutura do tipo em `tipos-de-post.md`, na ordem, e as regras abaixo, que valem para os sete tipos:
 
-1. Voz: o post é da pessoa, em primeira pessoa quando ela conta o que fez, e em imperativo na forma de "você" quando instrui quem lê (confira, corte, monte). Contrações e começos de frase do `voz.md`. Opinião de quem opera em vez de relato neutro: o post diz o que a pessoa acha, com o caso ou o número que ela tem.
+1. Voz: o post é da pessoa, em primeira pessoa quando ela conta o que fez, e em imperativo na forma de "você" quando instrui quem lê (confira, corte, monte). Contrações e começos de frase do `voz.md`. Opinião de quem opera em vez de relato neutro: o post diz o que a pessoa acha, com o caso ou o número que ela tem, e a leitura dela (item 14) aparece até o terceiro parágrafo, não só na última linha; relato que só ganha opinião no fecho é relatório. Voz ativa sempre: "a triagem foi feita", "os editais foram lidos", "o contrato foi assinado" viram frase com sujeito. Quando o briefing diz quem fez, o sujeito é esse; quando não diz, a coisa vira o sujeito da ação ("a triagem pegou 22 editais", "o maior edital saiu da disputa na habilitação"), e o agente nunca é inventado. A regra de não inventar ação em primeira pessoa (item 8) não se resolve com passiva: passiva empilhada soa como ata e é o primeiro motivo de derrota do post diante de quem lê.
 2. Parágrafos de 1 a 3 frases, com linha em branco entre eles. Frase curta seca, depois uma que respira; nunca todas do mesmo tamanho, porque cadência de metrônomo é a digital de texto de IA que quem lê sente antes de saber nomear.
 3. Itens de lista só com `→`, um por linha, de 2 a 4 itens, nunca hífen, ponto ou número (exceção: os passos de "como receber" do lead magnet). Tríade automática de adjetivos, frases ou benefícios não entra: liste 2, 4 ou só o que importa.
 4. Sem hashtag (não performa e polui), sem emoji e sem negrito unicode ou asterisco (ninguém do nicho que performa usa), sem travessão, sem caixa alta de grito (a única palavra em caixa alta é a palavra-chave da última linha, quando houver).
@@ -75,7 +75,7 @@ O que o nicho faz e este post não copia: paralelismo negativo em qualquer forma
 
 Grave só o texto do post em `saida/post-AAAA-MM-DD-<tema>.md` (data de hoje, tema em kebab-case, sem cercas; um arquivo só, regravado no mesmo nome a cada correção) e rode `bash [raiz do plugin]/scripts/check-voz.sh saida/post-AAAA-MM-DD-<tema>.md banidas.txt` (a raiz do plugin é a pasta dois níveis acima do caminho absoluto de onde você leu este SKILL.md; omita o segundo argumento se `banidas.txt` não existe). Cada acerto se corrige reescrevendo a frase, não trocando a palavra por sinônimo: o sinônimo costuma ser a próxima da lista. Conte os caracteres do mesmo arquivo (`wc -m`); sem script, conte por leitura e diga isso.
 
-Depois, por leitura, procure o que o script não pega: paralelismo negativo disfarçado, pergunta retórica de abertura, isca de reação, adjetivo no lugar de número, tríade automática, gerúndio de profundidade falsa ("destacando sua importância"), verbo corporativo abstrato, hedge defensivo, variação elegante de nome, fecho filosófico. Pergunte "o que aqui ainda parece IA?" e reescreva o que apontar. Lido em voz alta, o post soa como a pessoa ou como IA imitando a pessoa?
+Depois, por leitura, procure o que o script não pega: paralelismo negativo disfarçado, pergunta retórica de abertura, isca de reação, adjetivo no lugar de número, tríade automática, gerúndio de profundidade falsa ("destacando sua importância"), voz passiva ("foi feito", "foram lidos", "é recomendado"; cada uma vira frase com sujeito, pelo item 1 da Etapa 2), verbo corporativo abstrato, hedge defensivo, variação elegante de nome, fecho filosófico. Pergunte "o que aqui ainda parece IA?" e reescreva o que apontar. Lido em voz alta, o post soa como a pessoa ou como IA imitando a pessoa?
 
 ## Etapa 4: passe de ICP
 
@@ -98,7 +98,8 @@ Antes de entregar, item por item:
 7. Nenhum paralelismo negativo, nenhuma pergunta retórica de abertura, nenhuma isca; no máximo uma frase de assinatura literal, ligada ao fato, fora da última linha e ausente das duas últimas peças de `base-conteudo.md`.
 8. O fecho é o do tipo; CTA de palavra-chave só nas condições do item 10 da Etapa 2; o post só anuncia primeiro comentário quando o briefing trouxe o link.
 9. Script rodado no arquivo do post, com `banidas.txt`, saída limpa; ou conferência por leitura, dita como tal.
-10. Nenhum fato repetido, nenhuma inferência sua no post, nenhuma posição aplicada virou biografia e nenhuma ação a mais na sequência: releia cada frase em primeira pessoa com verbo de ação e aponte a linha do briefing que a registra; sem linha, a frase diz só o que a pessoa pensa, ou sai.
+10. Nenhuma frase em voz passiva, e a leitura da pessoa (ou o `[FALTA]` dela) aparece até o terceiro parágrafo: releia o post procurando "foi", "foram", "é", "são" seguidos de particípio, e reescreva cada um com sujeito.
+11. Nenhum fato repetido, nenhuma inferência sua no post, nenhuma posição aplicada virou biografia e nenhuma ação a mais na sequência: releia cada frase em primeira pessoa com verbo de ação e aponte a linha do briefing que a registra; sem linha, a frase diz só o que a pessoa pensa, ou sai.
 
 Falhou em algum item: corrija aquele trecho, não regenere o post (a regeneração reintroduz o que você já tinha limpado).
 
