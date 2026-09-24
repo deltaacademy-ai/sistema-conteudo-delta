@@ -78,11 +78,11 @@ Gancho: [letra] (estrutura [n]); alternativas [letras e estruturas].
 ```
 
 Primeiro comentário: [as linhas do linkedin-post, ou "nenhum: a peça não traz link"].
-Checagem da peça: check-voz.sh código [0 | 1, com o que acusou] no arquivo de saida/, rodado pelo motor com banidas.txt [na versão final | de novo depois da correção]; ou "por leitura, sem script".
+Checagem da peça: check-voz.sh código [0 | 1, com o que acusou; saída vazia é "código 0", escrito assim, nunca "sem acusação"] no arquivo de saida/, rodado pelo motor com banidas.txt [na versão final | de novo depois da correção]; ou "por leitura, sem script".
 Revisor: [veredito], [nota] de 100, contexto limpo [sim | não], checagem mecânica do revisor [rodou | não rodou, contou por leitura]. [Primeira correção, como o revisor a deu.] [Se houve rodada: "Antes da correção: [veredito], [nota]."]
 Falta: [cada FALTA e cada item de Aval que os especialistas listaram, em uma linha; ou "nada"].
 Derivados previstos: [carrossel e legenda de Instagram, porque o angulo pediu "post e carrossel" | nenhum, porque o angulo pediu só post].
-Checagem da mensagem: check-voz.sh código [0 ou 1, com o que acusou], rascunho apagado; ou "por leitura".
+Checagem da mensagem: check-voz.sh código [0 ou 1, com o que acusou; saída vazia é "código 0"], rascunho apagado; ou "por leitura".
 
 Aprova? [uma das duas redações abaixo, conforme Derivados previstos]
 ```
