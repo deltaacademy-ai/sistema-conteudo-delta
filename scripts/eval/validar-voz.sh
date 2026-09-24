@@ -63,15 +63,19 @@ if [ -n "$ban" ]; then
     if [ "$uteis" -eq 0 ]; then
       echo "BANIDAS: nenhum termo (so comentario): a checagem mecanica dos outros especialistas fica cega"; falhou=1
     fi
-    # linha feita so de palavra funcional ou verbo comum (palavras-comuns.txt), ou palavra
+    # linha feita so de palavra funcional ou verbo comum (palavras-comuns.txt), salvo expressao
+    # de 2+ palavras com verbo de plataforma (isca como "comenta aqui"), ou palavra
     # unica com menos de 4 letras: termo ativo dispara em todo texto, e acusaria uso legitimo
     funcionais=$(perl -CSD -e '
       use utf8;
       sub norm { my $w = lc shift; $w =~ tr/áàâãäéèêëíìîïóòôõöúùûüç/aaaaaeeeeiiiiooooouuuuc/; $w }
-      open my $l, "<", $ARGV[0] or die; my %c; while (<$l>) { next if /^#/; $c{norm($_)} = 1 for grep { length } split /\s+/ }
+      open my $l, "<", $ARGV[0] or die; my (%c, %p); my $plat = 0;
+      while (<$l>) { if (/^#/) { $plat = /verbos de plataforma/ ? 1 : 0; next } for (grep { length } split /\s+/) { $c{norm($_)} = 1; $p{norm($_)} = 1 if $plat } }
       open my $b, "<", $ARGV[1] or die;
       while (my $ln = <$b>) { chomp $ln; next if $ln =~ /^\s*#/ || $ln =~ /^\s*$/; my @w = grep { length } split /\s+/, $ln;
         my $todas = 1; $todas = 0 for grep { !$c{norm($_)} } @w;
+        # expressao de isca com verbo de plataforma ("comenta aqui") e termo completo, nao funcional solta
+        $todas = 0 if @w >= 2 && grep { $p{norm($_)} } @w;
         my $curta = (@w == 1 && length(norm($w[0])) < 4);
         print "$ln\n" if $todas || $curta }' "$dir/palavras-comuns.txt" "$ban")
     if [ -n "$funcionais" ]; then

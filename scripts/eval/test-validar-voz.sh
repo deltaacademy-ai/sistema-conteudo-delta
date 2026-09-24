@@ -41,6 +41,10 @@ for w in para está estou comenta 'a gente' 'por isso' ia; do
 done
 printf 'link na bio\ncomenta muse\nsinergia\nhype\n' > "$d/bok2.txt"
 bash "$s" "$d/ok.md" "$d/bok2.txt" > "$d/saida.txt" && ok "termo com funcional dentro passa (link na bio, comenta muse)" || { falha "termo legitimo reprovou"; cat "$d/saida.txt"; }
+printf 'comenta aqui\nsalva esse\nalavancar\n' > "$d/bisca.txt"
+bash "$s" "$d/ok.md" "$d/bisca.txt" > "$d/saida.txt" && ok "isca com verbo de plataforma passa (comenta aqui, salva esse)" || { falha "isca de plataforma reprovou"; cat "$d/saida.txt"; }
+printf 'aqui agora\nalavancar\n' > "$d/bfun2.txt"
+bash "$s" "$d/ok.md" "$d/bfun2.txt" > "$d/saida.txt" && falha "expressao so de funcionais sem verbo de plataforma passou" || ok "expressao so de funcionais sem verbo de plataforma reprova (aqui agora)"
 
 # banidas: so comentario, nenhum termo
 printf '# isca de engajamento\n# emoji\n' > "$d/b0.txt"
