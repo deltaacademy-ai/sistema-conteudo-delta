@@ -89,7 +89,7 @@ Antes de responder:
 
 ## Etapa 4: o status
 
-Quando a pessoa disser "publicado" (com ou sem a rede e o link), troque o status da peça em `base-conteudo.md` de `aprovado` para `publicado`. A tabela é do `linkedin-post`, e o procedimento de trocar um status (como achar a linha, o que pode e o que não pode mudar, o que fazer com linha curta) está definido lá, na Etapa 5, no parágrafo "Trocar o status de uma peça"; siga o que está lá. O que o publicar garante por si: lê o cabeçalho e preserva toda coluna que ele declara, sem lista fixa neste arquivo; e nunca entrega em silêncio uma linha com menos células que o cabeçalho. Se a pessoa deu o link do post, guarde-o na coluna de fonte ou de link se a tabela tiver uma; se não tiver, deixe na resposta e não crie coluna.
+Quando a pessoa disser "publicado" (com ou sem a rede e o link), troque o status da peça em `base-conteudo.md` de `aprovado` para `publicado`. A tabela é do `linkedin-post`, e o procedimento de trocar um status (como achar a linha, o que pode e o que não pode mudar, o que fazer com linha curta) está definido lá, na Etapa 5, no parágrafo "Trocar o status de uma peça"; siga o que está lá. O que o publicar garante por si: lê o cabeçalho e preserva toda coluna que ele declara, sem lista fixa neste arquivo; e nunca entrega em silêncio uma linha com menos células que o cabeçalho. Se a pessoa deu o link do post, deixe-o na resposta; a tabela não guarda link (a troca de status só mexe na célula `Status`), e nenhuma coluna é criada para isso.
 
 ## Formato da resposta
 
