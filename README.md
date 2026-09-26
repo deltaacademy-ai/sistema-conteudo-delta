@@ -8,10 +8,10 @@ Um conjunto de especialistas (skills) que leem o contexto do comprador em `conte
 
 ## Instalação
 
+Passo a passo completo em [INSTALAR.md](INSTALAR.md): convite do repositório, credencial do git, instalação do plugin, pasta de contexto e primeiro uso.
+
+Para desenvolver no próprio plugin, sem instalar:
+
 ```bash
 claude --plugin-dir /caminho/para/sistema-conteudo
 ```
-
-## Primeiro uso
-
-Preencha os arquivos em `contexto-modelo/` (cada um traz o cabeçalho e o especialista responsável por preenchê-lo) antes de rodar os demais especialistas.
