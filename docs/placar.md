@@ -61,3 +61,10 @@ Regressão do `angulo` na Tarefa 3: os 10/10 de 24/09 (`fba546c`) não se mantiv
 ## Execuções descartadas
 
 Saídas de 70 bytes ("You've hit your weekly limit") da rodada de 19/09 foram movidas para `evals/results/nova/_429/` e refeitas. `motor-r6` virou `motor-r6-falhou-429`. Em 24/09, das 17:08 às 17:21, dois lotes do `entrevista-voz` rodaram ao mesmo tempo (resto de uma cadeia interrompida): o caso 01 foi julgado duas vezes nos dois modelos, as duas vezes com vitória da voz, e vale o JSON gravado por último.
+
+## radar-pautas
+
+| Portão | Commit | Resultado | Pasta |
+|---|---|---|---|
+| radar-pautas 01 a 03 (camada 1, sem busca), tentativa só em Sonnet | árvore de trabalho sobre `583a1d0` | Sonnet 3 de 3 PASSA | `radar-pautas-t1a` |
+| radar-pautas 01 a 03, medição final | `9072f2e` | Sonnet 3 de 3, Opus 3 de 3: 6 de 6 PASSA | `radar-pautas-t1` |
