@@ -35,6 +35,18 @@ Caso 04 do `entrevista-voz`: os dois modelos puseram "comenta aqui" (a isca de c
 
 Motor: `113edb5` só muda texto de dois Menores da re-revisão 2 (repetir a checagem depois de ajuste na aprovação, e o `publicar` não gravar link na base), sem nova execução.
 
+## Plano de outubro, Tarefa 1: fato dito na aprovação vira prova
+
+Medido em 21/10/2026 sobre o conteúdo de `5ca9dbf` (a árvore não mudou entre o início do lote final e o commit). Pastas em `evals/results/nova/`. Antes do lote final houve execuções v0 a v3 descartadas por problema do caso ou da skill (ver `.superpowers/sdd/2026-10-21-inspiracoes/task-1-report.md`).
+
+| Portão | Commit | Resultado | Pasta |
+|---|---|---|---|
+| motor 04 antes da skill (só Sonnet) | `1cae8fd` + caso e portão | FALHA em `prova.md` (37 sem "resposta da pessoa") | `motor-t1-antes` |
+| motor 04, fluxo normal | `5ca9dbf` | Sonnet PASSA, Opus PASSA | `motor-t1` |
+| motor 04, variante B (`PROVA_CONFLITO=1`) | `5ca9dbf` | Sonnet PASSA, Opus PASSA | `motor-t1-conflito` |
+| motor 01 a 03, regressão | `5ca9dbf` | 6 de 6 PASSA (Sonnet e Opus) | `motor-t1-regressao` |
+| angulo 07 | `5ca9dbf` | 2 de 2 (37 em `Material bruto` com a fonte, sem `[FALTA` de número de empresas) | `angulo-t1` |
+
 ## Execuções descartadas
 
 Saídas de 70 bytes ("You've hit your weekly limit") da rodada de 19/09 foram movidas para `evals/results/nova/_429/` e refeitas. `motor-r6` virou `motor-r6-falhou-429`. Em 24/09, das 17:08 às 17:21, dois lotes do `entrevista-voz` rodaram ao mesmo tempo (resto de uma cadeia interrompida): o caso 01 foi julgado duas vezes nos dois modelos, as duas vezes com vitória da voz, e vale o JSON gravado por último.
