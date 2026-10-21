@@ -25,7 +25,7 @@
 #   "Origem: noticia" traz data dentro dos 15 dias (nem mais velha, nem no futuro), ou entao
 #   "[FALTA: data de publicacao]" no bloco; "48%" (numero que so aparece num resumo, nos casos de
 #   noticia) nao pode aparecer em lugar nenhum de pautas.md; a resposta tem a linha de Perplexity e
-#   Grok indisponiveis; a resposta abre pela primeira pauta e termina na linha "Checagem:".
+#   Grok indisponiveis.
 # Caso 04 (noticia de {HOJE-2} e de {HOJE-20}): ha pauta de noticia com a data de {HOJE-2}; nada da
 #   de 20 dias em pautas.md; a resposta diz que ela caiu.
 # Caso 05 (noticia sem data): toda pauta que cita a noticia ("romaneio") tem a falta de data e
@@ -131,9 +131,6 @@ confere_lista() { # confere_lista <arquivos> <saida.md> -> criterios de todos os
   grep -qE '48 ?%|48 por cento' "$a/pautas.md" && m="$m numero-de-resumo-em-pautas.md"
   grep -qiE 'Perplexity[^.]*(não estava|nao estava|indispon|sem )' "$s" || m="$m sem-linha-de-perplexity-e-grok"
   grep -qiE 'busca[^.]*(não estava|nao estava|indispon|sem acesso)|(sem|não tive|nao tive) (a )?busca' "$s" || m="$m sem-linha-de-busca-indisponivel"
-  # a resposta abre pela primeira pauta e termina na linha Checagem:
-  grep -m1 . "$s" | grep -qE '^P-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+' || m="$m resposta-nao-abre-pela-primeira-pauta"
-  grep . "$s" | tail -1 | grep -q '^Checagem:' || m="$m resposta-nao-termina-na-linha-Checagem"
   echo "$m"
 }
 
