@@ -87,6 +87,7 @@ Status: aberta
 (cerca de código sem linguagem com o pedido para o motor)
 ```
 
+- Toda pauta leva as sete linhas, na ordem, inclusive a `continuação`: nela, `Por que agora:` diz qual peça continua e o que mudou desde a data dela.
 - `Origem:` começa por uma das quatro palavras. Continuação traz a peça de `base-conteudo.md`; fato traz o arquivo e a linha citada; dor traz o item de `icp.md`. Notícia fica numa linha só, com o link (ou "colada pela pessoa"), `publicada em AAAA-MM-DD` na própria linha `Origem:` e o trecho literal curto entre aspas. A data vem da fonte, nunca da visita à página.
 - `Status:` é `aberta` ou `usada em AAAA-MM-DD`.
 - O pedido para o `motor` é o texto que a pessoa cola: `Use a skill motor do plugin sistema-conteudo. Quero um post sobre o tema abaixo. Pauta P-AAAA-MM-DD-N. TEMA (fonte: ...): ...`, com o fato, as fontes e os links da pauta, e o que a pessoa disse sobre ele quando `voz.md` ou `prova.md` registram (senão `[FALTA: leitura da pessoa sobre X]`). O identificador vai dentro dele.
