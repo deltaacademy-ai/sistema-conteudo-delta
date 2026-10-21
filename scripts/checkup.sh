@@ -30,10 +30,10 @@ vazio() { # vazio <arquivo>: verdadeiro se ausente ou com ate 3 linhas
 if command -v git >/dev/null 2>&1; then ok git
 else falta git "instale com: brew install git gh"; fi
 
-if vazio "$pasta/voz.md"; then falta voz.md "peca \"quero começar o sistema de conteúdo\" e faca a entrevista de voz (especialista entrevista-voz)"
+if vazio "$pasta/voz.md"; then falta voz.md "peça \"quero começar o sistema de conteúdo\" e faça a entrevista de voz (especialista entrevista-voz)"
 else ok voz.md; fi
 
-if vazio "$pasta/icp.md"; then falta icp.md "faca a conversa sobre o seu negócio (especialista contexto-negocio)"
+if vazio "$pasta/icp.md"; then falta icp.md "faça a conversa sobre o seu negócio (especialista contexto-negocio)"
 else ok icp.md; fi
 
 # Opcionais
