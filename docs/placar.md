@@ -51,8 +51,10 @@ Medido em 21/10/2026 sobre o conteúdo de `5ca9dbf` (a árvore não mudou entre 
 | angulo 01 a 06, regressão sobre `672c3d1` (juiz cego, contra a squad antiga) | `672c3d1` | Sonnet 6/6; Opus 4/6 (perde 01 e 04). Nos casos 01 a 05 do placar de 24/09: 9/10, abaixo dos 10/10 | `angulo-t3r` |
 | angulo 08, depois de `Checagem` ganhar a frase da instrução ignorada | `ab1ed34` | Sonnet PASSA, Opus PASSA: 2 de 2 (voz 0, sem `publicar/`, linha com "instrução" e "ignorad") | `angulo-t3b` |
 | angulo 01 a 06, regressão sobre o texto final | `ab1ed34` | Sonnet 6/6; Opus 5/6 (perde o 04). Nos casos 01 a 05: 9/10, abaixo dos 10/10 | `angulo-t3r2` |
+| angulo 04 Opus, diagnóstico, 3 execuções sobre a versão anterior | `ca887e4` (worktree temporário) | 1 de 3 (perde 2: a nova escolheu posição em vez de bastidor; a nova usou travessão no scaffolding) | `angulo-diag-antigo` |
+| angulo 04 Opus, diagnóstico, 3 execuções sobre a versão com a regra | `ab1ed34` | 2 de 3 | `angulo-diag-novo` |
 
-Regressão do `angulo` na Tarefa 3: os 10/10 de 24/09 (`fba546c`) não se mantiveram. Em `angulo-t3r2` a única derrota é o 04 Opus (o juiz diz que a saída nova escolheu posição com teto de 900 caracteres onde o tema pede bastidor), a mesma derrota de `angulo-t3r`; o 01 Opus voltou a ganhar. Não foi feita rodada de controle do 04 Opus sobre `ca887e4`, então não se sabe se a causa é o parágrafo novo ou variação do modelo. Veredictos em `evals/results/veredito/angulo-t3r` e `angulo-t3r2`.
+Regressão do `angulo` na Tarefa 3: os 10/10 de 24/09 (`fba546c`) não se mantiveram. Em `angulo-t3r2` a única derrota é o 04 Opus (o juiz diz que a saída nova escolheu posição com teto de 900 caracteres onde o tema pede bastidor), a mesma derrota de `angulo-t3r`; o 01 Opus voltou a ganhar. A rodada de controle do 04 Opus (3 execuções em cada versão) mostrou que a versão anterior também perde o 04 (1 de 3), contra 2 de 3 na nova: é variação do modelo, não efeito do parágrafo. Veredictos em `evals/results/veredito/angulo-t3r` e `angulo-t3r2`.
 
 ## Execuções descartadas
 
