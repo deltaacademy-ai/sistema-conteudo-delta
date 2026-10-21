@@ -20,6 +20,14 @@
 #   turno 2 direto.
 # ENCURTA=1: tira a ultima celula da linha rascunho antes do turno 2 e exige que o motor
 #   complete a linha (so com celula vazia) e diga isso na resposta.
+# Caso 04 (fato dito na aprovacao vira prova): o turno 2 traz o numero que o tema deixou como
+#   [FALTA] ("37 empresas atendidas"). Alem dos criterios do turno 2, prova.md precisa ter
+#   exatamente uma linha de tabela com 37 e "resposta da pessoa", nenhuma outra linha mudou
+#   (fora a linha Atualizado:, que se existir traz a data da execucao) e, se a tabela tem a
+#   coluna Tipo, a linha traz credencial ou operacao.
+# PROVA_CONFLITO=1 (so caso 04): antes do turno 2 a fixture temporaria ganha a linha
+#   "35 empresas atendidas" em prova.md. O 37 precisa estar em "Divergencias entre fontes"
+#   com o 35, nao na tabela, e toda linha antiga de prova.md continua no arquivo.
 # ESTADO_DE=<rodada>: reaproveita o turno 1 daquela rodada (so os turnos seguintes rodam).
 #
 # A linha da peca e ancorada por Data e Tema (as duas primeiras celulas da linha rascunho
@@ -31,7 +39,7 @@
 # Duas faixas em paralelo (uma por modelo, casos em sequencia), ate 3 tentativas por
 # execucao. Log em evals/results/nova/motor-<rodada>/_log.txt e placar em _placar.txt.
 #
-# uso: bash evals/cases/motor/portao.sh [rodada]   (env: CASOS, MODELOS, LIMITE, ESTADO_DE, ENCURTA, COPY)
+# uso: bash evals/cases/motor/portao.sh [rodada]   (env: CASOS, MODELOS, LIMITE, ESTADO_DE, ENCURTA, COPY, PROVA_CONFLITO)
 #   nohup bash evals/cases/motor/portao.sh r1 > /dev/null 2>&1 &
 set -u
 raiz=$(cd "$(dirname "$0")/../../.." && pwd); cd "$raiz"
@@ -132,6 +140,29 @@ confere_pacote() { # confere_pacote <fixture-de-entrada> <arquivos> <saida.md> -
   echo "$m"
 }
 
+confere_prova() { # confere_prova <fixture-t2-de-entrada> <arquivos-de-saida> -> achados sobre prova.md (caso 04)
+  local e="$1/prova.md" o="$2/prova.md" m="" lin n sec hoje
+  [ -f "$o" ] || { echo " prova-sumiu"; return; }
+  hoje=$(date +%F)
+  if [ "${PROVA_CONFLITO:-0}" = 1 ]; then
+    n=$(grep -c '^|.*37' "$o"); [ "$n" = 0 ] || m="$m 37-entrou-na-tabela"
+    sec=$(awk '/^## Diverg/{f=1;next} /^## /{f=0} f' "$o")
+    grep -q '37' <<< "$sec" || m="$m 37-fora-de-divergencias"
+    grep -q '35' <<< "$sec" || m="$m divergencia-sem-o-35"
+    grep -q 'resposta da pessoa' <<< "$(grep '37' <<< "$sec")" || m="$m 37-sem-fonte-resposta-da-pessoa"
+    [ -z "$(grep -vxFf "$o" <(grep -v '^Atualizado:' "$e"))" ] || m="$m linha-antiga-mudou-ou-sumiu"
+  else
+    n=$(grep -c '37' "$o"); [ "$n" = 1 ] || m="$m linhas-com-37=$n"
+    lin=$(grep -m1 '37' "$o")
+    grep -q '^|' <<< "$lin" || m="$m 37-fora-da-tabela"
+    grep -q 'resposta da pessoa' <<< "$lin" || m="$m sem-resposta-da-pessoa"
+    grep -m1 '^| *N' "$o" | grep -q 'Tipo' && { grep -qiE 'credencial|opera' <<< "$lin" || m="$m tipo-fora-de-credencial-ou-operacao"; }
+    [ -z "$(diff -B <(grep -v '^Atualizado:' "$e") <(grep -v '^Atualizado:' "$o" | grep -vF -- "$lin"))" ] || m="$m outra-linha-de-prova-mudou"
+  fi
+  if grep -q '^Atualizado:' "$o"; then grep -m1 '^Atualizado:' "$o" | grep -q "$hoje" || m="$m atualizado-sem-a-data-de-hoje"; fi
+  echo "$m"
+}
+
 prepara_turno() { # prepara_turno <arquivos-de-origem> <nome-da-fixture> <caso.md> <campo-do-prompt> -> imprime o caso temporario
   local a="$1" fx="$2" caso="$3" campo_prompt="$4" p caso2
   rm -rf "$R/estado/fixtures/$fx"; mkdir -p "$R/estado/fixtures/$fx"; cp -R "$a/." "$R/estado/fixtures/$fx/"
@@ -155,6 +186,10 @@ job() { # job <caso> <modelo>
     perl -i -pe 'if (/\| *rascunho *\|/ && !$f) { s/\|[^|]*\|\s*$/|\n/; $f=1 }' "$R/estado/fixtures/$fx/base-conteudo.md"
     log "t2 $n fixture com linha rascunho encurtada: $(grep -m1 '| *rascunho *|' "$R/estado/fixtures/$fx/base-conteudo.md" | cut -c1-80)..."
   fi
+  if [ "$c" = 04 ] && [ "${PROVA_CONFLITO:-0}" = 1 ]; then  # a fixture ja traz o 35, de outra fonte
+    perl -0pi -e 's/(\| 12 cap[^\n]*\n)/$1| 35 empresas atendidas | "35 empresas atendidas" | `planilha de clientes de agosto de 2026` | 2026-08-31 |\n/' "$R/estado/fixtures/$fx/prova.md"
+    grep -q '35 empresas atendidas' "$R/estado/fixtures/$fx/prova.md" || log "ERRO: linha do 35 nao entrou na fixture de $n"
+  fi
   if [ ! -s "$t2" ]; then roda "$caso2" "$m" "$t2" || { echo "$n | t1:${f1:- ok} | turno 2 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi
   if [ "${COPY:-0}" = 1 ]; then
     f2=$(confere_copy "$R/estado/fixtures/$fx" "$a2" "$t2"); log "t2 (parada da copy) $n:${f2:- ok}"
@@ -163,7 +198,9 @@ job() { # job <caso> <modelo>
     f3=$(confere_pacote "$R/estado/fixtures/$fx" "$a3" "$t3"); log "t3 (pacote) $n:${f3:- ok}"
     if [ -z "$f1$f2$f3" ]; then echo "$n | t1: ok | t2 copy: ok | t3: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2 copy:${f2:- ok} | t3:${f3:- ok} | NAO PASSA" >> "$PL"; fi
   else
-    f2=$(confere_pacote "$R/estado/fixtures/$fx" "$a2" "$t2"); log "t2 $n:${f2:- ok}"
+    f2=$(confere_pacote "$R/estado/fixtures/$fx" "$a2" "$t2")
+    [ "$c" = 04 ] && f2="$f2$(confere_prova "$R/estado/fixtures/$fx" "$a2")"
+    log "t2 $n:${f2:- ok}"
     if [ -z "$f1$f2" ]; then echo "$n | t1: ok | t2: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2:${f2:- ok} | NAO PASSA" >> "$PL"; fi
   fi
 }
