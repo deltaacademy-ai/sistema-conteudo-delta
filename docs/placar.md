@@ -68,3 +68,5 @@ Saídas de 70 bytes ("You've hit your weekly limit") da rodada de 19/09 foram mo
 |---|---|---|---|
 | radar-pautas 01 a 03 (camada 1, sem busca), tentativa só em Sonnet | árvore de trabalho sobre `583a1d0` | Sonnet 3 de 3 PASSA | `radar-pautas-t1a` |
 | radar-pautas 01 a 03, medição final | `9072f2e` | Sonnet 3 de 3, Opus 3 de 3: 6 de 6 PASSA | `radar-pautas-t1` |
+| radar-pautas 03, tentativa só em Sonnet, correção 1 (continuação aberta, nota com critérios, portão mais estrito) | árvore de trabalho sobre `9072f2e` | Sonnet PASSA | `radar-pautas-t1c1a` |
+| radar-pautas 01 a 03, medição final da correção 1 | `b350c38` | Sonnet 3 de 3, Opus 3 de 3: 6 de 6 PASSA | `radar-pautas-t1c1` |
