@@ -1,16 +1,17 @@
 # Prova
+Atualizado: 2026-10-20
 
 Fixture de avaliação do Hugo Doria. Só entra número que aparece escrito numa nota do vault `hugo-os` (pastas `resources/` e `areas/`), com a linha citada. Número sem fonte não entra.
 
-| Número | Linha citada | Fonte | Data da fonte |
-|---|---|---|---|
-| 20 anos de experiência em tecnologia | "20 anos de experiência em tecnologia, passando por Itaú e PixelMatters (Portugal)" | `resources/voice-profile-hugo-doria.md`, seção 14 | nota criada em 2026-07-06 |
-| 200+ projetos entregues | "Experiência real de 200+ projetos entregues" | `resources/voice-profile-hugo-doria.md`, seção 3 | 2026-07-06 |
-| 20M+ usuários nos produtos da Popcode | "Popcode: estúdio AI-first em Aracaju, 200+ projetos, produtos com 20M+ usuários" | `resources/voice-profile-hugo-doria.md`, seção 14 | 2026-07-06 |
-| Times de mais de 100 pessoas liderados | "Liderou times de mais de 100 pessoas" | `resources/voice-profile-hugo-doria.md`, seção 14 | 2026-07-06 |
-| 63 check-ins no primeiro Café Cursor NE | "Organizador do Café Cursor NE (primeiro evento: 63 check-ins, Aracaju)" | `resources/voice-profile-hugo-doria.md`, seção 14 | 2026-07-06 |
-| 12 capítulos de encontros, de Aracaju a Porto Alegre | "12 capítulos, de Aracaju a Porto Alegre" | `resources/post-spacex-ai-embaixador.md`, "Fontes dos fatos" | 2026-09-02 |
-| 37 empresas atendidas | "37 empresas atendidas" | resposta da pessoa, 2026-10-21 (planilha de clientes de outubro de 2026) | 2026-10 |
+| Número | Linha citada | Fonte | Data | Tipo |
+|---|---|---|---|---|
+| 20 anos de experiência em tecnologia | "20 anos de experiência em tecnologia, passando por Itaú e PixelMatters (Portugal)" | `resources/voice-profile-hugo-doria.md`, seção 14 | nota criada em 2026-07-06 | credencial |
+| 200+ projetos entregues | "Experiência real de 200+ projetos entregues" | `resources/voice-profile-hugo-doria.md`, seção 3 | 2026-07-06 | credencial |
+| 20M+ usuários nos produtos da Popcode | "Popcode: estúdio AI-first em Aracaju, 200+ projetos, produtos com 20M+ usuários" | `resources/voice-profile-hugo-doria.md`, seção 14 | 2026-07-06 | credencial |
+| Times de mais de 100 pessoas liderados | "Liderou times de mais de 100 pessoas" | `resources/voice-profile-hugo-doria.md`, seção 14 | 2026-07-06 | credencial |
+| 63 check-ins no primeiro Café Cursor NE | "Organizador do Café Cursor NE (primeiro evento: 63 check-ins, Aracaju)" | `resources/voice-profile-hugo-doria.md`, seção 14 | 2026-07-06 | operação |
+| 12 capítulos de encontros, de Aracaju a Porto Alegre | "12 capítulos, de Aracaju a Porto Alegre" | `resources/post-spacex-ai-embaixador.md`, "Fontes dos fatos" | 2026-09-02 | operação |
+| 37 empresas atendidas | "37 empresas atendidas" | resposta da pessoa, 2026-10-21 (planilha de clientes de outubro de 2026) | 2026-10 | operação |
 
 ## Divergências entre fontes
 

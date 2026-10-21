@@ -152,14 +152,18 @@ confere_prova() { # confere_prova <fixture-t2-de-entrada> <arquivos-de-saida> ->
     grep -q 'resposta da pessoa' <<< "$(grep '37' <<< "$sec")" || m="$m 37-sem-fonte-resposta-da-pessoa"
     [ -z "$(grep -vxFf "$o" <(grep -v '^Atualizado:' "$e"))" ] || m="$m linha-antiga-mudou-ou-sumiu"
   else
-    n=$(grep -c '37' "$o"); [ "$n" = 1 ] || m="$m linhas-com-37=$n"
-    lin=$(grep -m1 '37' "$o")
-    grep -q '^|' <<< "$lin" || m="$m 37-fora-da-tabela"
+    n=$(grep -c '^|.*37 empresas' "$o"); [ "$n" = 1 ] || m="$m linhas-de-tabela-com-37=$n"
+    lin=$(grep -m1 '^|.*37 empresas' "$o")
+    [ -n "$lin" ] || m="$m 37-fora-da-tabela"
     grep -q 'resposta da pessoa' <<< "$lin" || m="$m sem-resposta-da-pessoa"
-    grep -m1 '^| *N' "$o" | grep -q 'Tipo' && { grep -qiE 'credencial|opera' <<< "$lin" || m="$m tipo-fora-de-credencial-ou-operacao"; }
+    if grep -m1 '^| *N' "$e" | grep -q 'Tipo'; then  # formato de producao: Tipo e Atualizado sao obrigatorios
+      [ "$(pipes "$lin")" = "$(pipes "$(grep -m1 '^| *N' "$o")")" ] || m="$m 37-com-celulas-diferentes-do-cabecalho"
+      grep -qiE '\| *(credencial|operação) *\|$' <<< "$lin" || m="$m tipo-fora-de-credencial-ou-operacao"
+      grep -q '^Atualizado:' "$o" || m="$m sem-atualizado"
+    fi
     [ -z "$(diff -B <(grep -v '^Atualizado:' "$e") <(grep -v '^Atualizado:' "$o" | grep -vF -- "$lin"))" ] || m="$m outra-linha-de-prova-mudou"
   fi
-  if grep -q '^Atualizado:' "$o"; then grep -m1 '^Atualizado:' "$o" | grep -q "$hoje" || m="$m atualizado-sem-a-data-de-hoje"; fi
+  if [ "${PROVA_CONFLITO:-0}" != 1 ] && { grep -q '^Atualizado:' "$e" || grep -q '^Atualizado:' "$o"; }; then grep -m1 '^Atualizado:' "$o" | grep -q "$hoje" || m="$m atualizado-sem-a-data-de-hoje"; fi
   echo "$m"
 }
 
@@ -187,7 +191,9 @@ job() { # job <caso> <modelo>
     log "t2 $n fixture com linha rascunho encurtada: $(grep -m1 '| *rascunho *|' "$R/estado/fixtures/$fx/base-conteudo.md" | cut -c1-80)..."
   fi
   if [ "$c" = 04 ] && [ "${PROVA_CONFLITO:-0}" = 1 ]; then  # a fixture ja traz o 35, de outra fonte
-    perl -0pi -e 's/(\| 12 cap[^\n]*\n)/$1| 35 empresas atendidas | "35 empresas atendidas" | `planilha de clientes de agosto de 2026` | 2026-08-31 |\n/' "$R/estado/fixtures/$fx/prova.md"
+    perl -0pi -e 's/(\| 12 cap[^\n]*\n)/$1| 35 empresas atendidas | "35 empresas atendidas" | `planilha de clientes de agosto de 2026` | 2026-08-31 |TIPO\n/' "$R/estado/fixtures/$fx/prova.md"
+    grep -q 'Tipo' "$R/estado/fixtures/$fx/prova.md" && perl -pi -e 's/ \|TIPO$/ | operação |/' "$R/estado/fixtures/$fx/prova.md"
+    perl -pi -e 's/\|TIPO$/|/' "$R/estado/fixtures/$fx/prova.md"
     grep -q '35 empresas atendidas' "$R/estado/fixtures/$fx/prova.md" || log "ERRO: linha do 35 nao entrou na fixture de $n"
   fi
   if [ ! -s "$t2" ]; then roda "$caso2" "$m" "$t2" || { echo "$n | t1:${f1:- ok} | turno 2 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi

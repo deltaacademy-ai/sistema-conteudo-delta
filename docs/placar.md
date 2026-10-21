@@ -46,6 +46,7 @@ Medido em 21/10/2026 sobre o conteúdo de `5ca9dbf` (a árvore não mudou entre 
 | motor 04, variante B (`PROVA_CONFLITO=1`) | `5ca9dbf` | Sonnet PASSA, Opus PASSA | `motor-t1-conflito` |
 | motor 01 a 03, regressão | `5ca9dbf` | 6 de 6 PASSA (Sonnet e Opus) | `motor-t1-regressao` |
 | angulo 07 | `5ca9dbf` | 2 de 2 (37 em `Material bruto` com a fonte, sem `[FALTA` de número de empresas) | `angulo-t1` |
+| motor 04 normal, formato de produção de `prova.md` (5 colunas com `Tipo`, `Atualizado:`; fixture `hugo-5col`; rodada de correção 1) | medido na árvore de trabalho sobre `5c56480`, commitado no commit seguinte (`fix(evals)` desta rodada) | Sonnet PASSA, Opus PASSA | `motor-t1-5col` |
 
 ## Execuções descartadas
 

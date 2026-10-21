@@ -1,3 +1,5 @@
+Cópia da fixture `hugo-5col` (que é a `hugo` com `prova.md` no formato de produção: 5 colunas com `Tipo` e linha `Atualizado:`) mais a linha do 37 em `prova.md`. Mudança na `hugo` não se propaga para cá; refaça a cópia se precisar.
+
 # Como foi gerada a fixture hugo
 
 Fixture de avaliação montada em 2026-09-17 a partir do vault `hugo-os` (`~/projects/hugo-os`). Nada foi escrito de cabeça: cada arquivo cita a fonte.
