@@ -87,10 +87,10 @@ Status: aberta
 (cerca de código sem linguagem com o pedido para o motor)
 ```
 
-- Toda pauta leva as sete linhas, na ordem, inclusive a `continuação`: nela, `Por que agora:` diz qual peça continua e o que mudou desde a data dela.
+- Toda pauta leva as sete linhas, na ordem Origem, Por que agora, Ganho, Confiança, Nota, Faltas, Status (a `Nota:` vem antes de `Faltas:`), inclusive a `continuação`: nela, `Por que agora:` diz qual peça continua e o que mudou desde a data dela.
 - `Origem:` começa por uma das quatro palavras. Continuação traz a peça de `base-conteudo.md`; fato traz o arquivo e a linha citada; dor traz o item de `icp.md`. Notícia fica numa linha só, com o link (ou "colada pela pessoa"), `publicada em AAAA-MM-DD` na própria linha `Origem:` e o trecho literal curto entre aspas. A data vem da fonte, nunca da visita à página.
 - `Status:` é `aberta` ou `usada em AAAA-MM-DD`.
-- O pedido para o `motor` é o texto que a pessoa cola: `Use a skill motor do plugin sistema-conteudo. Quero um post sobre o tema abaixo. Pauta P-AAAA-MM-DD-N. TEMA (fonte: ...): ...`, com o fato, as fontes e os links da pauta, e o que a pessoa disse sobre ele quando `voz.md` ou `prova.md` registram (senão `[FALTA: leitura da pessoa sobre X]`). O identificador vai dentro dele.
+- O pedido para o `motor` é o texto que a pessoa cola: `Use a skill motor do plugin sistema-conteudo. Quero um post sobre o tema abaixo. Pauta P-AAAA-MM-DD-N. TEMA (fonte: ...): ...`, com o fato, as fontes e os links da pauta (sem o número que veio de resumo, ver "Regras de evidência"), e o que a pessoa disse sobre ele quando `voz.md` ou `prova.md` registram (senão `[FALTA: leitura da pessoa sobre X]`). O identificador vai dentro dele.
 
 ### Cada rodada
 
@@ -102,7 +102,7 @@ Status: aberta
 
 ## Pedido sobre um tema ("tem pauta sobre X?")
 
-Responda na conversa com 1 a 3 pautas sobre X e ponha essas pautas no topo de `pautas.md`, na rodada `## Rodada AAAA-MM-DD: X`. Toda pauta da rodada trata de X; pauta vizinha, mesmo boa, não entra. Os mesmos descartes valem. Se X está fora do ICP, se não há notícia de X dentro da janela da Etapa 2 nem fato nos arquivos, ou se não há ganho, a resposta é uma linha `Sem pauta: <motivo>` (o motivo em uma frase, apoiado em `icp.md` ou nos arquivos) e nada é gravado em `pautas.md`, nem a limpeza de "Cada rodada": nunca invente uma pauta para não voltar de mãos vazias.
+Responda na conversa com 1 a 3 pautas sobre X e ponha essas pautas no topo de `pautas.md`, na rodada `## Rodada AAAA-MM-DD: X`. Toda pauta da rodada trata de X e diz isso no título ou na `Origem:`, com o nome de X; pauta vizinha, mesmo boa, não entra. Os mesmos descartes valem. Se X está fora do ICP, se não há notícia de X dentro da janela da Etapa 2 nem fato nos arquivos, ou se não há ganho, a resposta é uma linha `Sem pauta: <motivo>` (o motivo em uma frase, apoiado em `icp.md` ou nos arquivos) e nada é gravado em `pautas.md`, nem a limpeza de "Cada rodada": nunca invente uma pauta para não voltar de mãos vazias.
 
 ## Pasta incompleta
 
@@ -122,9 +122,11 @@ Quando o `motor` recebe um pedido com identificador de pauta (`P-AAAA-MM-DD-N`),
 
 Antes de entregar:
 
-1. Toda pauta da rodada nova segue "O arquivo pautas.md", sem faltar nenhuma das sete linhas, e toda notícia segue a ficha de "Regras de evidência" e a janela da Etapa 2; todo número, nome, data e citação é rastreável a uma ficha, a `prova.md` ou à pessoa. Releia `pautas.md` procurando o número que veio de resumo e apague o valor onde ele estiver.
+1. Toda notícia segue a ficha de "Regras de evidência" e a janela da Etapa 2; todo número, nome, data e citação, também os dos títulos, é rastreável a uma ficha, a `prova.md` ou à pessoa. Número no título que nenhuma fonte deu sai do título.
 2. Nenhuma pauta repete tema de `base-conteudo.md` fora de uma continuação declarada.
-3. Rode `bash [raiz do plugin]/scripts/check-voz.sh pautas.md banidas.txt` (a pasta `scripts/` fica dois níveis acima deste SKILL.md, e o caminho vai absoluto e já resolvido, sem `..`; omita `banidas.txt` se não existe), sozinho, sem `echo` encadeado: saída vazia sem erro é código 0. Acusou (código 1): corrija o arquivo e rode de novo. Sem como rodar o script, diga que a checagem foi por leitura.
+3. Rode `bash [raiz do plugin]/scripts/checa-pautas.sh pautas.md <cada número que veio de resumo>` (um argumento por número, escrito como está na fonte, por exemplo `12%`). Ele confere a forma da rodada nova, que "O arquivo pautas.md" define, e acusa o número onde ele estiver. Código diferente de 0: corrija o arquivo e rode de novo antes de entregar. Sem número de resumo, rode sem os argumentos extras.
+4. No pedido sobre um tema, toda pauta da rodada cita o tema pedido no título ou na `Origem:`.
+5. Rode `bash [raiz do plugin]/scripts/check-voz.sh pautas.md banidas.txt`, sozinho, sem `echo` encadeado (a pasta `scripts/` fica dois níveis acima deste SKILL.md, e o caminho vai absoluto e já resolvido, sem `..`; omita `banidas.txt` se não existe): saída vazia sem erro é código 0. Acusou (código 1): corrija o arquivo e rode de novo. Sem como rodar o script, diga que a checagem foi por leitura.
 
 A resposta é montada só depois da conferência, e o resultado dela entra apenas na última linha. Comece a mensagem final pela primeira pauta (ou por `Sem pauta:`), sem comentário antes sobre o que você leu ou conferiu, e escreva em texto puro (a cerca abaixo só mostra a forma). Forma da resposta:
 
