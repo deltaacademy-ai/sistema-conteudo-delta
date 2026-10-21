@@ -119,3 +119,4 @@ Pra atualizar sozinho: dentro do Claude Code, abra `/plugin`, vá em Marketplace
 - **O `cp` do passo 4 diz que a pasta não existe:** o passo 3 não terminou. Rode `claude plugin list` e confira.
 - **O carrossel saiu só em HTML:** falta o passo 5. A resposta do sistema também explica como exportar pelo Chrome.
 - **A entrevista começou numa pasta errada:** o sistema usa a pasta onde você abriu o Claude Code. Feche, entre na pasta de conteúdo e abra de novo.
+- **Travou em qualquer ponto, ou algo não responde:** abra o Claude Code na sua pasta de conteúdo e peça "faz um check-up". O sistema confere `git`, `node`, `jq`, o Chromium do carrossel e os arquivos da pasta, e diz o que falta e o comando que resolve.

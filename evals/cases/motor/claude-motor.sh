@@ -28,6 +28,7 @@ for a in "$@"; do
   if [ "$a" = "--permission-mode" ]; then
     args+=("Agent" "Task"
       "Bash(node $plugin/scripts/render-carrossel.mjs:*)"
+      "Bash(bash $plugin/scripts/checkup.sh:*)"
       "Bash(jq:*)" "Bash(wc:*)" "Bash(mkdir:*)" "Bash(cp:*)" "Bash(ls:*)" "Bash(cmp:*)" "Bash(rm -f:*)")
   fi
   args+=("$a"); prev="$a"
