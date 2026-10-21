@@ -18,7 +18,8 @@
 #   contexto-negocio. Os criterios de todos os casos nao valem: o radar para antes de buscar.
 # Caso 03 (pautas.md de {HOJE-3}): a pauta usada (-1) e a de noticia de 20 dias (-3) nao estao
 #   mais no arquivo; a de fato (-2) esta, abaixo da rodada nova e sob a rodada original; a
-#   rodada nova nao repete a pauta de fato.
+#   rodada nova nao repete a pauta de fato; a de fato e a de continuacao (-4) seguem com
+#   Status: aberta sob a rodada original (continuacao nao sai por ter o tema em base-conteudo.md).
 #
 # Placar: evals/results/nova/radar-pautas-<rodada>/_placar.txt, uma linha por caso e modelo.
 # uso: bash evals/cases/radar-pautas/portao.sh [rodada]   (env: CASOS, MODELOS, LIMITE, TEMPO)
@@ -72,6 +73,9 @@ confere_pauta() { # confere_pauta <bloco-de-uma-pauta> -> achados
   if grep -qiE '^Origem: *not[ií]cia' <<< "$l"; then
     grep -qE '[0-9]{4}-[0-9]{2}-[0-9]{2}' <<< "$l" || m="$m $id:noticia-sem-data"
   fi
+  for rot in Ganho Faltas; do
+    grep -qE "^$rot: *[^ ]" <<< "$b" || m="$m $id:$rot-vazio"
+  done
   grep -qE '^Origem: *(continuação|fato|dor|notícia)' <<< "$b" || m="$m $id:origem-fora-das-quatro-palavras"
   grep -qE '^Status: *(aberta|usada em [0-9]{4}-[0-9]{2}-[0-9]{2})' <<< "$b" || m="$m $id:status-invalido"
   echo "$m"
@@ -105,23 +109,27 @@ confere_01() { # confere_01 <arquivos>
   prim=$(grep -m1 . "$p"); [ "$prim" = "# Pautas" ] || m="$m nao-abre-com-# Pautas"
   seg=$(grep -v '^# Pautas$' "$p" | grep -m1 .); case "$seg" in "## Rodada $hoje"*) ;; *) m="$m rodada-do-dia-nao-vem-primeiro";; esac
   n=$(conta_pautas "$p"); { [ "$n" -ge 3 ] && [ "$n" -le 5 ]; } || m="$m pautas-na-rodada=$n"
-  secao_nova "$p" | grep -E '^(### P-|Origem:)' | grep -q 'NPS' && m="$m pauta-com-NPS"
+  secao_nova "$p" | grep -E '^(### P-|Origem:)' | grep -qi 'NPS' && m="$m pauta-com-NPS"
   echo "$m"
 }
 
 confere_02() { # confere_02 <arquivos> <saida.md>
   local m=""
   [ ! -e "$1/pautas.md" ] || m="$m pautas.md-existe"
-  grep -qi 'icp.md' "$2" || m="$m resposta-sem-icp.md"
+  grep -qiE '(falta|sem|não há|nao ha|não existe|nao existe|ausente)[^.]*icp\.md|icp\.md[^.]*(falta|ausente|não existe|nao existe|não há|nao ha)' "$2" || m="$m resposta-nao-diz-que-falta-icp.md"
   grep -q 'contexto-negocio' "$2" || m="$m resposta-sem-contexto-negocio"
   echo "$m"
 }
 
+bloco_status() { # bloco_status <pautas.md> <id> -> linha Status: do bloco da pauta
+  awk -v id="### $2:" 'index($0,id)==1{f=1;next} /^##/{f=0} f&&/^Status:/{print; exit}' "$1"
+}
+
 confere_03() { # confere_03 <arquivos>
-  local p="$1/pautas.md" m="" d3 id1 id2 id3 l_nova l_fato l_orig
+  local p="$1/pautas.md" m="" d3 id1 id2 id3 id4 l_nova l_fato l_orig l_cont
   [ -f "$p" ] || { echo ""; return; }
   d3=$(date -v-3d +%F 2>/dev/null || date -d "-3 days" +%F)
-  id1="P-$d3-1"; id2="P-$d3-2"; id3="P-$d3-3"
+  id1="P-$d3-1"; id2="P-$d3-2"; id3="P-$d3-3"; id4="P-$d3-4"
   grep -qF "$id1" "$p" && m="$m pauta-usada-continua"
   grep -qF "$id3" "$p" && m="$m noticia-velha-continua"
   grep -qi 'cobrar por uso' "$p" && m="$m noticia-velha-no-texto"
@@ -131,8 +139,17 @@ confere_03() { # confere_03 <arquivos>
     l_orig=$(grep -n -m1 "^## Rodada $d3" "$p" | cut -d: -f1)
     { [ -n "$l_nova" ] && [ "$l_fato" -gt "$l_nova" ]; } || m="$m fato-nao-fica-abaixo-da-rodada-nova"
     { [ -n "$l_orig" ] && [ "$l_orig" -lt "$l_fato" ]; } || m="$m fato-fora-da-rodada-original"
+    bloco_status "$p" "$id2" | grep -qx 'Status: aberta' || m="$m fato-sem-status-aberta"
   else
     m="$m pauta-de-fato-sumiu"
+  fi
+  # continuacao aberta nao sai por ter o tema em base-conteudo.md: fica sob a rodada original
+  if grep -qF "### $id4" "$p"; then
+    l_cont=$(grep -n -m1 "^### $id4" "$p" | cut -d: -f1); l_orig=$(grep -n -m1 "^## Rodada $d3" "$p" | cut -d: -f1)
+    { [ -n "$l_orig" ] && [ "$l_orig" -lt "$l_cont" ]; } || m="$m continuacao-fora-da-rodada-original"
+    bloco_status "$p" "$id4" | grep -qx 'Status: aberta' || m="$m continuacao-sem-status-aberta"
+  else
+    m="$m continuacao-sumiu"
   fi
   secao_nova "$p" | grep -E '^(### P-|Origem:)' | grep -qiE 'Café Cursor|63 check' && m="$m rodada-nova-repete-a-pauta-de-fato"
   echo "$m"

@@ -40,3 +40,16 @@ Status: aberta
 ```
 Use a skill motor do plugin sistema-conteudo. Quero um post sobre o tema abaixo. Não me faça perguntas até a parada de aprovação. Pauta P-{HOJE-3}-3. TEMA (fonte: notícia colada pelo Hugo, publicada em {HOJE-20}): uma plataforma de agentes de código passa a cobrar por uso a partir do próximo ciclo.
 ```
+
+### P-{HOJE-3}-4: Manus depois do prazo de 22/08
+Origem: continuação do post de 2026-08-12 (Manus: dados apagados por ordem do regulador, prazo de 22/08), em `base-conteudo.md`.
+Por que agora: o post de agosto ficou sem retorno sobre o que aconteceu depois do prazo.
+Ganho: traz o desfecho do prazo que o primeiro post só anunciou; a base é `materiais/post-manus-meta-dados-apagados.md`.
+Confiança: média
+Nota: 9/16
+Faltas: [FALTA: o que aconteceu com os dados depois do prazo de 22/08]
+Status: aberta
+
+```
+Use a skill motor do plugin sistema-conteudo. Quero um post sobre o tema abaixo. Não me faça perguntas até a parada de aprovação. Pauta P-{HOJE-3}-4. TEMA (continuação do post de 2026-08-12 sobre o Manus): o que aconteceu com os dados depois do prazo de 22/08.
+```
