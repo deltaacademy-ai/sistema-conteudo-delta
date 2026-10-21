@@ -37,7 +37,7 @@ A rede é uma exceção só deste especialista e só para leitura: ele busca e l
 ## Regras de evidência
 
 - Cada fato da web vira uma ficha: link, data de publicação, trecho literal curto entre aspas e o que a fonte diz. A regra de data (janela e fato sem data) está na Etapa 2.
-- Número só entra se foi lido na fonte primária (a página do órgão, da empresa, do estudo). Número que veio de resumo, de resposta do Perplexity ou do Grok, ou de transcrição não aparece em lugar nenhum de `pautas.md`: nem em `Faltas:`, nem em `Confiança:`, nem no pedido para o `motor`. A falta descreve o dado sem o número, por exemplo `[FALTA: conferir na fonte o percentual citado no resumo]`. Escrever `[FALTA: conferir o 48%]`, com o valor, é erro: o valor sai do texto inteiro.
+- Número só entra se foi lido na fonte primária (a página do órgão, da empresa, do estudo). Número que veio de resumo, de resposta do Perplexity ou do Grok, ou de transcrição não aparece em lugar nenhum de `pautas.md`: nem em `Faltas:`, nem em `Confiança:`, nem no pedido para o `motor`. A falta descreve o dado sem o número, por exemplo `[FALTA: conferir na fonte o percentual citado no resumo]`. Escrever `[FALTA: conferir os N%]`, com o valor, é erro: o valor sai do texto inteiro.
 - Confiança da pauta de notícia: `alta` com duas fontes independentes, `média` com uma fonte primária, `baixa` só com blog ou relato de terceiro. Pauta de confiança baixa pode entrar, com a ressalva visível. Pauta sem notícia: `alta` quando nasce de linha de `prova.md` ou de peça publicada, `média` quando nasce de dor ou gatilho de `icp.md`.
 
 ## Etapa 1: candidatas
