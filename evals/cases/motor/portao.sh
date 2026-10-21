@@ -170,13 +170,23 @@ confere_prova() { # confere_prova <fixture-t2-de-entrada> <arquivos-de-saida> ->
   echo "$m"
 }
 
+veredito_fim() { grep -i 'revis' "$1" | grep -oE '\b(aprovar|reescrever|descartar)\b' | tail -1; }   # ultimo veredito citado na mensagem
+
+confere_parada() { # confere_parada <fixture-de-entrada> <arquivos> -> a peca parou de novo: sem publicar/, sem carrossel, base ainda rascunho
+  local a1="$1" a="$2" m=""
+  [ -d "$a/publicar" ] && m="$m publicar-apos-parada"
+  ls -d "$a"/saida/carrossel-* >/dev/null 2>&1 && m="$m carrossel-apos-parada"
+  grep -q '| *rascunho *|' "$a/base-conteudo.md" || m="$m base-sem-rascunho-apos-parada"
+  echo "$m"
+}
+
 confere_fim() { # confere_fim <arquivos-de-saida> <saida.md> -> achados sobre a frase do 37 e o veredito (caso 04)
   local a="$1" s="$2" m="" post fr ver
   post=$(ls "$a"/saida/post-*.md 2>/dev/null | head -1)
   fr=$([ -n "$post" ] && perl -0ne 'print "$1\n" if /([^.!?\n]*\b37\b[^.!?\n]*)/' "$post" | head -1 | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')
   if [ -z "$fr" ]; then m="$m post-sem-37"
   else grep -qF -- "$fr" "$s" || m="$m mensagem-sem-a-frase-do-37"; fi
-  ver=$(grep -i 'revis' "$s" | grep -oE '\b(aprovar|reescrever|descartar)\b' | tail -1)
+  ver=$(veredito_fim "$s")
   if [ -z "$ver" ]; then m="$m mensagem-sem-veredito-do-revisor"
   elif [ "$ver" != aprovar ] && ls -d "$a"/publicar/*/ >/dev/null 2>&1; then m="$m publicar-com-veredito-$ver"; fi
   echo "$m"
@@ -191,7 +201,7 @@ prepara_turno() { # prepara_turno <arquivos-de-origem> <nome-da-fixture> <caso.m
 }
 
 job() { # job <caso> <modelo>
-  local c="$1" m="$2" n="$1-$2" caso="evals/cases/motor/$1.md" t1 t2 t3 a1 a2 a3 f1 f2 f3 fx caso2
+  local c="$1" m="$2" n="$1-$2" caso="evals/cases/motor/$1.md" t1 t2 t3 a1 a2 a3 f1 f2 f3 fx caso2 parou=""
   t1="$R/$n-t1.md"; t2="$R/$n-t2.md"; t3="$R/$n-t3.md"; a1="$t1.arquivos"; a2="$t2.arquivos"; a3="$t3.arquivos"
   if [ ! -s "$t1" ] && [ -n "${ESTADO_DE:-}" ] && [ -s "evals/results/nova/motor-$ESTADO_DE/$n-t1.md" ]; then
     cp "evals/results/nova/motor-$ESTADO_DE/$n-t1.md" "$t1"; rm -rf "$a1"; cp -R "evals/results/nova/motor-$ESTADO_DE/$n-t1.md.arquivos" "$a1"
@@ -219,10 +229,15 @@ job() { # job <caso> <modelo>
     f3=$(confere_pacote "$R/estado/fixtures/$fx" "$a3" "$t3"); log "t3 (pacote) $n:${f3:- ok}"
     if [ -z "$f1$f2$f3" ]; then echo "$n | t1: ok | t2 copy: ok | t3: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2 copy:${f2:- ok} | t3:${f3:- ok} | NAO PASSA" >> "$PL"; fi
   else
-    f2=$(confere_pacote "$R/estado/fixtures/$fx" "$a2" "$t2")
-    [ "$c" = 04 ] && f2="$f2$(confere_prova "$R/estado/fixtures/$fx" "$a2")$(confere_fim "$a2" "$t2")"
+    if [ "$c" = 04 ] && [ -n "$(veredito_fim "$t2")" ] && [ "$(veredito_fim "$t2")" != aprovar ]; then
+      f2="$(confere_parada "$R/estado/fixtures/$fx" "$a2")$(confere_prova "$R/estado/fixtures/$fx" "$a2")$(confere_fim "$a2" "$t2")"   # parou de novo (veredito $(veredito_fim "$t2")): sem pacote
+      log "t2 $n parou no veredito $(veredito_fim "$t2")"; parou=" (parou no veredito $(veredito_fim "$t2"), sem pacote)"
+    else
+      f2=$(confere_pacote "$R/estado/fixtures/$fx" "$a2" "$t2")
+      [ "$c" = 04 ] && f2="$f2$(confere_prova "$R/estado/fixtures/$fx" "$a2")$(confere_fim "$a2" "$t2")"
+    fi
     log "t2 $n:${f2:- ok}"
-    if [ -z "$f1$f2" ]; then echo "$n | t1: ok | t2: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2:${f2:- ok} | NAO PASSA" >> "$PL"; fi
+    if [ -z "$f1$f2" ]; then echo "$n | t1: ok | t2: ok${parou:-} | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | t2:${f2:- ok}${parou:-} | NAO PASSA" >> "$PL"; fi
   fi
 }
 
