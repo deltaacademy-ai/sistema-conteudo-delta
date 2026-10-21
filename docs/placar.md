@@ -70,3 +70,7 @@ Saídas de 70 bytes ("You've hit your weekly limit") da rodada de 19/09 foram mo
 | radar-pautas 01 a 03, medição final | `9072f2e` | Sonnet 3 de 3, Opus 3 de 3: 6 de 6 PASSA | `radar-pautas-t1` |
 | radar-pautas 03, tentativa só em Sonnet, correção 1 (continuação aberta, nota com critérios, portão mais estrito) | árvore de trabalho sobre `9072f2e` | Sonnet PASSA | `radar-pautas-t1c1a` |
 | radar-pautas 01 a 03, medição final da correção 1 | `b350c38` | Sonnet 3 de 3, Opus 3 de 3: 6 de 6 PASSA | `radar-pautas-t1c1` |
+| radar-pautas 04 a 08 e 08b (notícias, busca, tema), RED só em Sonnet, sobre o SKILL da Tarefa 1 | `fc7321d` | Sonnet 3 de 6 PASSA (06, 07, 08 falham) | `radar-pautas-t2red` |
+| radar-pautas 06, 07 e 08, tentativas só em Sonnet depois do SKILL novo | árvore de trabalho sobre `fc7321d` | 06 e 08 PASSA; 07 falhou duas vezes por variação de formato, passou na terceira | `radar-pautas-t2a`, `t2b`, `t2c` |
+| radar-pautas 01 a 08 e 08b, medição | `9af497a` | Sonnet 9 de 9, Opus 7 de 9 (04 sem linha Por que agora; 07 critério estreito demais) | `radar-pautas-t2` |
+| radar-pautas 01 a 08 e 08b, medição final | `bc7c09c` | Sonnet 9 de 9, Opus 9 de 9: 18 de 18 PASSA | `radar-pautas-t2f` |
