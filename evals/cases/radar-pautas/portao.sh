@@ -83,15 +83,6 @@ confere_pauta() { # confere_pauta <bloco-de-uma-pauta> -> achados
   local b="$1" m="" id rot n anterior=0 l d
   id=$(sed -nE 's/^### (P-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+):.*/\1/p' <<< "$b" | head -1)
   [ -n "$id" ] || { echo " pauta-sem-identificador"; return; }
-  # ordem: Origem, Por que agora, Ganho, Confianca, Nota, Faltas, Status
-  for rot in "Origem:" "Por que agora:" "Ganho:" "Confiança:" "Nota:" "Faltas:" "Status:"; do
-    n=$(grep -n -m1 "^$rot" <<< "$b" | cut -d: -f1)
-    if [ -z "$n" ]; then m="$m $id:sem-linha-${rot%:}"; continue; fi
-    [ "$n" -gt "$anterior" ] || m="$m $id:linha-fora-de-ordem-${rot%:}"
-    anterior=$n
-  done
-  awk '/^```/{c++} END{exit !(c>=2)}' <<< "$b" || m="$m $id:sem-cerca-de-codigo"
-  awk '/^```/{c++; next} c%2==1' <<< "$b" | grep -qF -- "$id" || m="$m $id:cerca-sem-o-identificador"
   case "$id" in "P-$hoje-"*) ;; *) m="$m $id:id-com-data-que-nao-e-hoje";; esac
   l=$(grep -m1 '^Origem:' <<< "$b")
   if grep -qiE '^Origem: *not[ií]cia' <<< "$l"; then
@@ -103,11 +94,6 @@ confere_pauta() { # confere_pauta <bloco-de-uma-pauta> -> achados
       [[ "$d" > "$hoje" ]] && m="$m $id:noticia-com-data-no-futuro-$d"
     fi
   fi
-  for rot in Ganho Faltas; do
-    grep -qE "^$rot: *[^ ]" <<< "$b" || m="$m $id:$rot-vazio"
-  done
-  grep -qE '^Origem: *(continuação|fato|dor|notícia)' <<< "$b" || m="$m $id:origem-fora-das-quatro-palavras"
-  grep -qE '^Status: *(aberta|usada em [0-9]{4}-[0-9]{2}-[0-9]{2})' <<< "$b" || m="$m $id:status-invalido"
   echo "$m"
 }
 
@@ -127,8 +113,10 @@ confere_lista() { # confere_lista <arquivos> <saida.md> -> criterios de todos os
     [ -n "$b" ] || continue
     r=$(confere_pauta "$b"); m="$m$r"
   done < <(printf '%s' "$blocos")
-  # numero que so veio de resumo (48%) nao aparece em lugar nenhum de pautas.md, nem na linha de FALTA
-  grep -qE '48 ?%|48 por cento' "$a/pautas.md" && m="$m numero-de-resumo-em-pautas.md"
+  # forma da rodada nova (sete linhas, cerca com o id, valores) e numero de resumo (48%) fora de pautas.md:
+  # a regra mora em scripts/checa-pautas.sh, que a propria skill roda antes de entregar
+  r=$(bash scripts/checa-pautas.sh "$a/pautas.md" "48%" "48 %" "48 por cento" | tr '\n' ' ' | tr -s ' ')
+  [ -z "$r" ] || m="$m checa-pautas:[${r% }]"
   grep -qiE 'Perplexity[^.]*(não estava|nao estava|indispon|sem )' "$s" || m="$m sem-linha-de-perplexity-e-grok"
   grep -qiE 'busca[^.]*(não estava|nao estava|indispon|sem acesso)|(sem|não tive|nao tive) (a )?busca' "$s" || m="$m sem-linha-de-busca-indisponivel"
   echo "$m"
