@@ -173,10 +173,11 @@ confere_prova() { # confere_prova <fixture-t2-de-entrada> <arquivos-de-saida> ->
 veredito_fim() { grep -i 'revis' "$1" | grep -oE '\b(aprovar|reescrever|descartar)\b' | tail -1; }   # ultimo veredito citado na mensagem
 
 confere_parada() { # confere_parada <fixture-de-entrada> <arquivos> -> a peca parou de novo: sem publicar/, sem carrossel, base ainda rascunho
-  local a1="$1" a="$2" m=""
+  local a1="$1" a="$2" m="" anc lin
   [ -d "$a/publicar" ] && m="$m publicar-apos-parada"
   ls -d "$a"/saida/carrossel-* >/dev/null 2>&1 && m="$m carrossel-apos-parada"
-  grep -q '| *rascunho *|' "$a/base-conteudo.md" || m="$m base-sem-rascunho-apos-parada"
+  anc=$(ancora "$a1/base-conteudo.md"); lin=$(linha "$a/base-conteudo.md" "$anc")   # a linha da peca do caso, nao qualquer rascunho
+  grep -q '| *rascunho *|' <<< "$lin" || m="$m base-sem-rascunho-apos-parada"
   echo "$m"
 }
 
@@ -185,7 +186,13 @@ confere_fim() { # confere_fim <arquivos-de-saida> <saida.md> -> achados sobre a 
   post=$(ls "$a"/saida/post-*.md 2>/dev/null | head -1)
   fr=$([ -n "$post" ] && perl -0ne 'print "$1\n" if /([^.!?\n]*\b37\b[^.!?\n]*)/' "$post" | head -1 | sed -E 's/^[[:space:]]+|[[:space:]]+$//g')
   if [ -z "$fr" ]; then m="$m post-sem-37"
-  else grep -qF -- "$fr" "$s" || m="$m mensagem-sem-a-frase-do-37"; fi
+  else
+    grep -qF -- "$fr" "$s" || m="$m mensagem-sem-a-frase-do-37"
+    # fato como a pessoa disse ("37 empresas atendidas"): criterio barato, so por palavra. Reprova verbo no presente
+    # (atendo/atende, "atende hoje") no lugar de "atendidas" e nome de outra empresa (Idens, Popcode, Delta) na frase.
+    grep -qiE '\b(atendo|atende)\b' <<< "$fr" && m="$m fato-distorcido-atende-no-presente"
+    grep -qE '\b(Idens|Popcode|Delta)\b' <<< "$fr" && m="$m fato-atribuido-a-outra-empresa"
+  fi
   ver=$(veredito_fim "$s")
   if [ -z "$ver" ]; then m="$m mensagem-sem-veredito-do-revisor"
   elif [ "$ver" != aprovar ] && ls -d "$a"/publicar/*/ >/dev/null 2>&1; then m="$m publicar-com-veredito-$ver"; fi
