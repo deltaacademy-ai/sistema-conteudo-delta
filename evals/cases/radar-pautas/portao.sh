@@ -40,6 +40,11 @@
 #   da rodada de hoje traz o tema; de 1 a 3 pautas, todas sobre o tema (Café Cursor ou 63 no titulo
 #   ou na origem).
 #
+# Caso rede (fora do CASOS padrao; rode com CASOS=rede): o runner libera WebSearch, WebFetch e Write
+#   (campo ferramentas_extra: do caso). Vale tudo de "todos os casos com lista" e o minimo de 3
+#   pautas, menos a linha de busca indisponivel; e ao menos uma pauta com "Origem: noticia", link
+#   http na linha de origem e data de publicacao dentro dos 15 dias. Os links sao conferidos a mao.
+#
 # Placar: evals/results/nova/radar-pautas-<rodada>/_placar.txt, uma linha por caso e modelo.
 # uso: bash evals/cases/radar-pautas/portao.sh [rodada]   (env: CASOS, MODELOS, LIMITE, TEMPO, REAVALIAR, HOJE)
 #   REAVALIAR=<rodada>: nao roda modelo; confere de novo as saidas de evals/results/nova/radar-pautas-<rodada>
@@ -103,7 +108,7 @@ pautas_da_secao() { # imprime cada bloco "### P-..." separado por \f
   awk '/^### /{if(b!="")printf "%s\f", b; b=$0 "\n"; next} b!=""{b=b $0 "\n"} END{if(b!="")printf "%s\f", b}' <<< "$1"
 }
 
-confere_lista() { # confere_lista <arquivos> <saida.md> -> criterios de todos os casos com lista
+confere_lista() { # confere_lista <arquivos> <saida.md> [rede] -> criterios de todos os casos com lista
   local a="$1" s="$2" m="" sec blocos b r
   [ -f "$a/pautas.md" ] || { echo " sem-pautas.md"; return; }
   bash scripts/check-voz.sh "$a/pautas.md" "$a/banidas.txt" >/dev/null || m="$m check-voz-pautas"
@@ -120,7 +125,7 @@ confere_lista() { # confere_lista <arquivos> <saida.md> -> criterios de todos os
   r=$(bash scripts/checa-pautas.sh --rodada "$hoje" "$a/pautas.md" "48%" "48 %" "48 por cento" | tr '\n' ' ' | tr -s ' ')
   [ -z "$r" ] || m="$m checa-pautas:[${r% }]"
   grep -qiE 'Perplexity[^.]*(não estava|nao estava|indispon|sem )' "$s" || m="$m sem-linha-de-perplexity-e-grok"
-  grep -qiE 'busca[^.]*(não estava|nao estava|indispon|sem acesso)|(sem|não tive|nao tive) (a )?busca' "$s" || m="$m sem-linha-de-busca-indisponivel"
+  [ "${3:-}" = rede ] || grep -qiE 'busca[^.]*(não estava|nao estava|indispon|sem acesso)|(sem|não tive|nao tive) (a )?busca' "$s" || m="$m sem-linha-de-busca-indisponivel"
   echo "$m"
 }
 
@@ -139,6 +144,22 @@ confere_01() { # confere_01 <arquivos>
   n=$(conta_pautas "$p"); { [ "$n" -ge 3 ] && [ "$n" -le 5 ]; } || m="$m pautas-na-rodada=$n"
   secao_nova "$p" | grep -E '^(### P-|Origem:)' | grep -qi 'NPS' && m="$m pauta-com-NPS"
   echo "$m"
+}
+
+confere_rede() { # confere_rede <arquivos>: ao menos uma pauta de noticia com link http e data dentro dos 15 dias
+  local p="$1/pautas.md" b l d achou=0
+  [ -f "$p" ] || { echo ""; return; }
+  while IFS= read -r -d $'\f' b; do
+    [ -n "$b" ] || continue
+    l=$(grep -m1 '^Origem:' <<< "$b")
+    grep -qiE '^Origem: *not[ií]cia' <<< "$l" || continue
+    grep -q 'https\?://' <<< "$l" || continue
+    d=$(grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' <<< "$l" | head -1)
+    [ -n "$d" ] || continue
+    [[ "$d" < "$corte15" || "$d" > "$hoje" ]] && continue
+    achou=1
+  done < <(printf '%s' "$(pautas_da_secao "$(secao_nova "$p")")")
+  [ "$achou" = 1 ] && echo "" || echo " sem-pauta-de-noticia-com-link-e-data-dentro-de-15-dias"
 }
 
 confere_02() { # confere_02 <arquivos> <saida.md>
@@ -268,6 +289,7 @@ job() { # job <caso> <modelo>
     06) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_06 "$a" "$s")" ;;
     07) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_07 "$a" "$s" "$est/fixtures/hugo-radar")" ;;
     08) f=$(confere_08 "$a" "$s" "$est/fixtures/hugo-radar") ;;
+    rede) f="$(confere_lista "$a" "$s" rede)$(minimo_3 "$a")$(confere_rede "$a")" ;;
     08b) f="$(confere_lista "$a" "$s")$(confere_08b "$a")" ;;
   esac
   log "$n:${f:- ok}"
