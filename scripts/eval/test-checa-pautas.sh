@@ -94,7 +94,20 @@ confere "Status invalido" 1 "Status" "$tmp/status-ruim.md"
 variante nota-ruim 's/Nota: 14\/16/Nota: alta/'
 confere "Nota fora de N/16" 1 "Nota" "$tmp/nota-ruim.md"
 confere "valor proibido em qualquer lugar" 1 "63 check-ins" "$tmp/bom.md" "63 check-ins"
-variante velha-so 's/## Rodada 2026-10-21/## Rodada 2026-10-21: tema/'
-confere "cabecalho com tema" 0 - "$tmp/velha-so.md"
+variante cabecalho-com-tema 's/## Rodada 2026-10-21/## Rodada 2026-10-21: tema/'
+confere "cabecalho com tema" 0 - "$tmp/cabecalho-com-tema.md"
+variante cerca-aberta 's/(TEMA: y\n)```\n/$1/'
+confere "cerca sem fechamento" 1 "sem fechamento" "$tmp/cerca-aberta.md"
+variante solta-depois 's/(TEMA: x\n```\n)/$1Comentario solto\n/'
+confere "linha solta depois da cerca" 1 "Comentario solto" "$tmp/solta-depois.md"
+variante titulo-sem-dois-pontos 's/### P-2026-10-21-2: Outro titulo/### P-2026-10-21-2 Outro titulo/'
+confere "titulo sem dois-pontos" 1 "identificador" "$tmp/titulo-sem-dois-pontos.md"
+saida=$(bash "$script" --rodada 2026-10-18 "$tmp/bom.md" 2>&1); rc=$?
+if [ "$rc" = 1 ] && grep -q "P-2026-10-18-1" <<< "$saida"; then echo "ok --rodada confere a rodada pedida (a antiga mal formada acusa)"; else echo "FALHA --rodada 2026-10-18: codigo $rc, saida: $saida"; falhas=$((falhas+1)); fi
+saida=$(bash "$script" --rodada 2026-10-21 "$tmp/bom.md" 2>&1); rc=$?
+if [ "$rc" = 0 ] && [ -z "$saida" ]; then echo "ok --rodada da data de hoje passa sem olhar a antiga"; else echo "FALHA --rodada 2026-10-21: codigo $rc, saida: $saida"; falhas=$((falhas+1)); fi
+saida=$(bash "$script" --rodada 2026-01-01 "$tmp/bom.md" 2>&1); rc=$?
+if [ "$rc" = 1 ] && grep -q "sem rodada" <<< "$saida"; then echo "ok --rodada de data que nao existe"; else echo "FALHA --rodada 2026-01-01: codigo $rc, saida: $saida"; falhas=$((falhas+1)); fi
+
 
 [ "$falhas" = 0 ] || exit 1

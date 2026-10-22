@@ -26,6 +26,8 @@
 #   "[FALTA: data de publicacao]" no bloco; "48%" (numero que so aparece num resumo, nos casos de
 #   noticia) nao pode aparecer em lugar nenhum de pautas.md; a resposta tem a linha de Perplexity e
 #   Grok indisponiveis.
+# Casos 01 e 03 a 07 (lista cheia): a rodada de hoje tem pelo menos 3 pautas (o 01 de 3 a 5). O
+#   checa-pautas.sh recebe so a rodada de hoje (--rodada).
 # Caso 04 (noticia de {HOJE-2} e de {HOJE-20}): ha pauta de noticia com a data de {HOJE-2}; nada da
 #   de 20 dias em pautas.md; a resposta diz que ela caiu.
 # Caso 05 (noticia sem data): toda pauta que cita a noticia ("romaneio") tem a falta de data e
@@ -115,7 +117,7 @@ confere_lista() { # confere_lista <arquivos> <saida.md> -> criterios de todos os
   done < <(printf '%s' "$blocos")
   # forma da rodada nova (sete linhas, cerca com o id, valores) e numero de resumo (48%) fora de pautas.md:
   # a regra mora em scripts/checa-pautas.sh, que a propria skill roda antes de entregar
-  r=$(bash scripts/checa-pautas.sh "$a/pautas.md" "48%" "48 %" "48 por cento" | tr '\n' ' ' | tr -s ' ')
+  r=$(bash scripts/checa-pautas.sh --rodada "$hoje" "$a/pautas.md" "48%" "48 %" "48 por cento" | tr '\n' ' ' | tr -s ' ')
   [ -z "$r" ] || m="$m checa-pautas:[${r% }]"
   grep -qiE 'Perplexity[^.]*(não estava|nao estava|indispon|sem )' "$s" || m="$m sem-linha-de-perplexity-e-grok"
   grep -qiE 'busca[^.]*(não estava|nao estava|indispon|sem acesso)|(sem|não tive|nao tive) (a )?busca' "$s" || m="$m sem-linha-de-busca-indisponivel"
@@ -123,6 +125,11 @@ confere_lista() { # confere_lista <arquivos> <saida.md> -> criterios de todos os
 }
 
 conta_pautas() { secao_nova "$1" | grep -c '^### P-'; }
+
+minimo_3() { # minimo_3 <arquivos>: a rodada de hoje tem pelo menos 3 pautas (casos de lista cheia)
+  local n; [ -f "$1/pautas.md" ] || { echo ""; return; }
+  n=$(conta_pautas "$1/pautas.md"); [ "$n" -ge 3 ] && echo "" || echo " menos-de-3-pautas-na-rodada=$n"
+}
 
 confere_01() { # confere_01 <arquivos>
   local p="$1/pautas.md" m="" n prim seg
@@ -255,11 +262,11 @@ job() { # job <caso> <modelo>
   case "$c" in
     02) f=$(confere_02 "$a" "$s") ;;
     01) f="$(confere_lista "$a" "$s")$(confere_01 "$a")" ;;
-    03) f="$(confere_lista "$a" "$s")$(confere_03 "$a")" ;;
-    04) f="$(confere_lista "$a" "$s")$(confere_04 "$a" "$s")" ;;
-    05) f="$(confere_lista "$a" "$s")$(confere_05 "$a" "$s")" ;;
-    06) f="$(confere_lista "$a" "$s")$(confere_06 "$a" "$s")" ;;
-    07) f="$(confere_lista "$a" "$s")$(confere_07 "$a" "$s" "$est/fixtures/hugo-radar")" ;;
+    03) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_03 "$a")" ;;
+    04) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_04 "$a" "$s")" ;;
+    05) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_05 "$a" "$s")" ;;
+    06) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_06 "$a" "$s")" ;;
+    07) f="$(confere_lista "$a" "$s")$(minimo_3 "$a")$(confere_07 "$a" "$s" "$est/fixtures/hugo-radar")" ;;
     08) f=$(confere_08 "$a" "$s" "$est/fixtures/hugo-radar") ;;
     08b) f="$(confere_lista "$a" "$s")$(confere_08b "$a")" ;;
   esac

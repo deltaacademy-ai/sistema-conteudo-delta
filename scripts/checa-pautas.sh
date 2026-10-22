@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# uso: checa-pautas.sh <pautas.md> [valor-proibido ...]
+# uso: checa-pautas.sh [--rodada AAAA-MM-DD] <pautas.md> [valor-proibido ...]
 #
-# Confere a forma da rodada mais nova de um pautas.md (a primeira "## Rodada" do arquivo):
+# Confere a forma da rodada mais nova de um pautas.md (a primeira "## Rodada" do arquivo, ou a
+# de --rodada AAAA-MM-DD, com ou sem tema no cabecalho):
 # cada pauta tem o titulo "### P-AAAA-MM-DD-N: ...", as sete linhas Origem, Por que agora,
 # Ganho, Confianca, Nota, Faltas e Status, nessa ordem, coladas e com valor, e depois uma
 # cerca de codigo com o identificador da pauta dentro; nenhuma outra linha entra no bloco.
@@ -9,13 +10,15 @@
 # Nota e N/16; Status e aberta ou "usada em AAAA-MM-DD". Cada valor proibido
 # (por exemplo um numero que so veio de resumo) nao pode aparecer em lugar nenhum do arquivo.
 # Rodadas anteriores nao entram. Sai 0 quando esta limpo; fora isso, sai 1 com uma linha por problema.
+alvo=""
+if [ "${1:-}" = "--rodada" ]; then alvo="${2:-}"; shift 2 2>/dev/null || shift $#; fi
 arq="${1:-}"; [ $# -gt 0 ] && shift
 [ -f "$arq" ] || { echo "arquivo nao existe: $arq"; exit 1; }
 n=0
 for v in "$@"; do
   if grep -qF -- "$v" "$arq"; then echo "valor proibido no arquivo: $v"; n=$((n+1)); fi
 done
-saida=$(awk '
+saida=$(awk -v alvo="$alvo" '
   function prob(msg) { print (id != "" ? id ": " : "") msg; ruim++ }
   function fecha_bloco(   i) {
     if (!em_bloco) return
@@ -23,7 +26,11 @@ saida=$(awk '
     em_bloco = 0
   }
   BEGIN { split("Origem|Por que agora|Ganho|Confiança|Nota|Faltas|Status", rot, "|") }
-  /^## Rodada / { if (rodada) { fecha_bloco(); exit } rodada = 1; next }
+  /^## / {
+    if (rodada) { fecha_bloco(); exit }
+    if ($0 ~ /^## Rodada / && (alvo == "" || index($0, "## Rodada " alvo) == 1)) { rodada = 1; achou = 1 }
+    next
+  }
   !rodada { next }
   /^### / {
     fecha_bloco(); em_bloco = 1; k = 0; achou_cerca = 0; na_cerca = 0; id = ""
@@ -57,7 +64,7 @@ saida=$(awk '
     if (r == "Status" && $0 !~ /^Status: (aberta|usada em [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])/) prob("Status invalido: " $0)
   }
   END {
-    if (!rodada) { print "sem rodada: nenhum cabecalho ## Rodada"; ruim++ }
+    if (!achou) { print "sem rodada: nenhum cabecalho ## Rodada" (alvo != "" ? " " alvo : ""); ruim++ }
     else { if (na_cerca) prob("cerca de codigo sem fechamento"); fecha_bloco() }
   }
 ' "$arq")
