@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Testa scripts/checkup.sh: itens obrigatorios (git, voz.md, icp.md), opcionais
-# (node, jq, marca.md), contagem de pecas em aberto, codigo de saida e pasta
+# (node, jq, marca.md, pautas.md), contagem de pecas em aberto, codigo de saida e pasta
 # de contexto com espaco no nome.
 set -u
 raiz=$(cd "$(dirname "$0")/../.." && pwd)
@@ -48,6 +48,16 @@ completa "$d/semmarca"; rm "$d/semmarca/marca.md"
 roda "$d/semmarca"
 espera_cod   "marca.md ausente" 0
 espera_linha "marca.md ausente" '^opcional marca.md'
+
+# 3b. pautas.md: ausente e opcional; com conteudo conta como ok
+completa "$d/pautas"; rm -f "$d/pautas/pautas.md"
+roda "$d/pautas"
+espera_cod   "pautas.md ausente" 0
+espera_linha "pautas.md ausente" '^opcional pautas.md'
+cp "$raiz/evals/fixtures/hugo-radar-anterior/pautas.md" "$d/pautas/pautas.md"
+roda "$d/pautas"
+espera_cod   "pautas.md com conteudo" 0
+espera_linha "pautas.md com conteudo" '^ok pautas.md'
 
 # 4. sem node e sem jq: opcional, nao falha
 roda "$d/cheia" "$d/bin-sem-nodejq"

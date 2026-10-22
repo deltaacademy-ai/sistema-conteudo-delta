@@ -61,6 +61,9 @@ else ok marca.md; fi
 if vazio "$pasta/banidas.txt"; then opcional banidas.txt "sem ele a checagem de termo proibido não roda; o especialista entrevista-voz gera"
 else ok banidas.txt; fi
 
+if vazio "$pasta/pautas.md"; then opcional pautas.md "sem ele não há lista de pautas; peça \"me dá pautas\" e o especialista radar-pautas grava"
+else ok pautas.md; fi
+
 # Pecas em aberto: coluna Status achada pelo nome no cabecalho; trechos entre
 # aspas (o Gancho) saem antes de dividir a linha, porque podem conter "|".
 contagem=$(awk -F'|' '

@@ -97,8 +97,9 @@ Na primeira peça aparecem vários pedidos de permissão que você não digitou.
 - **`bash .../scripts/check-voz.sh`:** a checagem de travessão, emoji e termo proibido. Às vezes vem junto com `rm -f`, que apaga só o rascunho temporário que o próprio sistema acabou de gravar.
 - **`node .../scripts/render-carrossel.mjs`:** gera os PNGs e o PDF do carrossel.
 - **`jq`, `wc`, `cmp`, `mkdir`, `cp`:** leem o JSON do carrossel, contam caracteres, conferem a cópia do post e montam a pasta `publicar/`.
+- **Busca na web e leitura de página (só no pedido de pautas):** o `radar-pautas` procura novidades do seu nicho nos últimos 15 dias. É a busca que o seu Claude Code já tem. Ele só lê: não envia, não publica e não grava fora da sua pasta de conteúdo, onde grava o `pautas.md`. Sem liberar, a lista sai só dos seus arquivos e o sistema diz que a busca não estava disponível.
 
-Nenhum desses comandos sai da sua pasta de conteúdo ou da pasta do plugin, e nenhum acessa a internet. Pode escolher "sempre permitir" pra não ver o pedido de novo. Se negar algum, o sistema faz o que dá sem ele e diz o que ficou por conferir.
+Nenhum desses comandos sai da sua pasta de conteúdo ou da pasta do plugin. Só o radar acessa a internet, e só para ler. Pode escolher "sempre permitir" pra não ver o pedido de novo. Se negar algum, o sistema faz o que dá sem ele e diz o que ficou por conferir.
 
 ## Atualizar
 
