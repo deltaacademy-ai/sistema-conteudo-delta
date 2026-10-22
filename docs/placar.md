@@ -84,3 +84,4 @@ Saídas de 70 bytes ("You've hit your weekly limit") da rodada de 19/09 foram mo
 | motor 05 e 01 a 03, medição final | `528a4e4` | Sonnet 4 de 4, Opus 4 de 4: 8 de 8 PASSA | `motor-t3-final-a` |
 | motor 04 normal, medição final | `528a4e4` | Opus PASSA; Sonnet NAO PASSA (sem pasta publicar, Atualizado sem a data de hoje, verbo no presente na frase do 37) | `motor-t3-final-04` |
 | motor 04 com `PROVA_CONFLITO=1`, medição final | `528a4e4` | Opus PASSA (parou no veredito reescrever); Sonnet NAO PASSA (sem pasta publicar, verbo no presente, mensagem sem veredito do revisor) | `motor-t3-final-04c` |
+| radar-pautas rede (busca de verdade, WebSearch e WebFetch liberados), medição única, 4 pautas de notícia lidas e 5 links abertos | `77f7ef3` | Sonnet PASSA, Opus PASSA: 2 de 2; links: 5 de 5 conferem (data, trecho e números) | `radar-pautas-t4` |
