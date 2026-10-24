@@ -142,11 +142,11 @@ Medido sobre `335acfa` mais `scripts/eval/instalacao-limpa.sh`. Sem modelo. Bran
 
 | Portão | Commit | Resultado |
 |---|---|---|
-| `instalacao-limpa.sh`, itens 1 a 7 | `335acfa` + script | 7 de 7 ok: credential helper, `git ls-remote`, `plugin install` (0.2.0, clone do marketplace em HTTPS sem chave SSH), `plugin list` habilitado, `plugin validate`, cópia do `contexto-modelo` com `git init`, `checkup.sh` com `falta voz.md`, `falta icp.md`, `pendencias: 2`, código 1 e nenhum caminho do repositório de desenvolvimento |
+| `instalacao-limpa.sh`, itens 1 a 7 | `335acfa` + script | 7 de 7 ok: credential helper, `git ls-remote`, `plugin install` (0.2.0, clone do marketplace em HTTPS sem chave SSH; o fluxo `gh auth setup-git` só é provado no roteiro da pessoa real, porque provar aqui exigiria gravar credencial em `$H`), `plugin list` habilitado, `plugin validate`, cópia do `contexto-modelo` com `git init`, `checkup.sh` com `falta voz.md`, `falta icp.md`, `pendencias: 2`, código 1 e nenhum caminho do repositório de desenvolvimento |
 | `COM_CHROMIUM=1`, item 8 | `335acfa` + script | ok: o comando impresso fica dentro de `$H` e o check-up passa a mostrar `ok chromium` |
 | Sabotagem do item 7 (`pendencias: 3` esperado), cópia descartável | `335acfa` + script | `FALHA 7`, código 1: o script não passa por padrão |
 | `marketplace update` e `plugin update` no mesmo `$H` | `335acfa` | ambos saem com 0 e dizem "already at the latest version (0.2.0)"; a prova de que a versão nova chega depende de uma release nova (item 9, pendente) |
 
-Achados do teste, todos de ambiente e já tratados no script, nenhum erro no `INSTALAR.md`: (1) o Keychain do gh não existe num HOME falso, então o token vai só em memória (`GH_TOKEN`) para os comandos do teste; (2) o `osxkeychain` do gitconfig de sistema trava sem o Keychain real (`GIT_CONFIG_NOSYSTEM=1`); (3) o `ssh` acha `~/.ssh` pelo usuário do sistema, não pelo `$HOME`, e sem bloquear isso o teste usaria a chave real.
+Achados do teste, todos de ambiente e já tratados no script, nenhum erro no `INSTALAR.md`: (1) o Keychain do gh não existe num HOME falso, então o token vai só em memória, numa variável não exportada, e apenas para `git ls-remote` e `claude plugin install`; (2) o `osxkeychain` do gitconfig de sistema trava sem o Keychain real (`GIT_CONFIG_NOSYSTEM=1`); (3) o `ssh` acha `~/.ssh` pelo usuário do sistema, não pelo `$HOME`, e sem bloquear isso o teste usaria a chave real.
 
 Fica para a pessoa real, no roteiro do relatório da tarefa: convite numa conta sem acesso, `gh auth login` no navegador, login do Claude Code, auto-update na tela `/plugin`, check-up e aviso de modelo na primeira conversa, "travei" com a issue. Tempo e pontos de ajuda ainda não medidos.

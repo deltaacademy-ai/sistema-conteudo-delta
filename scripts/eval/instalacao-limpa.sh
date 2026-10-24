@@ -9,7 +9,7 @@
 #
 # Credencial: o gh guarda o token no Keychain, que um HOME falso nao alcanca. O
 # token sai do gh real direto para uma variavel de memoria (GH_TOKEN) e so vale
-# para os comandos deste script. Nunca e impresso nem gravado. Toda saida de
+# para git ls-remote e claude plugin install (variavel nao exportada). Nunca e impresso nem gravado. Toda saida de
 # comando passa por mascara antes de aparecer.
 # Compativel com o bash 3.2 do macOS.
 set -u
@@ -28,21 +28,22 @@ mostra() { mascara < "$1" | sed 's/^/      /' | head -${2:-15}; }
 [ -n "$gh_bin" ] || { echo "FALHA gh nao encontrado"; exit 1; }
 
 # Token em memoria, lido com o HOME real. Nada disso vai para arquivo.
-GH_TOKEN=$(HOME="$real_home" "$gh_bin" auth token 2>/dev/null || true)
-if [ -z "$GH_TOKEN" ]; then echo "FALHA gh real sem login; rode gh auth login no HOME real antes"; exit 1; fi
-export GH_TOKEN
+tok=$(HOME="$real_home" "$gh_bin" auth token 2>/dev/null || true)
+if [ -z "$tok" ]; then echo "FALHA gh real sem login; rode gh auth login no HOME real antes"; exit 1; fi
 unset GH_ENTERPRISE_TOKEN GITHUB_TOKEN GITHUB_ENTERPRISE_TOKEN
 
-H=$(mktemp -d)
+H=$(mktemp -d) || { echo "FALHA mktemp"; exit 1; }
+case "$H" in /*/tmp.*|/tmp/*|/private/tmp/*|/var/folders/*) ;; *) echo "FALHA H fora do diretorio temporario: $H"; exit 1 ;; esac
+[ -d "$H" ] && [ "$H" != "/" ] || { echo "FALHA H invalido"; exit 1; }
 log="$H/.log-teste"; mkdir -p "$log"
 cleanup() {
   if [ "${MANTER:-0}" = "1" ]; then
     for f in "$log"/*; do [ -f "$f" ] && mascara < "$f" > "$f.m" && mv "$f.m" "$f"; done
     echo "MANTER=1: $H ficou. O script grava ali so o .gitconfig (linha do credential.helper do gh),"
     echo "  o plugin, a pasta conteudo, o cache do npm e os logs em .log-teste (com a mascara aplicada)."
-    if grep -rlF "$GH_TOKEN" "$H" >/dev/null 2>&1; then
+    if grep -rlF "$tok" "$H" >/dev/null 2>&1; then
       echo "  ATENCAO: o token real aparece em arquivos de $H:"
-      grep -rlF "$GH_TOKEN" "$H" 2>/dev/null | sed 's/^/    /'
+      grep -rlF "$tok" "$H" 2>/dev/null | sed 's/^/    /'
     else
       echo "  varredura: o token real nao aparece em nenhum arquivo de $H"
     fi
@@ -54,6 +55,7 @@ cleanup() {
   fi
 }
 trap cleanup EXIT
+trap 'exit 130' INT TERM HUP
 
 # Ambiente do teste: HOME falso, sem agente SSH (a pessoa nova nao tem chave:
 # o Claude Code tenta SSH primeiro e cai para HTTPS), sem pasta de config do claude.
@@ -63,9 +65,10 @@ export GIT_TERMINAL_PROMPT=0
 # O gitconfig de sistema da maquina de desenvolvimento chama o osxkeychain, que
 # trava sem o Keychain do HOME real. Fora do teste, uma pessoa nova tem o dele.
 export GIT_CONFIG_NOSYSTEM=1
-# O ssh acha ~/.ssh pelo usuario do sistema, nao pelo $HOME. Sem este bloqueio o
-# teste usaria a chave SSH real e nao provaria o caminho de quem so tem o gh.
-export GIT_SSH_COMMAND='ssh -F /dev/null -o IdentityAgent=none -o IdentitiesOnly=yes -o BatchMode=yes -o UserKnownHostsFile=/dev/null'
+# O ssh acha ~/.ssh pelo usuario do sistema (getpwuid), nao pelo $HOME, e -F /dev/null
+# nao impede as chaves padrao: IdentityFile=/dev/null e IdentitiesOnly=yes impedem.
+# Sem este bloqueio o teste usaria a chave SSH real e nao provaria o caminho HTTPS.
+export GIT_SSH_COMMAND='ssh -F /dev/null -o IdentityFile=/dev/null -o IdentityAgent=none -o IdentitiesOnly=yes -o BatchMode=yes -o UserKnownHostsFile=/dev/null'
 # Nenhum passo de rede pode travar o teste.
 limite() { perl -e 'alarm shift; exec @ARGV' "$@"; }
 
@@ -74,14 +77,18 @@ git config --global credential.helper "!$gh_bin auth git-credential"
 if [ "$(git config --global credential.helper)" = "!$gh_bin auth git-credential" ]; then ok "1 credential helper do gh gravado no HOME temporario"; else erro "1 credential helper nao gravou"; fi
 
 # 2. git ls-remote
-if limite 60 git ls-remote https://github.com/hdoria/sistema-conteudo.git HEAD > "$log/lsremote" 2>&1 && grep -qE '^[0-9a-f]{40}[[:space:]]+HEAD$' "$log/lsremote"; then
+if GH_TOKEN="$tok" limite 60 git ls-remote https://github.com/hdoria/sistema-conteudo.git HEAD > "$log/lsremote" 2>&1 && grep -qE '^[0-9a-f]{40}[[:space:]]+HEAD$' "$log/lsremote"; then
   ok "2 git ls-remote devolve uma linha com HEAD"
 else
   erro "2 git ls-remote sem linha HEAD"; mostra "$log/lsremote"
 fi
 
 # 3. claude plugin install
-limite 240 claude plugin install sistema-conteudo --marketplace hdoria/sistema-conteudo > "$log/install" 2>&1 < /dev/null
+# Limitacao: o Claude Code clona via git e o helper `gh auth git-credential` le o
+# GH_TOKEN do ambiente. Por isso este item prova o transporte HTTPS sem SSH, mas nao
+# o fluxo `gh auth setup-git` do INSTALAR.md: prova-lo exigiria gravar credencial em $H.
+# Esse fluxo so e provado no roteiro da pessoa real.
+GH_TOKEN="$tok" limite 240 claude plugin install sistema-conteudo --marketplace hdoria/sistema-conteudo > "$log/install" 2>&1 < /dev/null
 cod=$?
 if [ "$cod" -ne 0 ] && grep -Eqi 'not logged in|/login|please log ?in|sign in|authenticat' "$log/install"; then
   erro "3 login exigido (o item e os seguintes passam para o roteiro da pessoa real)"; mostra "$log/install"
