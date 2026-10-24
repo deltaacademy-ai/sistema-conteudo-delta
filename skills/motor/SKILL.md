@@ -1,6 +1,6 @@
 ---
 name: motor
-description: Orquestra a produção de uma peça do começo ao pacote de publicação. Confere a pasta de contexto, chama os especialistas na ordem certa (angulo, gancho, linkedin-post, revisor), para para a pessoa aprovar a peça principal e só depois deriva o carrossel (carrossel-roteiro, carrossel-render) e monta o pacote (publicar), mantendo base-conteudo.md atualizada. Use quando a pessoa trouxer uma ideia, um tema, uma notícia ou um fato e pedir "faz um post disso", "roda o sistema", "quero publicar sobre X", quando ela pedir pautas ("me dá pautas", "roda o radar", "tem pauta sobre X?"), quando ela disser "aprovado" para seguir com os derivados, ou quando não souber por qual especialista começar. Não escreve nada: toda regra de escrita vive no especialista que escreve.
+description: Orquestra a produção de uma peça do começo ao pacote de publicação. Confere a pasta de contexto, chama os especialistas na ordem certa (angulo, gancho, linkedin-post, revisor), para para a pessoa aprovar a peça principal e só depois deriva o carrossel (carrossel-roteiro, carrossel-render) e monta o pacote (publicar), mantendo base-conteudo.md atualizada. Use quando a pessoa trouxer uma ideia, um tema, uma notícia ou um fato e pedir "faz um post disso", "roda o sistema", "quero publicar sobre X", quando ela pedir pautas ("me dá pautas", "roda o radar", "tem pauta sobre X?"), quando ela disser "aprovado" para seguir com os derivados, "continuar" ou "onde parei", "faz um check-up" ou "travei", ou quando não souber por qual especialista começar. Não escreve nada: toda regra de escrita vive no especialista que escreve.
 ---
 
 # Motor
@@ -29,11 +29,12 @@ A pasta de contexto é a pasta atual, a que tem (ou vai ter) `voz.md`; se a pess
 - `pautas.md`: escrito e mantido pelo `radar-pautas`; opcional.
 - `base-conteudo.md`, `learnings.md`, `config.md`: podem estar vazios; o `linkedin-post` cria a tabela, o `learnings.md` cresce com as correções e o `publicar` trata `config.md`.
 
-Arquivo vazio é o que não existe ou só tem o cabeçalho e a linha de instrução do `contexto-modelo` (até 3 linhas). Pedido de pautas ("me dá pautas", "roda o radar", "tem pauta sobre X?") não passa por esta etapa: vai direto ao `radar-pautas` (Etapa 1), que lê a pasta e diz o que falta. Para os outros pedidos, na primeira execução:
+Arquivo vazio é o que não existe ou só tem o cabeçalho e a linha de instrução do `contexto-modelo` (até 3 linhas). Pedido de pautas ("me dá pautas", "roda o radar", "tem pauta sobre X?") não passa por esta etapa: vai direto ao `radar-pautas` (Etapa 1), que lê a pasta e diz o que falta. Os pedidos de check-up, "travei", "deu erro", "continuar" e "onde parei" também não passam por esta etapa: a Etapa 1 responde e nenhum especialista é chamado, mesmo com `voz.md` vazio (a resposta diz que o próximo passo é a entrevista, e ela só abre quando a pessoa a pede). Para os outros pedidos, na primeira execução:
 
-- `voz.md` vazio: chame o `entrevista-voz` antes de tudo, e diga em uma linha por quê: sem `voz.md` todo especialista escreve como IA genérica, e a peça sairia com a voz de ninguém.
+- `voz.md` vazio: rode o check-up (o procedimento é o do bullet "Faz um check-up" da Etapa 1) e repasse a saída antes de qualquer pergunta da entrevista. `falta voz.md` e `falta icp.md` não viram aviso: são o que a entrevista e a conversa de negócio vão resolver. `falta git` fica dito antes da entrevista, sem pará-la. Sem permissão para o script, diga isso em uma linha e siga. Depois chame o `entrevista-voz`, e diga em uma linha por quê: sem `voz.md` todo especialista escreve como IA genérica, e a peça sairia com a voz de ninguém.
 - `icp.md` vazio: chame o `contexto-negocio` antes de tudo, e diga em uma linha por quê: sem `icp.md` ninguém sabe para quem a peça existe nem o que pode ser afirmado.
 - Os dois vazios: `entrevista-voz` primeiro, `contexto-negocio` depois, com a mesma linha de motivo para cada um.
+- Ao encaminhar para o `entrevista-voz` ou o `contexto-negocio`, diga também, uma vez, junto da linha de motivo: `Esta conversa rende mais no modelo mais forte do seu plano; o dia a dia pode rodar no padrão.` O motor não instala nada pela pessoa: se o check-up trouxe um comando, ele o diz como comando para a pessoa rodar.
 
 Esses dois especialistas conversam com a pessoa (entrevista, perguntas, validação). O motor entrega a conversa a eles e só retoma o fluxo quando os arquivos existirem e a pessoa trouxer o tema de novo; não tente escrever o post na mesma conversa em que a voz foi compilada. `prova.md` ou `marca.md` vazios com `icp.md` preenchido não param o fluxo: os especialistas marcam `[FALTA]` no que depender deles, e o motor lista isso na parada.
 
@@ -48,14 +49,40 @@ O estado do fluxo vive em disco, não na conversa: `saida/` guarda o briefing, o
 - "Aprovado" (ou "aprova", "pode seguir", "tá bom, segue"): Etapa 3, sobre a peça mais recente com status `rascunho` em `base-conteudo.md` (ou a que a pessoa nomear). Se a mensagem traz a peça colada e ela não está em `saida/`, grave o texto em `saida/post-AAAA-MM-DD-<tema>.md` (data de hoje, tema em kebab-case) e registre a linha na base no formato que o `linkedin-post` define (Etapa 5 dele), com status `rascunho`, antes de aprovar. Peça aprovada precisa existir em arquivo para o `publicar` encontrá-la depois.
 - "Ajusta X", "outro ângulo", "quero o gancho B": o pedido volta ao especialista dono daquela decisão (Etapa 2, ponto certo), e o fluxo segue dali até a parada de novo.
 - "Publica", "monta o pacote", "publicado": Etapa 4.
-- "Faz um check-up", "travei", "não está funcionando": nenhum especialista de escrita roda. "Travei" e "não está funcionando" só valem como check-up quando vêm sem objeto; "travei no gancho" ou "esse ângulo não está funcionando" vão para a peça (Etapa 2, ponto certo).
+- "Faz um check-up", "travei", "deu erro", "não está funcionando": nenhum especialista de escrita roda. "Travei", "deu erro" e "não está funcionando" só valem como check-up quando vêm sem objeto (ou só com a mensagem de erro colada); "travei no gancho" ou "esse ângulo não está funcionando" vão para a peça (Etapa 2, ponto certo).
   - Rode `bash [raiz do plugin]/scripts/checkup.sh` na pasta de contexto (a raiz do plugin é a de "Etapa 2", passo 4), sozinho, sem `echo` encadeado e sem busca de arquivo, e repasse a saída inteira.
   - O código é 0 se a linha final for `pendencias: 0`, senão 1. Diga na resposta o código e que ele foi lido pela saída.
-  - O script só lê, não grava nada. Para cada linha `falta`, diga o próximo passo em uma linha (o comando ou o especialista que a própria linha indica). Linha `opcional` não trava o fluxo: cite só o que muda para a pessoa.
+  - O script só lê, não grava nada. Para cada linha `falta`, diga o próximo passo em uma linha (o comando ou o especialista que a própria linha indica). Linha `opcional` não trava o fluxo: cite só o que muda para a pessoa. Linha `andamento` não é pendência: diga que a entrevista está em andamento e o que a própria linha manda fazer.
   - Para `pecas em aberto`, liste as peças com status `rascunho` ou `aprovado` da base, como na pergunta de desambiguação acima.
   - Sem permissão para rodar o script, diga isso e peça à pessoa que o rode e cole a saída.
+  - Quando o pedido foi "travei", "deu erro" ou "não está funcionando", o bullet termina no "Pedido de suporte" (seção abaixo), depois do check-up.
+- "Continuar", "onde parei": nenhum especialista roda. Rode o check-up como no bullet acima e leia `base-conteudo.md`; a resposta sai dos dois. A resposta é uma lista curta: primeiro o que o check-up pede (`falta voz.md` ou linha `andamento entrevista-voz`: o próximo passo é a entrevista de voz, e a pessoa a retoma com o pedido que a própria linha traz; `falta icp.md`: o `contexto-negocio`), depois uma linha por peça com status `rascunho` ou `aprovado`, cada uma com o próximo passo: `rascunho`, aprovar; `aprovado`, derivar o carrossel ou montar o pacote. Sem nada em aberto, diga isso e que a pessoa pode trazer um tema. O estado vive em `saida/` e na base; nenhum arquivo de progresso é criado. A resposta termina no próximo passo dito, sem ponto de interrogação.
 
 Se não der para saber a que peça a pessoa se refere, pergunte em uma linha, listando as peças com status `rascunho` ou `aprovado` da base.
+
+## Pedido de suporte
+
+Esta seção é a única dona do modelo do pedido de suporte. O motor o monta depois do check-up (Etapa 1) e o entrega em cerca de código sem linguagem, com estas seis linhas, nesta ordem:
+
+```
+Onde parou: [etapa e especialista, lidos da conversa e da base-conteudo.md]
+O que pedi: [uma linha, sem colar conteúdo da peça]
+Erro: [a mensagem como apareceu, já mascarada; "nenhum" se a pessoa não colou]
+Versão do plugin: [campo version de .claude-plugin/plugin.json na raiz do plugin]
+Sistema: [o sistema operacional que o host informa]
+Check-up: [a saída inteira do checkup.sh, já mascarada, uma linha da saída por linha]
+```
+
+Falta vira marcador: sem acesso ao `plugin.json`, `Versão do plugin: [FALTA: versão do plugin; a pessoa vê com claude plugin list]`; sem a informação do sistema, `Sistema: [FALTA: sistema operacional]`. Nada é estimado.
+
+Mascarar tudo o que vai na cerca, antes de entregar:
+
+- Token vira `[removido]`: sequência que começa com `ghp_`, `gho_`, `sk-` ou `xox`, e qualquer sequência de 20 ou mais caracteres alfanuméricos seguidos.
+- `/Users/<nome>` e `/home/<nome>` viram `~`.
+- A máscara vale para a resposta inteira, não só para a cerca: ao comentar o erro, o motor não repete o token nem o caminho original. Se havia token, diga em uma linha, sem repeti-lo, que ele apareceu na conversa e deve ser revogado e trocado por outro.
+- Não entram, mesmo que estejam à vista: senha, chave, nome de cliente, número de `prova.md`, trecho de `voz.md`, `voz-bruta.md`, `icp.md` ou do post.
+
+Depois da cerca, o link `https://github.com/hdoria/sistema-conteudo/issues/new` e uma linha dizendo que a issue fica visível para quem tem acesso ao repositório, e por isso o pedido não leva dado sensível. O motor não abre a issue (nenhum comando dele toca em rede) e a resposta termina aí, sem pergunta. O `.github/ISSUE_TEMPLATE/suporte.md` traz os mesmos seis rótulos para quem abre a issue à mão.
 
 ## Etapa 2: até a peça principal
 
@@ -131,7 +158,7 @@ O motor não roda nada sozinho: cada comando passa pela permissão do host, e na
 - `bash [raiz do plugin]/scripts/check-voz.sh ...`: a checagem mecânica de travessão, emoji e termo banido, que todo especialista roda. O comando vem encadeado com `echo "codigo $?"` e `rm -f <rascunho>`; o `rm` só apaga o rascunho temporário que o próprio especialista acabou de gravar. Host que avalia permissão por prefixo pode recusar o encadeamento inteiro; nesse caso os especialistas rodam o script sozinho e apagam o rascunho num segundo comando, e dizem que leram o código pela saída.
 - `node [raiz do plugin]/scripts/render-carrossel.mjs ...`: o render do carrossel (PNG e PDF), só depois da copy aprovada. Precisa de Node e do Chromium do Playwright instalados uma vez (`carrossel-render`, Etapa 3 diz como); sem eles o render entrega o HTML e a instrução de exportar à mão.
 - `bash [raiz do plugin]/scripts/checa-pautas.sh pautas.md ...`: a conferência da forma, das datas e da origem das pautas, que o `radar-pautas` roda antes de entregar. Só lê o `pautas.md`; não grava nada. Negado, o radar entrega com a `Checagem:` dizendo que a conferência ficou por leitura.
-- `bash [raiz do plugin]/scripts/checkup.sh`: o check-up ("faz um check-up", Etapa 1). Só lê a pasta de contexto e confere se `git`, `node` e `jq` estão no PATH e se o Chromium do Playwright abre via `require("playwright")` a partir da raiz do plugin; não grava nada.
+- `bash [raiz do plugin]/scripts/checkup.sh`: o check-up ("faz um check-up", "travei" e "continuar" na Etapa 1, e a primeira execução com `voz.md` vazio na Etapa 0). Só lê a pasta de contexto e confere se `git`, `node` e `jq` estão no PATH e se o Chromium do Playwright abre via `require("playwright")` a partir da raiz do plugin; não grava nada.
 - `jq`, `wc -m`, `cmp`: leitura de campo do `carrossel.json`, contagem de caracteres e conferência do post copiado. `jq` não vem instalado no macOS; sem ele o `publicar` lê o JSON e grava o campo à mão, e o `carrossel-roteiro` confere o JSON por leitura, e os dois dizem isso na resposta.
 - `mkdir -p` e `cp`: a montagem da pasta `publicar/<data>-<tema>/`, com os PNGs e o PDF copiados como binário.
 
