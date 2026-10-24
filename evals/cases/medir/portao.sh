@@ -133,13 +133,13 @@ confere_03() { # confere_03 <arquivos> <fixture> <resposta>
   grep -qiE 'idade' <<< "$b" || m="$m resumo-sem-idade-das-leituras"
   grep -qE '^- ' <<< "$b" || m="$m resumo-sem-linha-de-grupo"
   while IFS= read -r linha; do
-    grep -qE '\([0-9]+ pe[çc]as?\)|poucos dados \([0-9]+\)' <<< "$linha" || m="$m grupo-sem-numero-de-pecas:${linha:0:40}"
-    grep -qE '\([12] pe[çc]as?\)' <<< "$linha" && m="$m grupo-pequeno-com-conta:${linha:0:40}"
+    grep -qE '\([0-9]+ pe[çc]as?[:)]|poucos dados \([0-9]+\)' <<< "$linha" || m="$m grupo-sem-numero-de-pecas:${linha:0:40}"
+    grep -qE '\([12] pe[çc]as?[:)]' <<< "$linha" && m="$m grupo-pequeno-com-conta:${linha:0:40}"
     grep -qE 'poucos dados \([3-9]' <<< "$linha" && m="$m poucos-dados-em-grupo-de-3-ou-mais:${linha:0:40}"
     grep -qE 'poucos dados' <<< "$linha" && grep -qiE 'média|media' <<< "$linha" && m="$m poucos-dados-com-media:${linha:0:40}"
   done < <(grep -E '^- ' <<< "$b")
   grep -E '^- ' <<< "$b" | grep -iE '(^- *caso|tipo caso|caso *\(|caso:)' | grep -qE 'poucos dados \(2\)' || m="$m grupo-caso-sem-poucos-dados-2"
-  grep -E '^- ' <<< "$b" | grep -E '\([3-9] pe[çc]as?\)' | grep -qiE 'média|media' || m="$m nenhum-grupo-de-3-ou-mais-com-media"
+  grep -E '^- ' <<< "$b" | grep -E '\([3-9] pe[çc]as?[:)]' | grep -qiE 'média|media' || m="$m nenhum-grupo-de-3-ou-mais-com-media"
   grep -qE '^Falta(m)? ' "$3" && m="$m resposta-com-Falta-apesar-das-8-pecas"
   echo "$m"
 }

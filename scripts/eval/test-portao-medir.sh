@@ -117,6 +117,10 @@ $RESUMO
 Checagem: check-voz.sh código 0 em metricas.md. Resposta conferida na leitura."
 prepara 03 hugo-medir-8; resp "$RESP03" 03; grava 03 "$ROW03"
 roda 03 PASSA - "03 certo passa"
+prepara 03 hugo-medir-8; resp "${RESP03//- teardown (3 peças): impressões média 1.187, reações média 33/- teardown (3 peças: 2026-08-03, 2026-08-12, 2026-08-28): impressões média 1.187}" 03; grava 03 "$ROW03"
+roda 03 PASSA - "03 aceita a lista das pecas dentro do parentese do grupo"
+prepara 03 hugo-medir-8; resp "${RESP03//- caso: poucos dados (2)/- caso (2 peças: 2026-09-14, 2026-09-22): impressões média 1.695}" 03; grava 03 "$ROW03"
+roda 03 "NAO PASSA" "grupo-pequeno-com-conta" "03 reprova media em grupo de 2 com a lista das pecas"
 prepara 03 hugo-medir-8; resp "Medir: gravado.
 Peças medidas: 8 de 8.
 Checagem: check-voz.sh código 0." 03; grava 03 "$ROW03"
