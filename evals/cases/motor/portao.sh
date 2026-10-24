@@ -34,7 +34,11 @@
 # Caso 05 (pauta do radar vira peca e fica usada): so o turno 1 roda. O caso e a fixture passam por
 #   scripts/eval/datas-relativas.sh antes de rodar. Alem dos criterios do turno 1, pautas.md precisa
 #   ter a linha `Status: usada em <hoje>` no bloco do identificador do pedido e nenhuma outra linha mudada.
-# ESTADO_DE=<rodada>: reaproveita o turno 1 daquela rodada (so os turnos seguintes rodam).
+# Caso 06 (pedido de pautas numa pasta sem icp.md): so o turno 1 roda, sem "nao faca perguntas" no prompt.
+#   Passa se a resposta nao tem pergunta (nenhum "?"), diz que falta icp.md e que o contexto-negocio monta,
+#   e a pasta ficou igual a fixture hugo-radar-sem-icp (sem pautas.md, icp.md nem saida/).
+# ESTADO_DE=<rodada>: reaproveita o turno 1 daquela rodada (so os turnos seguintes rodam; nos casos 05 e 06,
+#   o turno 1 inteiro, com o estado de datas dele).
 #
 # A linha da peca e ancorada por Data e Tema (as duas primeiras celulas da linha rascunho
 # do turno 1), nao pela primeira linha que casa. Celulas sao contadas pelos `|` da linha
@@ -202,16 +206,15 @@ confere_fim() { # confere_fim <arquivos-de-saida> <saida.md> -> achados sobre a 
   echo "$m"
 }
 
-confere_pautas() { # confere_pautas <fixture-de-entrada> <arquivos-de-saida> <id-da-pauta> -> achados sobre pautas.md (caso 05)
-  local e="$1/pautas.md" o="$2/pautas.md" id="$3" hoje
+confere_pautas() { # confere_pautas <fixture-de-entrada> <arquivos-de-saida> <id-da-pauta> <hoje-da-execucao> -> achados sobre pautas.md (caso 05)
+  local e="$1/pautas.md" o="$2/pautas.md" id="$3" hoje="$4"
   [ -f "$o" ] || { echo " pautas-sumiu"; return; }
-  hoje=$(date +%F)
   awk -v id="$id" -v hoje="$hoje" '
     /^### /{ em = (index($0, "### " id ":") == 1) }
     /^## /{ em = 0 }
     em && /^Status:/ { print "Status: usada em " hoje; next }
     { print }' "$e" > "$o.esperado"
-  diff -B "$o.esperado" "$o" >/dev/null || echo " pautas-diferem-do-esperado"
+  diff "$o.esperado" "$o" >/dev/null || echo " pautas-diferem-do-esperado"
   rm -f "$o.esperado"
 }
 
@@ -223,15 +226,55 @@ prepara_turno() { # prepara_turno <arquivos-de-origem> <nome-da-fixture> <caso.m
   echo "$caso2"
 }
 
-job05() { # job05 <modelo>: so o turno 1, sobre o caso e a fixture com as datas de hoje
-  local m="$1" n="05-$1" t1 a1 est caso2 id f1 f2
+reaproveita_t1() { # reaproveita_t1 <nome> <t1> <a1> [estado-de-datas-de-origem <est>]: copia o turno 1 de ESTADO_DE
+  local n="$1" t1="$2" a1="$3" est="${4:-}" orig="evals/results/nova/motor-${ESTADO_DE:-}"
+  [ -s "$t1" ] && return 0
+  [ -n "${ESTADO_DE:-}" ] && [ -s "$orig/$n-t1.md" ] || return 1
+  [ -z "$est" ] || [ -d "$orig/estado/datas-${n#*-}" ] || return 1
+  cp "$orig/$n-t1.md" "$t1"; rm -rf "$a1"; cp -R "$orig/$n-t1.md.arquivos" "$a1"
+  [ -z "$est" ] || { rm -rf "$est"; cp -Rp "$orig/estado/datas-${n#*-}" "$est"; }
+  log "t1 $n reaproveitado de $ESTADO_DE"
+}
+
+job05() { # job05 <modelo>: so o turno 1, sobre o caso e a fixture com as datas de hoje (ou as da rodada de ESTADO_DE)
+  local m="$1" n="05-$1" t1 a1 est caso2 id f1 f2 hoje
   t1="$R/$n-t1.md"; a1="$t1.arquivos"; est="$R/estado/datas-$m"
-  caso2=$(bash scripts/eval/datas-relativas.sh evals/cases/motor/05.md "$est") || { echo "$n | datas-relativas FALHOU | NAO PASSA" >> "$PL"; return; }
+  if reaproveita_t1 "$n" "$t1" "$a1" "$est" && [ -s "$t1" ] && [ -d "$est/cases" ]; then
+    caso2="$est/cases/motor/05.md"
+  else
+    caso2=$(bash scripts/eval/datas-relativas.sh evals/cases/motor/05.md "$est") || { echo "$n | datas-relativas FALHOU | NAO PASSA" >> "$PL"; return; }
+    date +%F > "$est/hoje.txt"
+  fi
+  hoje=$(cat "$est/hoje.txt" 2>/dev/null || date -r "$caso2" +%F)   # o dia da execucao do turno 1, nao o de agora
   id=$(grep -oE 'P-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+' "$caso2" | head -1)
   if [ ! -s "$t1" ]; then roda "$caso2" "$m" "$t1" || { echo "$n | turno 1 FALHOU (sem saida) | | NAO PASSA" >> "$PL"; return; }; fi
-  f1=$(confere_t1 "$a1" "$t1"); f2=$(confere_pautas "$est/fixtures/hugo-radar-anterior" "$a1" "$id")
+  f1=$(confere_t1 "$a1" "$t1"); f2=$(confere_pautas "$est/fixtures/hugo-radar-anterior" "$a1" "$id" "$hoje")
   log "t1 $n:${f1:- ok} pautas:${f2:- ok}"
   if [ -z "$f1$f2" ]; then echo "$n | t1: ok | pautas: ok | PASSA" >> "$PL"; else echo "$n | t1:${f1:- ok} | pautas:${f2:- ok} | NAO PASSA" >> "$PL"; fi
+}
+
+confere_pedido_pautas() { # confere_pedido_pautas <fixture> <arquivos-de-saida> <saida.md> -> achados (caso 06)
+  local fx="$1" a="$2" s="$3" m="" f rel
+  grep -q '?' "$s" && m="$m resposta-com-pergunta"
+  grep -qiE '(falta|sem|não há|nao ha|não existe|nao existe|ausente)[^.]*icp\.md|icp\.md[^.]*(falta|ausente|não existe|nao existe|não há|nao ha)' "$s" || m="$m resposta-nao-diz-que-falta-icp.md"
+  grep -q 'contexto-negocio' "$s" || m="$m resposta-sem-contexto-negocio"
+  while IFS= read -r -d '' f; do
+    rel="${f#$fx/}"; cmp -s "$f" "$a/$rel" || m="$m arquivo-da-fixture-alterado-ou-sumiu:$rel"
+  done < <(find "$fx" -type f -print0)
+  while IFS= read -r -d '' f; do
+    rel="${f#$a/}"; [ -e "$fx/$rel" ] || m="$m arquivo-novo:$rel"
+  done < <(find "$a" -type f -print0)
+  echo "$m"
+}
+
+job06() { # job06 <modelo>: so o turno 1; pedido de pautas numa pasta sem icp.md
+  local m="$1" n="06-$1" t1 a1 f1
+  t1="$R/$n-t1.md"; a1="$t1.arquivos"
+  reaproveita_t1 "$n" "$t1" "$a1" || true
+  if [ ! -s "$t1" ]; then roda evals/cases/motor/06.md "$m" "$t1" || { echo "$n | turno 1 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi
+  f1=$(confere_pedido_pautas evals/fixtures/hugo-radar-sem-icp "$a1" "$t1")
+  log "t1 $n:${f1:- ok}"
+  if [ -z "$f1" ]; then echo "$n | pedido de pautas: ok | PASSA" >> "$PL"; else echo "$n | pedido de pautas:$f1 | NAO PASSA" >> "$PL"; fi
 }
 
 job() { # job <caso> <modelo>
@@ -275,7 +318,7 @@ job() { # job <caso> <modelo>
   fi
 }
 
-faixa() { local m="$1" c; for c in $CASOS; do if [ "$c" = 05 ]; then job05 "$m"; else job "$c" "$m"; fi; done; log "faixa $m encerrada"; }
+faixa() { local m="$1" c; for c in $CASOS; do case "$c" in 05) job05 "$m";; 06) job06 "$m";; *) job "$c" "$m";; esac; done; log "faixa $m encerrada"; }
 
 log "inicio rodada=$rodada casos=$CASOS modelos=$MODELOS copy=${COPY:-0} encurta=${ENCURTA:-0} estado_de=${ESTADO_DE:-}"
 for m in $MODELOS; do faixa "$m" & done
