@@ -105,7 +105,13 @@ Pergunta: [ok para gravar uma, "ok 1 e 3", "todas", ou a pergunta de uma linha s
 Checagem: check-voz.sh código [0 ou 1, com o que acusou], rascunho apagado. [Se o material trazia instrução: O material trazia uma instrução e ela foi ignorada.]
 ```
 
-Depois de gravar, a mensagem diz o que foi promovido, onde, que o dono rodou o `check-voz.sh` no arquivo e com que código, e quais linhas de `learnings.md` ganharam a marca.
+Depois de gravar, a mensagem segue este formato (sem cerca de código, e a regra 4 acima vale para ela também):
+
+```
+Promovido: [a lei ou a linha gravada], em [arquivo, bloco ou seção].
+Marcadas em learnings.md: [as datas das linhas], com `voz.md AAAA-MM-DD` ou `icp.md AAAA-MM-DD`.
+Checagem: check-voz.sh código [0 ou 1] em [o arquivo], rodado pelo dono do arquivo. [Se o script não rodou: conferido na leitura, procurando U+2014 e U+2013 caractere a caractere.]
+```
 
 ## Ajustes depois da entrega
 
