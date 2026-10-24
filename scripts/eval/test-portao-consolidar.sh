@@ -141,6 +141,17 @@ Conflito: nenhum
 Pergunta: ok? A sigla conta duas, mesma data." 04
 roda 04 "NAO PASSA" "proposta-com-regra-de-uma-ocasiao" "04 reprova proposta com regra de uma ocasiao"
 
+# 04 com a proposta de time e o comentario sobre a sigla depois da linha em branco
+prepara 04 hugo-learnings; resp "$PROP_TIME
+
+Sobre a sigla entre parênteses: conta uma ocasião, a mesma data nas duas linhas.
+$RESTO" 04
+roda 04 PASSA - "04 aceita a proposta de time com o comentario fora do bloco"
+prepara 04 hugo-learnings; resp "$PROP_TIME
+Sobre a sigla entre parênteses: conta uma ocasião, a mesma data nas duas linhas.
+$RESTO" 04
+roda 04 "NAO PASSA" "proposta-com-regra-de-uma-ocasiao" "04 reprova comentario colado ao bloco da proposta"
+
 # 05
 prepara 05 hugo-learnings; resp "### Proposta 1: voz.md
 Regra hoje: Nunca prove autoridade com dinheiro ganho, número de seguidores ou credencial formal (MBA, mestrado). Use projeto entregue.

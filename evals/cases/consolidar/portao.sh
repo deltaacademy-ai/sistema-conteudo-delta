@@ -56,8 +56,8 @@ roda() { # roda <caso.md> <modelo> <saida.md>
   log "FALHOU $(basename "$s")"; return 1
 }
 
-blocos() { # blocos <resposta>: imprime cada bloco "### Proposta" separado por \f
-  awk '/^### Proposta/{if(b!="")printf "%s\f", b; b=$0 "\n"; next} /^(Fora das propostas|Pergunta|Checagem|Sem proposta):/{if(b!="")printf "%s\f", b; b=""; next} b!=""{b=b $0 "\n"} END{if(b!="")printf "%s\f", b}' "$1"
+blocos() { # blocos <resposta>: imprime cada bloco "### Proposta" separado por \f; o bloco acaba na primeira linha em branco
+  awk '/^### Proposta/{if(b!="")printf "%s\f", b; b=$0 "\n"; next} /^[[:space:]]*$/{if(b!="")printf "%s\f", b; b=""; next} /^(Fora das propostas|Pergunta|Checagem|Sem proposta):/{if(b!="")printf "%s\f", b; b=""; next} b!=""{b=b $0 "\n"} END{if(b!="")printf "%s\f", b}' "$1"
 }
 n_propostas() { grep -c '^### Proposta' "$1"; }
 

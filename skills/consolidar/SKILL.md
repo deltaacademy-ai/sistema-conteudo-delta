@@ -60,7 +60,7 @@ Na pasta de contexto (a pasta atual, a que tem `voz.md`; se a pessoa apontar out
 
 O destino é `voz.md` quando a regra é sobre escrita e tom (palavra, ritmo, fecho, forma de frase, o que nunca dizer) e `icp.md` quando é sobre público, oferta e promessa (quem lê, o que o preocupa, o jargão do leitor, o que a oferta entrega, o que o produto não faz, claim). Regra que cabe nos dois ou em nenhum: pergunte qual, em uma linha, e não proponha até ela responder.
 
-Uma proposta por regra, neste formato, sem cerca de código:
+Uma proposta por regra, neste formato. O cabeçalho começa por três cerquilhas (`### Proposta 1: voz.md`), as quatro linhas rotuladas vêm logo abaixo, sem linha em branco entre elas, e uma linha em branco fecha a proposta. Comentário, aviso ou pergunta seus sobre a proposta vão depois dessa linha em branco, nunca dentro do bloco. Sem negrito e sem cerca de código em volta:
 
 ```
 ### Proposta N: <voz.md | icp.md>
@@ -92,7 +92,7 @@ Antes de entregar:
 3. Cada proposta leu o arquivo de destino em `Regra hoje` e `Conflito`.
 4. Sem travessão, sem emoji e sem termo de `banidas.txt`, na resposta inteira. Quando puder rodar script, grave o texto da resposta em `consolidar-rascunho.md` na pasta atual e rode a checagem e a remoção num comando só: `bash [raiz do plugin]/scripts/check-voz.sh consolidar-rascunho.md banidas.txt; echo "codigo $?"; rm -f consolidar-rascunho.md` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita `banidas.txt` se não existe). Citação literal de linha de `learnings.md` não se altera para passar: se o que acusou está dentro de uma citação, a linha `Checagem` diz isso. Sem script, confira na leitura e diga isso. A leitura procura o travessão (U+2014 e U+2013) caractere a caractere, principalmente dentro da `Pergunta` e das linhas de `Fora das propostas`, onde ele escapa mais: se achou, troque por vírgula, dois-pontos ou parênteses antes de entregar. Só escreva "sem travessão" na `Checagem` depois dessa procura.
 
-Entregue assim, com tudo o que a pessoa precisa ler dentro da mensagem:
+Entregue assim (sem cerca de código em volta), com tudo o que a pessoa precisa ler dentro da mensagem:
 
 ```
 Consolidar: [N regras em learnings.md; M com 3 ocasiões ou mais; K pedidas agora]
