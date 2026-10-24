@@ -1,6 +1,7 @@
 ---
 name: radar-pautas
 description: Entrega cerca de 5 pautas ordenadas em pautas.md, na pasta de contexto, cada uma com a origem do fato, por que agora, o ganho e o pedido pronto para colar no motor. Cruza os arquivos da pessoa (base-conteudo.md, prova.md, materiais/, icp.md, voz.md) com o que a busca na web do host achar nos últimos 15 dias, descarta notícia velha, pauta fora do ICP, pauta sem ganho e tema já publicado, e dá nota ao resto. Roda do começo ao fim sem pergunta. Use quando a pessoa pedir "me dá pautas", "roda o radar", "sobre o que eu posto hoje", "tem pauta sobre X?", e quando o motor precisar marcar uma pauta como usada. Não escreve gancho nem post (motor, angulo, gancho, linkedin-post).
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *) Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/checa-pautas.sh *)
 ---
 
 # Radar de pautas

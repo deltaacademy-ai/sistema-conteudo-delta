@@ -33,17 +33,23 @@ git ls-remote https://github.com/hdoria/sistema-conteudo.git HEAD
 
 Se aparecer uma linha com um código longo e `HEAD`, o acesso tá ok. Se pedir senha ou der erro 404, o convite não foi aceito ou o login foi em outra conta.
 
-## 3. Instale o plugin
+## 3. Instale o plugin e ligue a atualização automática
 
-Ainda no terminal:
+Ainda no terminal, uma linha:
+
+```bash
+claude plugin install sistema-conteudo --marketplace hdoria/sistema-conteudo
+claude plugin list
+```
+
+A segunda linha precisa mostrar `sistema-conteudo@sistema-conteudo` como habilitado. Essa forma precisa do Claude Code 2.1.292 ou mais novo (`claude --version` mostra o seu). Se o seu for anterior, use o caminho em duas linhas:
 
 ```bash
 claude plugin marketplace add hdoria/sistema-conteudo
 claude plugin install sistema-conteudo@sistema-conteudo
-claude plugin list
 ```
 
-A última linha precisa mostrar `sistema-conteudo@sistema-conteudo` como habilitado. Se preferir fazer de dentro do Claude Code: `/plugin marketplace add hdoria/sistema-conteudo` e depois `/plugin install sistema-conteudo@sistema-conteudo`, que abre a tela do plugin com o botão de instalar.
+Agora ligue a atualização automática, senão você não recebe as versões novas: para plugin de terceiros ela vem desligada. Dentro do Claude Code, abra `/plugin`, vá em Marketplaces, escolha `sistema-conteudo` e ligue "Enable auto-update". Funciona porque o passo 2 deixou a credencial guardada.
 
 ## 4. Crie sua pasta de conteúdo
 
@@ -60,15 +66,7 @@ Pode trocar `~/conteudo` pelo caminho que quiser. O `git init` é pra você ter 
 
 ## 5. Instale o render do carrossel (se tiver Node)
 
-A instalação do plugin já traz o Playwright. Falta o navegador que ele usa pra gerar as imagens. Uma vez só:
-
-```bash
-cd ~/.claude/plugins/cache/sistema-conteudo/sistema-conteudo/0.1.0
-npm install
-npx playwright install chromium
-```
-
-O `npm install` quase sempre responde que já tá tudo lá. Ele fica aqui pro caso de não estar. Quando o plugin atualizar, o número da versão no caminho muda, e o Chromium continua instalado.
+A instalação do plugin já traz o Playwright. Falta o navegador que ele usa pra gerar as imagens. Uma vez só. Abra o Claude Code na sua pasta de conteúdo (`cd ~/conteudo` e `claude`) e peça "faz um check-up". Se a linha `chromium` vier como opcional, ela traz o comando pronto, com o caminho certo do seu computador. Copie e rode esse comando no terminal. É a forma de instalar sem depender do número da versão no caminho: quando o plugin atualizar, o Chromium continua instalado.
 
 ## 6. Primeiro uso
 
@@ -89,20 +87,24 @@ O `motor` vê que a pasta tá vazia, confere o que falta na instalação e chama
 
 Parou no meio? Abra o Claude Code na mesma pasta e diga "continuar": o `motor` lê a pasta e diz o próximo passo.
 
+## Por que o terminal
+
+O sistema roda no Claude Code do terminal, e não em outro lugar, por três motivos:
+
+- O repositório é privado. Quem baixa o plugin é o `git` da sua máquina, com a credencial que o passo 2 guardou. Outro ambiente não tem essa credencial.
+- O Claude na nuvem (claude.ai no navegador) não carrega plugin.
+- A aba Code do app não documenta como adicionar um marketplace privado.
+
 Com as duas prontas, abra uma conversa nova na mesma pasta e mande o tema: uma notícia, um link, algo que aconteceu na sua empresa. Tipo "faz um post disso: [o que aconteceu]". O sistema escreve, manda pra um revisor que não viu o raciocínio de quem escreveu e para pra você aprovar. Nada é publicado sozinho: no fim ele monta a pasta `publicar/` com o texto, o carrossel e o passo a passo, e quem posta é você.
 
 ## O que o Claude Code vai pedir pra liberar
 
-Na primeira peça aparecem vários pedidos de permissão que você não digitou. São esses:
+O plugin já avisa o Claude Code de quais comandos próprios ele vai rodar (a checagem de voz, o check-up, o render do carrossel, a conferência das pautas e a montagem da pasta `publicar/`). Esses pedidos não aparecem pra você. Ficam só dois tipos, que o plugin não pode liberar por você:
 
 - **Subagente (Agent):** é onde o revisor roda, sem ver a conversa de quem escreveu. Sem liberar, o sistema para antes da revisão e pede uma conversa nova.
-- **`bash .../scripts/check-voz.sh`:** a checagem de travessão, emoji e termo proibido. Às vezes vem junto com `rm -f`, que apaga só o rascunho temporário que o próprio sistema acabou de gravar.
-- **`node .../scripts/render-carrossel.mjs`:** gera os PNGs e o PDF do carrossel.
-- **`jq`, `wc`, `cmp`, `mkdir`, `cp`:** leem o JSON do carrossel, contam caracteres, conferem a cópia do post e montam a pasta `publicar/`.
-- **`bash .../scripts/checa-pautas.sh`:** confere o `pautas.md` (forma, datas, origem) antes de o radar entregar a lista. Só lê o `pautas.md`, não grava nada. Se negar, o radar entrega e diz que essa conferência ficou por leitura.
 - **Busca na web e leitura de página (só no pedido de pautas):** o `radar-pautas` procura novidades do seu nicho com a busca que o seu Claude Code já tem; a janela de tempo e o que acontece sem a busca estão em "As três camadas de fonte" do radar. O radar é instruído a só buscar e ler, e a regra está nele. O que o Claude Code garante é que pede a sua permissão antes de abrir cada página, a menos que você libere. Liberar a leitura de página é escolha sua; se não liberar, a lista sai só dos seus arquivos.
 
-Nenhum desses comandos sai da sua pasta de conteúdo ou da pasta do plugin. Só o radar acessa a internet. Para os comandos acima você pode escolher "sempre permitir" pra não ver o pedido de novo; para a leitura de página, decida você, porque a permissão é o que limita o radar além da instrução dele. Se negar algum, o sistema faz o que dá sem ele e diz o que ficou por conferir.
+Se aparecer um pedido de `bash ... check-voz.sh`, `checkup.sh`, `checa-pautas.sh`, `node ... render-carrossel.mjs`, `jq`, `cmp`, `mkdir` ou `cp`, é o mesmo comando de sempre, e pode aprovar. Nenhum deles sai da sua pasta de conteúdo ou da pasta do plugin, e só o radar acessa a internet. Se negar algum, o sistema faz o que dá sem ele e diz o que ficou por conferir.
 
 ## Atualizar
 
@@ -115,7 +117,7 @@ claude plugin update sistema-conteudo@sistema-conteudo
 
 Sua pasta de conteúdo não é tocada pela atualização.
 
-Pra atualizar sozinho: dentro do Claude Code, abra `/plugin`, vá em Marketplaces, escolha `sistema-conteudo` e ligue "Enable auto-update". Funciona porque o passo 2 deixou a credencial guardada.
+Com a atualização automática ligada no passo 3, isso acontece sozinho ao abrir o Claude Code.
 
 ## Se der errado
 

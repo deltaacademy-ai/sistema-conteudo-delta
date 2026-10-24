@@ -1,6 +1,7 @@
 ---
 name: motor
 description: Orquestra a produção de uma peça do começo ao pacote de publicação. Confere a pasta de contexto, chama os especialistas na ordem certa (angulo, gancho, linkedin-post, revisor), para para a pessoa aprovar a peça principal e só depois deriva o carrossel (carrossel-roteiro, carrossel-render) e monta o pacote (publicar), mantendo base-conteudo.md atualizada. Use quando a pessoa trouxer uma ideia, um tema, uma notícia ou um fato e pedir "faz um post disso", "roda o sistema", "quero publicar sobre X", quando ela pedir pautas ("me dá pautas", "roda o radar", "tem pauta sobre X?"), quando ela disser "aprovado" para seguir com os derivados, "continuar" ou "onde parei", "faz um check-up" ou "travei", ou quando não souber por qual especialista começar. Não escreve nada: toda regra de escrita vive no especialista que escreve.
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *) Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/checkup.sh *) Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/checa-pautas.sh *) Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/render-carrossel.mjs *) Bash(rm -f motor-rascunho.md)
 ---
 
 # Motor
@@ -156,19 +157,20 @@ Feche com a mensagem do `publicar` e nada mais.
 
 ## O que a pessoa precisa liberar na primeira execução
 
-O motor não roda nada sozinho: cada comando passa pela permissão do host, e na primeira peça a pessoa vai ver uma sequência de pedidos que ela não escreveu. Diga a ela, na primeira vez, o que vai aparecer e por quê, em vez de deixar cada prompt chegar sem contexto:
+Os comandos do próprio plugin vêm pré-aprovados no cabeçalho de cada skill, e o Claude Code não pergunta por eles no turno em que a skill roda:
+
+- `bash [raiz do plugin]/scripts/check-voz.sh ...`, com o `rm -f <rascunho>` que apaga só o rascunho temporário que o próprio especialista acabou de gravar.
+- `bash [raiz do plugin]/scripts/checkup.sh`: só lê a pasta de contexto e confere se `git`, `node` e `jq` estão no PATH e se o Chromium do Playwright abre via `require("playwright")` a partir da raiz do plugin; não grava nada.
+- `node [raiz do plugin]/scripts/render-carrossel.mjs ...`: o render do carrossel (PNG e PDF), só depois da copy aprovada. Precisa de Node e do Chromium do Playwright instalados uma vez (`carrossel-render`, Etapa 3 diz como); sem eles o render entrega o HTML e a instrução de exportar à mão.
+- `bash [raiz do plugin]/scripts/checa-pautas.sh pautas.md ...`: a conferência da forma, das datas e da origem das pautas, que o `radar-pautas` roda antes de entregar. Só lê o `pautas.md`.
+- `jq`, `cmp`, `mkdir -p` e `cp` do `publicar` e do `carrossel-roteiro`: leitura de campo do `carrossel.json`, conferência do post copiado e a montagem da pasta `publicar/<data>-<tema>/`. `jq` não vem instalado no macOS; sem ele o `publicar` lê o JSON e grava o campo à mão, e o `carrossel-roteiro` confere o JSON por leitura, e os dois dizem isso na resposta.
+
+Dois pedidos continuam, porque o plugin não pode liberar por conta própria. Diga a ela, na primeira vez, o que vai aparecer e por quê:
 
 - Subagente (no Claude Code, a ferramenta Agent): o revisor roda nele. Sem liberar, o motor para antes da revisão e pede uma conversa nova.
-- `bash [raiz do plugin]/scripts/check-voz.sh ...`: a checagem mecânica de travessão, emoji e termo banido, que todo especialista roda. O comando vem encadeado com `echo "codigo $?"` e `rm -f <rascunho>`; o `rm` só apaga o rascunho temporário que o próprio especialista acabou de gravar. Host que avalia permissão por prefixo pode recusar o encadeamento inteiro; nesse caso os especialistas rodam o script sozinho e apagam o rascunho num segundo comando, e dizem que leram o código pela saída.
-- `node [raiz do plugin]/scripts/render-carrossel.mjs ...`: o render do carrossel (PNG e PDF), só depois da copy aprovada. Precisa de Node e do Chromium do Playwright instalados uma vez (`carrossel-render`, Etapa 3 diz como); sem eles o render entrega o HTML e a instrução de exportar à mão.
-- `bash [raiz do plugin]/scripts/checa-pautas.sh pautas.md ...`: a conferência da forma, das datas e da origem das pautas, que o `radar-pautas` roda antes de entregar. Só lê o `pautas.md`; não grava nada. Negado, o radar entrega com a `Checagem:` dizendo que a conferência ficou por leitura.
-- `bash [raiz do plugin]/scripts/checkup.sh`: o check-up ("faz um check-up", "travei" e "continuar" na Etapa 1, e a primeira execução com `voz.md` vazio na Etapa 0). Só lê a pasta de contexto e confere se `git`, `node` e `jq` estão no PATH e se o Chromium do Playwright abre via `require("playwright")` a partir da raiz do plugin; não grava nada.
-- `jq`, `wc -m`, `cmp`: leitura de campo do `carrossel.json`, contagem de caracteres e conferência do post copiado. `jq` não vem instalado no macOS; sem ele o `publicar` lê o JSON e grava o campo à mão, e o `carrossel-roteiro` confere o JSON por leitura, e os dois dizem isso na resposta.
-- `mkdir -p` e `cp`: a montagem da pasta `publicar/<data>-<tema>/`, com os PNGs e o PDF copiados como binário.
-
 - Busca na web e leitura de página, só no `radar-pautas`: a janela, a busca e o que acontece sem ela estão em "As três camadas de fonte" e na Etapa 2 dele. Ele grava `pautas.md` na pasta de contexto.
 
-Nenhum comando sai da pasta de contexto ou da pasta do plugin, e nenhum, fora o radar, toca em rede. A exceção de rede é só dele, e o limite dela está em "As três camadas de fonte" do `radar-pautas`. Permissão negada nunca é silenciosa: o especialista faz o que dá sem o comando, diz o que ficou por leitura e o que ficou por fazer.
+Host que ignora o cabeçalho das skills, ou um comando fora do que ele libera, pode pedir permissão mesmo assim: aprovar é seguro, porque nenhum comando sai da pasta de contexto ou da pasta do plugin e nenhum, fora o radar, toca em rede. Esse host também pode recusar o encadeamento `; echo "codigo $?"; rm -f <rascunho>`; nesse caso os especialistas rodam o script sozinho, apagam o rascunho num segundo comando e dizem que leram o código pela saída. Permissão negada nunca é silenciosa: o especialista faz o que dá sem o comando, diz o que ficou por leitura e o que ficou por fazer.
 
 ## Ajustes depois da parada
 

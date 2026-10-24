@@ -1,6 +1,7 @@
 ---
 name: carrossel-render
 description: Transforma o carrossel.json aprovado (saída do carrossel-roteiro) nas imagens que a pessoa publica, 01.png a NN.png em 1080x1350 mais carrossel.pdf, tudo do mesmo render, na marca de marca.md e com fontes locais. Use quando a pessoa pedir para renderizar, gerar as imagens, o PDF ou os PNGs de um carrossel, ou quando o motor precisar das artes de uma peça com roteiro aprovado. Não escreve a copy dos slides (isso é do carrossel-roteiro), não inventa cor nem fonte, e não publica.
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *) Bash(node ${CLAUDE_PLUGIN_ROOT}/scripts/render-carrossel.mjs *)
 ---
 
 # Render do carrossel

@@ -1,6 +1,7 @@
 ---
 name: publicar
 description: Monta o pacote de publicação de uma peça aprovada, no modo que config.md define. Nesta versão só existe o modo manual, e é ele que roda quando o arquivo não diz outra coisa: cria publicar/<data>-<tema>/ com post.txt, primeiro-comentario.txt, legenda-instagram.txt, os PNGs e o PDF do carrossel e um passo a passo para a pessoa publicar à mão no LinkedIn e no Instagram. Nunca chama API de rede social. Use quando a pessoa pedir para publicar, montar o pacote, preparar a publicação ou "deixa pronto pra postar", quando o motor chegar ao fim dos derivados, ou quando ela disser "publicado" para marcar a peça na base.
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *) Bash(jq *) Bash(cmp *) Bash(mkdir -p publicar/*) Bash(cp * publicar/*)
 ---
 
 # Publicar

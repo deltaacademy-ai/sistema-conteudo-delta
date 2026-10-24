@@ -1,6 +1,7 @@
 ---
 name: carrossel-roteiro
 description: Transforma um post aprovado ou um briefing na copy slide a slide de um carrossel de Instagram, com até 10 slides, capa que nomeia a entrega, legenda e título do PDF, e grava o carrossel.json que o carrossel-render consome. Use quando a pessoa pedir carrossel, roteiro de carrossel, quebrar um post em slides ou a copy dos slides, e quando o motor precisar do carrossel de uma peça. Para antes do render: não gera HTML, PNG nem PDF (isso é do carrossel-render), não escreve o post (linkedin-post) e não escolhe o ângulo (angulo).
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *) Bash(rm -f carrossel-rascunho.md) Bash(jq *)
 ---
 
 # Roteiro de carrossel

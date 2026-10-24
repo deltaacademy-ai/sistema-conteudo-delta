@@ -1,6 +1,7 @@
 ---
 name: gancho
 description: Escreve a abertura de uma peça, as duas linhas que aparecem antes do "ver mais" num post de LinkedIn, o título de capa de um carrossel ou a linha 1 de uma peça derivada, a partir de um briefing ou de um tema. Entrega 2 ou 3 ganchos rotulados pela estrutura usada, ou 10 ganchos quando chamado sozinho para um tema. Use quando a pessoa pedir gancho, hook, abertura, primeira linha ou título de capa, e quando o linkedin-post, o carrossel-roteiro ou o motor precisarem da abertura de uma peça. Não escreve o post inteiro: isso é do linkedin-post.
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *) Bash(rm -f ganchos-rascunho.md)
 ---
 
 # Gancho

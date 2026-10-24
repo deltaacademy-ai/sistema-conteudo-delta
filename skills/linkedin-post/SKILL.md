@@ -1,6 +1,7 @@
 ---
 name: linkedin-post
 description: Escreve o post de LinkedIn pronto para colar, na voz da pessoa, a partir de um briefing (tipo, tese e gancho aprovado) ou de um tema, em um dos sete tipos: teardown de notícia, caso, build ou bastidor, educativo, posição, lead magnet e anúncio pessoal. Entrega o post, o primeiro comentário quando há link, duas linhas de nota e o registro em base-conteudo.md. Use quando a pessoa pedir para escrever, redigir ou montar um post de LinkedIn, transformar notícia, sessão de trabalho, caso ou anúncio em post, ou quando o angulo, o gancho ou o motor entregarem um briefing para virar texto. Não escolhe o ângulo (isso é do angulo), não entrega só a abertura (gancho) e não revisa post pronto (revisor).
+allowed-tools: Bash(bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-voz.sh *)
 ---
 
 # Post de LinkedIn
