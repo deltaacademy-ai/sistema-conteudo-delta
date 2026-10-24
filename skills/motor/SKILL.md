@@ -29,7 +29,7 @@ A pasta de contexto é a pasta atual, a que tem (ou vai ter) `voz.md`; se a pess
 - `pautas.md`: escrito e mantido pelo `radar-pautas`; opcional.
 - `base-conteudo.md`, `learnings.md`, `config.md`: podem estar vazios; o `linkedin-post` cria a tabela, o `learnings.md` cresce com as correções e o `publicar` trata `config.md`.
 
-Arquivo vazio é o que não existe ou só tem o cabeçalho e a linha de instrução do `contexto-modelo` (até 3 linhas). Na primeira execução:
+Arquivo vazio é o que não existe ou só tem o cabeçalho e a linha de instrução do `contexto-modelo` (até 3 linhas). Pedido de pautas ("me dá pautas", "roda o radar", "tem pauta sobre X?") não passa por esta etapa: vai direto ao `radar-pautas` (Etapa 1), que lê a pasta e diz o que falta. Para os outros pedidos, na primeira execução:
 
 - `voz.md` vazio: chame o `entrevista-voz` antes de tudo, e diga em uma linha por quê: sem `voz.md` todo especialista escreve como IA genérica, e a peça sairia com a voz de ninguém.
 - `icp.md` vazio: chame o `contexto-negocio` antes de tudo, e diga em uma linha por quê: sem `icp.md` ninguém sabe para quem a peça existe nem o que pode ser afirmado.
@@ -44,7 +44,7 @@ Com a pasta pronta, leia `base-conteudo.md` e `learnings.md` (se existir) antes 
 O estado do fluxo vive em disco, não na conversa: `saida/` guarda o briefing, o post, o comentário e o carrossel de cada peça, e a tabela de `base-conteudo.md` guarda o status. Uma conversa nova retoma de onde a anterior parou lendo esses arquivos. Leia o pedido da pessoa e decida em qual ponto entrar:
 
 - Tema, ideia, notícia, fato, "faz um post disso": Etapa 2, do começo. Se o pedido traz um identificador de pauta (`P-AAAA-MM-DD-N`, vindo de uma pauta do `radar-pautas`), a Etapa 2 inclui o passo 3, que marca a pauta como usada.
-- "Me dá pautas", "roda o radar", "tem pauta sobre X?": chame o `radar-pautas` com o pedido da pessoa, palavra por palavra, e repasse a resposta dele como veio. Nenhum outro especialista roda, e o motor não escolhe pauta nem escreve o post: a pessoa cola o pedido de uma pauta de volta quando quiser a peça.
+- "Me dá pautas", "roda o radar", "tem pauta sobre X?": chame o `radar-pautas` com o pedido da pessoa, palavra por palavra, e repasse a resposta dele como veio. O motor não chama outro especialista nesse pedido, nem o `entrevista-voz` nem o `contexto-negocio`, mesmo com `voz.md` ou `icp.md` vazios: sem `icp.md` o radar para e diz que falta o arquivo e que o `contexto-negocio` monta, e o motor repassa isso sem abrir entrevista. O motor não escolhe pauta nem escreve o post: a pessoa cola o pedido de uma pauta de volta quando quiser a peça.
 - "Aprovado" (ou "aprova", "pode seguir", "tá bom, segue"): Etapa 3, sobre a peça mais recente com status `rascunho` em `base-conteudo.md` (ou a que a pessoa nomear). Se a mensagem traz a peça colada e ela não está em `saida/`, grave o texto em `saida/post-AAAA-MM-DD-<tema>.md` (data de hoje, tema em kebab-case) e registre a linha na base no formato que o `linkedin-post` define (Etapa 5 dele), com status `rascunho`, antes de aprovar. Peça aprovada precisa existir em arquivo para o `publicar` encontrá-la depois.
 - "Ajusta X", "outro ângulo", "quero o gancho B": o pedido volta ao especialista dono daquela decisão (Etapa 2, ponto certo), e o fluxo segue dali até a parada de novo.
 - "Publica", "monta o pacote", "publicado": Etapa 4.
@@ -130,13 +130,14 @@ O motor não roda nada sozinho: cada comando passa pela permissão do host, e na
 - Subagente (no Claude Code, a ferramenta Agent): o revisor roda nele. Sem liberar, o motor para antes da revisão e pede uma conversa nova.
 - `bash [raiz do plugin]/scripts/check-voz.sh ...`: a checagem mecânica de travessão, emoji e termo banido, que todo especialista roda. O comando vem encadeado com `echo "codigo $?"` e `rm -f <rascunho>`; o `rm` só apaga o rascunho temporário que o próprio especialista acabou de gravar. Host que avalia permissão por prefixo pode recusar o encadeamento inteiro; nesse caso os especialistas rodam o script sozinho e apagam o rascunho num segundo comando, e dizem que leram o código pela saída.
 - `node [raiz do plugin]/scripts/render-carrossel.mjs ...`: o render do carrossel (PNG e PDF), só depois da copy aprovada. Precisa de Node e do Chromium do Playwright instalados uma vez (`carrossel-render`, Etapa 3 diz como); sem eles o render entrega o HTML e a instrução de exportar à mão.
+- `bash [raiz do plugin]/scripts/checa-pautas.sh pautas.md ...`: a conferência da forma, das datas e da origem das pautas, que o `radar-pautas` roda antes de entregar. Só lê o `pautas.md`; não grava nada. Negado, o radar entrega com a `Checagem:` dizendo que a conferência ficou por leitura.
 - `bash [raiz do plugin]/scripts/checkup.sh`: o check-up ("faz um check-up", Etapa 1). Só lê a pasta de contexto e confere se `git`, `node` e `jq` estão no PATH e se o Chromium do Playwright abre via `require("playwright")` a partir da raiz do plugin; não grava nada.
 - `jq`, `wc -m`, `cmp`: leitura de campo do `carrossel.json`, contagem de caracteres e conferência do post copiado. `jq` não vem instalado no macOS; sem ele o `publicar` lê o JSON e grava o campo à mão, e o `carrossel-roteiro` confere o JSON por leitura, e os dois dizem isso na resposta.
 - `mkdir -p` e `cp`: a montagem da pasta `publicar/<data>-<tema>/`, com os PNGs e o PDF copiados como binário.
 
-- Busca na web e leitura de página, só no `radar-pautas`: ele procura novidades do nicho dentro da janela de 15 dias, com a busca que o host tiver, e grava `pautas.md` na pasta de contexto. Sem liberar, o radar roda só com os arquivos da pessoa e diz que a busca não estava disponível.
+- Busca na web e leitura de página, só no `radar-pautas`: a janela, a busca e o que acontece sem ela estão em "As três camadas de fonte" e na Etapa 2 dele. Ele grava `pautas.md` na pasta de contexto.
 
-Nenhum comando sai da pasta de contexto ou da pasta do plugin, e nenhum, fora o radar, toca em rede. A exceção de rede é só dele e só leitura: ele busca e lê páginas, não envia nem publica. Permissão negada nunca é silenciosa: o especialista faz o que dá sem o comando, diz o que ficou por leitura e o que ficou por fazer.
+Nenhum comando sai da pasta de contexto ou da pasta do plugin, e nenhum, fora o radar, toca em rede. A exceção de rede é só dele, e o limite dela está em "As três camadas de fonte" do `radar-pautas`. Permissão negada nunca é silenciosa: o especialista faz o que dá sem o comando, diz o que ficou por leitura e o que ficou por fazer.
 
 ## Ajustes depois da parada
 
