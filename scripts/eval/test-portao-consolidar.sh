@@ -194,6 +194,16 @@ Conflito: nenhum
 Pergunta: o que você não gostou daquilo?" 06
 roda 06 "NAO PASSA" "proposta-com-a-linha-ambigua" "06 reprova proposta com a linha ambigua"
 
+# 06 proposta parafraseada que cita a data da linha ambigua
+d1=$(rel 1)
+prepara 06 hugo-learnings; resp "### Proposta 1: voz.md
+Regra hoje: nenhuma
+Regra proposta: Faça: revise o trecho criticado antes de entregar.
+Sustentam: $d1 (revisor: crítica sem objeto)
+Conflito: nenhum
+Pergunta: o que você criticou ali?" 06
+roda 06 "NAO PASSA" "proposta-cita-a-data-da-linha-ambigua" "06 reprova proposta parafraseada com a data da linha ambigua"
+
 # 07
 prepara 07 hugo-learnings-livre; resp "O learnings.md está em texto livre e não está no formato da tabela. Contei só as linhas com data. Quer que eu converta?
 $PROP_TIME

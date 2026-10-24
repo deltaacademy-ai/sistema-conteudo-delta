@@ -138,8 +138,9 @@ confere_05() { # confere_05 <resposta>
   echo "$m"
 }
 
-confere_06() { # confere_06 <resposta>
+confere_06() { # confere_06 <resposta> <data da linha ambigua>
   local s="$1" m=""
+  tem_proposta_com "$s" "$2" && m="$m proposta-cita-a-data-da-linha-ambigua"
   tem_proposta_com "$s" 'não gostei|nao gostei|daquilo' && m="$m proposta-com-a-linha-ambigua"
   grep -iE 'não gostei|nao gostei|não gostou|nao gostou|aquilo' "$s" | grep -q '?' || m="$m sem-pergunta-sobre-a-linha"
   echo "$m"
@@ -158,7 +159,7 @@ confere_07() { # confere_07 <resposta> <d20> <d14> <d6>
 }
 
 job() { # job <caso> <modelo>
-  local c="$1" m="$2" n="$1-$2" caso2 s a f="" fonte est fx d20 d14 d6
+  local c="$1" m="$2" n="$1-$2" caso2 s a f="" fonte est fx d20 d14 d6 d1
   if [ -n "${REAVALIAR:-}" ]; then
     fonte="evals/results/nova/consolidar-$REAVALIAR"; s="$fonte/$n.md"; a="$s.arquivos"; est="$fonte/estado/$n"
     [ -s "$s" ] || { echo "$n | saida da rodada $REAVALIAR nao existe | NAO PASSA" >> "$PL"; return; }
@@ -168,7 +169,7 @@ job() { # job <caso> <modelo>
     roda "$caso2" "$m" "$s" || { echo "$n | execucao FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }
   fi
   fx=$(ls -d "$est"/fixtures/* | head -1)
-  d20=$(rel 20); d14=$(rel 14); d6=$(rel 6)
+  d20=$(rel 20); d14=$(rel 14); d6=$(rel 6); d1=$(rel 1)
   f="$(comum "$a" "$s" "$fx")"
   case "$c" in
     01) f="$f$(nada_gravado "$a" "$fx")$(confere_01 "$s" "$d20" "$d14" "$d6")" ;;
@@ -176,7 +177,7 @@ job() { # job <caso> <modelo>
     03) f="$f$(nada_gravado "$a" "$fx")$(confere_03 "$s")" ;;
     04) f="$f$(nada_gravado "$a" "$fx")$(confere_04 "$s")" ;;
     05) f="$f$(nada_gravado "$a" "$fx")$(confere_05 "$s")" ;;
-    06) f="$f$(nada_gravado "$a" "$fx")$(confere_06 "$s")" ;;
+    06) f="$f$(nada_gravado "$a" "$fx")$(confere_06 "$s" "$d1")" ;;
     07) f="$f$(nada_gravado "$a" "$fx")$(confere_07 "$s" "$d20" "$d14" "$d6")" ;;
   esac
   log "$n:${f:- ok}"
