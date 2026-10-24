@@ -57,7 +57,7 @@ roda rede PASSA - "rede com noticia recente passa"
 
 # (ad) a primeira data da linha e do link (dentro da janela), a de publicacao e antiga
 prepara rede
-{ pauta 1 "Noticia velha" "notícia, https://exemplo.com.br/2026/10/20/a, publicada em 2026-08-01, \"trecho\"" média "nada"
+{ pauta 1 "Noticia velha" "notícia, https://exemplo.com.br/2026-10-20-a, publicada em 2026-08-01, \"trecho\"" média "nada"
   pauta 2 "Fato local" 'fato, prova.md, linha "63 check-ins"' alta nada
   pauta 3 "Dor do leitor" 'dor, icp.md, item "O que preocupa"' média nada; } | grava rede
 roda rede "NAO PASSA" "sem-pauta-de-noticia-com-link-e-data-dentro-de-15-dias" "rede pega a data de publicacao e nao a primeira da linha"
