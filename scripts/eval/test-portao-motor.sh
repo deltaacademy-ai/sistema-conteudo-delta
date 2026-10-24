@@ -109,6 +109,9 @@ Quer que eu siga?"
 roda 09 "NAO PASSA" "resposta-termina-em-pergunta" "09 terminando em pergunta reprova"
 um_turno 09 hugo-em-aberto "Peça de teste do caso 09 do motor (rascunho): falta aprovar."
 roda 09 "NAO PASSA" "aprovado-fora-da-resposta" "09 sem a peca aprovada reprova"
+um_turno 09 hugo-em-aberto "Peça de teste do caso 09 do motor (rascunho): falta você aprovar.
+Programa de embaixadores do Cursor virou SpaceXAI (aprovado, não publicado)."
+roda 09 "NAO PASSA" "aprovado-sem-proximo-passo" "09 com a peca aprovada sem proximo passo reprova"
 um_turno 09 hugo-em-aberto "$ABERTO"; echo "# Progresso" > "$O/09-fake-t1.md.arquivos/progresso.md"
 roda 09 "NAO PASSA" "progresso.md-criado" "09 com progresso.md reprova"
 

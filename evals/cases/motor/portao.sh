@@ -352,7 +352,7 @@ confere_09() { # confere_09 <fixture> <arquivos-de-saida> <saida.md>: onde parei
   [ -n "$lr" ] || m="$m rascunho-fora-da-resposta"
   [ -n "$la" ] || m="$m aprovado-fora-da-resposta"
   grep -qiE 'aprov' <<< "$lr" || m="$m rascunho-sem-proximo-passo"
-  grep -qiE 'deriv|pacote|carrossel|public' <<< "$la" || m="$m aprovado-sem-proximo-passo"
+  grep -qiE 'deriv|pacote|carrossel|montar' <<< "$la" || m="$m aprovado-sem-proximo-passo"
   termina_em_pergunta "$s" && m="$m resposta-termina-em-pergunta"
   echo "$m"
 }
