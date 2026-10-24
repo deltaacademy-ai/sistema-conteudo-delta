@@ -87,6 +87,8 @@ O `motor` vê que a pasta tá vazia, confere o que falta na instalação e chama
 
 Parou no meio? Abra o Claude Code na mesma pasta e diga "continuar": o `motor` lê a pasta e diz o próximo passo.
 
+Com as duas prontas, abra uma conversa nova na mesma pasta e mande o tema: uma notícia, um link, algo que aconteceu na sua empresa. Tipo "faz um post disso: [o que aconteceu]". O sistema escreve, manda pra um revisor que não viu o raciocínio de quem escreveu e para pra você aprovar. Nada é publicado sozinho: no fim ele monta a pasta `publicar/` com o texto, o carrossel e o passo a passo, e quem posta é você.
+
 ## Por que o terminal
 
 O sistema roda no Claude Code do terminal, e não em outro lugar, por três motivos:
@@ -95,13 +97,11 @@ O sistema roda no Claude Code do terminal, e não em outro lugar, por três moti
 - O Claude na nuvem (claude.ai no navegador) não carrega plugin.
 - A aba Code do app não documenta como adicionar um marketplace privado.
 
-Com as duas prontas, abra uma conversa nova na mesma pasta e mande o tema: uma notícia, um link, algo que aconteceu na sua empresa. Tipo "faz um post disso: [o que aconteceu]". O sistema escreve, manda pra um revisor que não viu o raciocínio de quem escreveu e para pra você aprovar. Nada é publicado sozinho: no fim ele monta a pasta `publicar/` com o texto, o carrossel e o passo a passo, e quem posta é você.
-
 ## O que o Claude Code vai pedir pra liberar
 
 O plugin já avisa o Claude Code de quais comandos próprios ele vai rodar (a checagem de voz, o check-up, o render do carrossel, a conferência das pautas e a montagem da pasta `publicar/`). Esses pedidos não aparecem pra você. Ficam só três tipos, que o plugin não pode liberar por você:
 
-- **Carregar o especialista (Skill):** as skills que pré-aprovam comandos (`motor`, `linkedin-post`, `gancho`, `carrossel-roteiro`, `carrossel-render`, `publicar`, `radar-pautas`) pedem um "Execute skill" na primeira vez que o Claude Code as chama. Escolha "sempre permitir" e o pedido não volta.
+- **Carregar o especialista (Skill):** na primeira vez que o Claude Code chama cada especialista, ele pergunta "Execute skill". Escolha "sempre permitir" e o pedido não volta.
 - **Subagente (Agent):** é onde o revisor roda, sem ver a conversa de quem escreveu. Sem liberar, o sistema para antes da revisão e pede uma conversa nova.
 - **Busca na web e leitura de página (só no pedido de pautas):** o `radar-pautas` procura novidades do seu nicho com a busca que o seu Claude Code já tem; a janela de tempo e o que acontece sem a busca estão em "As três camadas de fonte" do radar. O radar é instruído a só buscar e ler, e a regra está nele. O que o Claude Code garante é que pede a sua permissão antes de abrir cada página, a menos que você libere. Liberar a leitura de página é escolha sua; se não liberar, a lista sai só dos seus arquivos.
 
