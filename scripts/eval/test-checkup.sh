@@ -121,5 +121,30 @@ espera_linha "pasta com espaco" '^ok icp.md'
 ( cd "$d/cheia" && /bin/bash "$s" > "$d/out" 2>&1; echo $? > "$d/cod" )
 espera_cod   "pasta atual por padrao" 0
 
+# 10. entrevista em andamento: voz-bruta.md com respostas e voz.md vazio. A linha
+# `andamento` avisa e nao conta como pendencia (as duas pendencias sao voz.md e icp.md)
+modelo() { rm -rf "$1"; mkdir -p "$1"; cp -R "$raiz/contexto-modelo/." "$1/"; }
+modelo "$d/andamento"
+printf '# Voz bruta\n\nResposta 1\nResposta 2\nResposta 3\n' > "$d/andamento/voz-bruta.md"
+roda "$d/andamento"
+espera_linha "entrevista em andamento" '^andamento entrevista-voz: '
+espera_linha "entrevista em andamento" '^falta voz.md'
+espera_linha "entrevista em andamento" '^pendencias: 2$'
+
+# 11. voz-bruta.md do modelo: nenhuma linha andamento
+modelo "$d/modelo"
+roda "$d/modelo"
+grep -q '^andamento' "$d/out" && { erro "voz-bruta.md do modelo: linha andamento inesperada"; } || ok "voz-bruta.md do modelo (sem linha andamento)"
+
+# 12. pasta recem-copiada do contexto-modelo: base sem tabela conta 0 e 0, sem erro no stderr
+roda "$d/modelo"
+espera_linha "pasta do contexto-modelo" '^pecas em aberto: 0 rascunho, 0 aprovado$'
+grep -qi 'awk' "$d/out" && erro "pasta do contexto-modelo: erro do awk na saida" || ok "pasta do contexto-modelo (sem erro do awk)"
+
+# 13. voz.md preenchido: o aviso de andamento nao aparece mesmo com voz-bruta.md cheia
+completa "$d/pronta"; printf '# Voz bruta\n\na\nb\nc\nd\n' > "$d/pronta/voz-bruta.md"
+roda "$d/pronta"
+grep -q '^andamento' "$d/out" && erro "voz.md preenchido: linha andamento inesperada" || ok "voz.md preenchido (sem linha andamento)"
+
 rm -rf "$d"
 [ "$falhas" -eq 0 ] && { echo "todos passaram"; exit 0; } || { echo "$falhas falha(s)"; exit 1; }

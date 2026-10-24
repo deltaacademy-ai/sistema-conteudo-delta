@@ -5,6 +5,7 @@
 #   ok <item>
 #   falta <item>: <o que fazer>       (obrigatorio; conta como pendencia)
 #   opcional <item>: <o que fazer>    (o sistema funciona sem, com limite)
+#   andamento <item>: <o que fazer>   (aviso de trabalho comecado; nao conta como pendencia)
 # Depois, as pecas em aberto da base e a contagem de pendencias:
 #   pecas em aberto: <N> rascunho, <M> aprovado
 #   pendencias: <K>
@@ -21,6 +22,7 @@ pend=0
 ok()       { echo "ok $1"; }
 falta()    { echo "falta $1: $2"; pend=$((pend+1)); }
 opcional() { echo "opcional $1: $2"; }
+andamento() { echo "andamento $1: $2"; }
 
 vazio() { # vazio <arquivo>: verdadeiro se ausente ou com ate 3 linhas
   [ ! -f "$1" ] || [ "$(grep -c '' < "$1")" -le 3 ]
@@ -32,6 +34,12 @@ else falta git "instale com: brew install git gh"; fi
 
 if vazio "$pasta/voz.md"; then falta voz.md "peça \"quero começar o sistema de conteúdo\" e faça a entrevista de voz (especialista entrevista-voz)"
 else ok voz.md; fi
+
+# Entrevista comecada e nao compilada: voz-bruta.md com respostas (mais de 3 linhas)
+# e voz.md ainda vazio.
+if vazio "$pasta/voz.md" && [ -f "$pasta/voz-bruta.md" ] && ! vazio "$pasta/voz-bruta.md"; then
+  andamento entrevista-voz "voz-bruta.md tem respostas e voz.md está vazio; peça \"quero começar o sistema de conteúdo\" para retomar"
+fi
 
 if vazio "$pasta/icp.md"; then falta icp.md "faça a conversa sobre o seu negócio (especialista contexto-negocio)"
 else ok icp.md; fi
