@@ -99,8 +99,9 @@ Com as duas prontas, abra uma conversa nova na mesma pasta e mande o tema: uma n
 
 ## O que o Claude Code vai pedir pra liberar
 
-O plugin já avisa o Claude Code de quais comandos próprios ele vai rodar (a checagem de voz, o check-up, o render do carrossel, a conferência das pautas e a montagem da pasta `publicar/`). Esses pedidos não aparecem pra você. Ficam só dois tipos, que o plugin não pode liberar por você:
+O plugin já avisa o Claude Code de quais comandos próprios ele vai rodar (a checagem de voz, o check-up, o render do carrossel, a conferência das pautas e a montagem da pasta `publicar/`). Esses pedidos não aparecem pra você. Ficam só três tipos, que o plugin não pode liberar por você:
 
+- **Carregar o especialista (Skill):** as skills que pré-aprovam comandos (`motor`, `linkedin-post`, `gancho`, `carrossel-roteiro`, `carrossel-render`, `publicar`, `radar-pautas`) pedem um "Execute skill" na primeira vez que o Claude Code as chama. Escolha "sempre permitir" e o pedido não volta.
 - **Subagente (Agent):** é onde o revisor roda, sem ver a conversa de quem escreveu. Sem liberar, o sistema para antes da revisão e pede uma conversa nova.
 - **Busca na web e leitura de página (só no pedido de pautas):** o `radar-pautas` procura novidades do seu nicho com a busca que o seu Claude Code já tem; a janela de tempo e o que acontece sem a busca estão em "As três camadas de fonte" do radar. O radar é instruído a só buscar e ler, e a regra está nele. O que o Claude Code garante é que pede a sua permissão antes de abrir cada página, a menos que você libere. Liberar a leitura de página é escolha sua; se não liberar, a lista sai só dos seus arquivos.
 

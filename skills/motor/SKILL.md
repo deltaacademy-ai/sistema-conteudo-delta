@@ -165,8 +165,9 @@ Os comandos do próprio plugin vêm pré-aprovados no cabeçalho de cada skill, 
 - `bash [raiz do plugin]/scripts/checa-pautas.sh pautas.md ...`: a conferência da forma, das datas e da origem das pautas, que o `radar-pautas` roda antes de entregar. Só lê o `pautas.md`.
 - `jq`, `cmp`, `mkdir -p` e `cp` do `publicar` e do `carrossel-roteiro`: leitura de campo do `carrossel.json`, conferência do post copiado e a montagem da pasta `publicar/<data>-<tema>/`. `jq` não vem instalado no macOS; sem ele o `publicar` lê o JSON e grava o campo à mão, e o `carrossel-roteiro` confere o JSON por leitura, e os dois dizem isso na resposta.
 
-Dois pedidos continuam, porque o plugin não pode liberar por conta própria. Diga a ela, na primeira vez, o que vai aparecer e por quê:
+Três pedidos continuam, porque o plugin não pode liberar por conta própria. Diga a ela, na primeira vez, o que vai aparecer e por quê:
 
+- Carregar o especialista (a ferramenta Skill): as skills com comando pré-aprovado pedem "Execute skill" na primeira chamada; "sempre permitir" resolve de uma vez.
 - Subagente (no Claude Code, a ferramenta Agent): o revisor roda nele. Sem liberar, o motor para antes da revisão e pede uma conversa nova.
 - Busca na web e leitura de página, só no `radar-pautas`: a janela, a busca e o que acontece sem ela estão em "As três camadas de fonte" e na Etapa 2 dele. Ele grava `pautas.md` na pasta de contexto.
 

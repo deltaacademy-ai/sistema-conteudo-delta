@@ -22,6 +22,10 @@ fi
 # soma-se ao que ja e liberado abaixo, no fim de --allowedTools. Sem o campo, a linha de
 # comando sai identica. Usado so pelo caso de rede do radar-pautas (WebSearch, WebFetch).
 extra=(); read -r -a extra <<< "$(campo ferramentas_extra)"
+# A ferramenta Skill entra na lista porque skill com `allowed-tools` no cabecalho deixa de ser
+# aprovada sozinha: em `claude -p` o pedido "Execute skill" nao tem quem aprove, a skill nao
+# carrega e o cabecalho dela nunca vale (medido na Tarefa 2 de prontidao: base carrega,
+# com `allowed-tools` nega).
 # Alem de ler as skills do plugin, a execucao pode rodar o check-voz.sh e o checa-pautas.sh do
 # repositorio: a sessao de um comprador tem esse script disponivel, e sem ele
 # o portao media as skills sem a checagem mecanica que elas mandam rodar
@@ -30,5 +34,5 @@ extra=(); read -r -a extra <<< "$(campo ferramentas_extra)"
 # comando que comece pela chamada do script, inclusive um encadeamento depois
 # dela; nao e "so esse script" no sentido estrito. Basta aqui porque o lado
 # executado nao e adversario; nao reutilize o padrao onde for.
-( cd "$work" && "${CLAUDE_ISOLADO:-$dir/claude-isolado.sh}" --model "$modelo" --plugin-dir "$plugin" --allowedTools "Read(/$plugin/skills/**)" "Bash(bash $plugin/scripts/check-voz.sh:*)" "Bash($plugin/scripts/check-voz.sh:*)" "Bash(bash $plugin/scripts/checa-pautas.sh:*)" "Bash($plugin/scripts/checa-pautas.sh:*)" ${extra[@]+"${extra[@]}"} --permission-mode acceptEdits --output-format json "$pr" ) | jq -r '.result' > "$saida"
+( cd "$work" && "${CLAUDE_ISOLADO:-$dir/claude-isolado.sh}" --model "$modelo" --plugin-dir "$plugin" --allowedTools "Skill" "Read(/$plugin/skills/**)" "Bash(bash $plugin/scripts/check-voz.sh:*)" "Bash($plugin/scripts/check-voz.sh:*)" "Bash(bash $plugin/scripts/checa-pautas.sh:*)" "Bash($plugin/scripts/checa-pautas.sh:*)" ${extra[@]+"${extra[@]}"} --permission-mode acceptEdits --output-format json "$pr" ) | jq -r '.result' > "$saida"
 mkdir -p "$saida.arquivos" && cp -R "$work/." "$saida.arquivos/"
