@@ -78,13 +78,15 @@ Em `Tipo: carrossel`, a linha só diz o formato; o tipo do conteúdo vai no brie
 
 Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e menos encosto na origem, ou o carrossel, quando a pessoa o pediu. Grave o briefing dele em `saida/briefing-AAAA-MM-DD-<tema>.md`, no formato que a seção "Etapa 4: conferência e entrega" do `angulo` define para o bloco "Briefing do ângulo", com estas regras daqui:
 
-- `Material bruto`: só fatos da origem, de `prova.md` ou da fala da pessoa, com a fonte de cada um (a peça de origem entra pelo nome do arquivo). Nenhum número novo do pedido fora de `[FALTA ...]`. O fato que a linha 1 da origem resume entra pelo dado, em frase sua, sem as palavras da linha 1 nem a ordem dela (o `linkedin-post` lê este campo e copia o que está nele).
-- `Leitura da pessoa`: só o que ela disse, ou `[FALTA: leitura da pessoa sobre X]`. O que a origem afirma na voz dela é leitura que ela já publicou, e pode entrar com a fonte "peça de AAAA-MM-DD"; leitura nova não se inventa.
+- `Material bruto`: só fatos da origem, de `prova.md` ou da fala da pessoa, com a fonte de cada um (a peça de origem entra pelo nome do arquivo). Nenhum número novo do pedido fora de `[FALTA ...]`. O fato que a linha 1 da origem resume (por exemplo, o tempo que o dono leva para conferir) entra aqui, e só aqui, como dado e com as palavras da origem: se ela diz "em dez", escreva "em dez", sem acrescentar unidade que ela não diz. Liste os fatos sem seguir a ordem dos argumentos do post. Fora do `Material bruto`, nem o briefing nem os recortes trazem a linha 1 nem o fecho da origem, literais ou quase literais (nenhuma sequência de 6 palavras seguidas delas).
+- `Leitura da pessoa`: só o que ela disse, ou `[FALTA: leitura da pessoa sobre X]`. Ela traz a tese nova do recorte, nunca reafirma a tese da origem nem o fecho dela; uma frase de apoio da origem pode entrar com a fonte "peça de AAAA-MM-DD", e leitura nova não se inventa.
 - `Falta`: cada item como `[FALTA: descrição]`, com os colchetes; sem colchetes, o item é lido como afirmação.
 - `Formato`: `carrossel` no recorte de carrossel, `post` nos demais.
-- `Origem:` é a última linha do briefing, com a data e o tema da linha da base, copiados letra por letra: `Origem: reaproveita AAAA-MM-DD <tema>`.
+- `Origem:` fica onde o formato do `angulo` a põe (depois de `Falta:`, antes de `Checagem:`), com a data e o tema da linha da base, copiados letra por letra: `Origem: reaproveita AAAA-MM-DD <tema>`.
 
 O briefing não leva a linha 1 da origem, nem a tese dela, nem a sequência de argumentos dela.
+
+No recorte recomendado, `O que muda frente à origem:` diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas: sem citar a linha 1 nem o fecho da origem, e com a palavra "tese".
 
 ## Etapa 5: a sugestão ("o que vale reaproveitar?")
 
@@ -105,7 +107,7 @@ Antes de entregar:
 
 1. Cada recorte tem tese diferente da origem e das dos outros recortes; nenhum repete a linha 1, a tese ou a sequência de argumentos; nenhum transforma um episódio em hábito ou regra geral ("nesse projeto", não "sempre").
 2. Todo número, nome, cena, data e sentimento é rastreável à peça de origem, a `prova.md`, a `voz.md` (só posição geral) ou à fala da pessoa; número novo do pedido está só dentro de `[FALTA ...]`; nenhum juízo de qualidade que o contexto não sustente.
-3. O briefing tem os campos do `angulo`, `Material bruto` com fonte em cada fato, e a última linha é `Origem: reaproveita AAAA-MM-DD <tema>` com data e tema letra por letra como na base.
+3. O briefing tem os campos do `angulo`, `Material bruto` com fonte em cada fato, e a linha `Origem: reaproveita AAAA-MM-DD <tema>` está depois de `Falta:`, com data e tema letra por letra como na base.
 4. Sem travessão, sem emoji e sem termo de `banidas.txt`, na resposta e no briefing. Rode `bash [raiz do plugin]/scripts/check-voz.sh saida/briefing-AAAA-MM-DD-<tema>.md banidas.txt` sozinho, sem `echo` nem `rm` encadeados (a pasta `scripts/` fica dois níveis acima deste SKILL.md; o caminho vai absoluto e já resolvido, sem `..`; omita `banidas.txt` se não existe). Acusou: corrija o que o próprio texto trouxe e rode de novo. A resposta se confere na leitura, procurando o travessão (U+2014 e U+2013) caractere a caractere; só escreva que procurou depois de procurar. Se nada foi gravado, o script não roda. Sem como rodar o script, diga isso na `Checagem`.
 5. O que a pessoa precisa ler (os recortes, `Recomendado:`, as faltas, a pergunta ou a recusa) está dentro da mensagem final, não só no arquivo.
 6. A `Checagem` é a última linha da mensagem: nada vem depois dela.
