@@ -11,8 +11,9 @@
 # Casos 01, 03 e 04 (recorte de peca publicada): de 2 a 3 blocos "### Recorte <letra>", cada um com
 #   "Tipo:", "O que muda frente à origem:" e "Faltas:"; uma so linha "Recomendado: <letra>" de uma letra que
 #   existe; exatamente um briefing novo, com Tipo, Tese, Ângulo, Leitura da pessoa, Formato, Material bruto,
-#   Falta e a linha "Origem: reaproveita 2026-09-22 Caso do relatório mensal automatizado"; a abertura da
-#   linha 1 da origem nao aparece nos recortes nem no briefing, e o fecho dela nao aparece nos recortes; nenhum numero de 3 ou mais digitos fora dos arquivos.
+#   Falta e a linha "Origem: reaproveita 2026-09-22 Caso do relatório mensal automatizado"; a linha 1 e o fecho da
+#   origem nao reaparecem (6 palavras seguidas) nos recortes nem no briefing fora do Material bruto; "dez minutos"
+#   e invencao; o recorte recomendado diz a tese de la e a nova (a palavra "tese" em "O que muda"); nenhum numero de 3 ou mais digitos fora dos arquivos.
 # Caso 02 (peca em rascunho): nenhum arquivo novo, sem recorte e sem "Recomendado:"; a resposta diz que so
 #   peca publicada entra e cita o status.
 # Caso 03 (o pedido traz "50 clientes"): o 50 nao esta no briefing fora de um "[FALTA ...]"; a resposta ou o
@@ -54,8 +55,6 @@ roda() { # roda <caso.md> <modelo> <saida.md>
   log "FALHOU $(basename "$s")"; return 1
 }
 
-ORIGEM_L1_A="o relatório mensal que levava um dia"
-ORIGEM_L1_B="sai em minutos, e o dono confere em dez"
 ORIGEM_LINHA="Origem: reaproveita 2026-09-22 Caso do relatório mensal automatizado"
 
 briefings_novos() { find "$1/saida" -type f -name "briefing-*.md" 2>/dev/null | sort; } # briefings_novos <arquivos>
@@ -109,16 +108,22 @@ confere_recortes() { # confere_recortes <arquivos> <fixture> <resposta> <caso.md
     grep -qE "^$k:" "$br" || m="$m briefing-sem-$k"
   done
   grep -qxF "$ORIGEM_LINHA" "$br" || m="$m briefing-sem-a-linha-Origem"
-  # A linha 1 da origem nao pode reaparecer: a abertura dela ("o relatorio mensal que levava um dia") nao
-  # entra em recorte nem em briefing, e o fecho dela ("sai em minutos, e o dono confere em dez") nao entra
-  # nos recortes. No briefing, o fato do fecho (o dono confere em dez) pode estar no Material bruto, porque
-  # so a linha 1 o traz e o briefing precisa registrar o fato; a abertura do post é do gancho.
-  todo=$(awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s")
-  minus() { tr 'A-ZÁÉÍÓÚÂÊÔÃÕÇ' 'a-záéíóúâêôãõç'; }
-  { minus <<< "$todo"; minus < "$br"; } | grep -qF "$ORIGEM_L1_A" && m="$m repete-a-linha-1-da-origem"
-  minus <<< "$todo" | grep -qF "$ORIGEM_L1_B" && m="$m repete-a-linha-1-da-origem"
+  # A linha 1 e o fecho da origem nao reaparecem: nenhuma sequencia de 6 palavras seguidas delas (texto
+  # normalizado, sem maiusculas nem pontuacao) nos recortes nem no briefing fora do Material bruto. O fato
+  # "o dono confere em dez" so existe na linha 1, entao fica permitido dentro do Material bruto, e la a
+  # unidade "minutos" depois do dez e invencao.
+  todo=$({ awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s"; awk '/^Material bruto:/{d=1; next} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/{d=0} !d' "$br"; })
+  src=$(perl -CSDA -e 'open F,"<:utf8",$ARGV[0]; local $/; $t=<F>; ($p)=split /\n/,$t; @pp=split /\n\n+/,$t; $u=$pp[-1]; print "$p\n$u\n"' "$fx/saida/post-2026-09-22-relatorio-mensal-automatizado.md")
+  sob=$(sobrepoe "$src" <<< "$todo"); [ -z "$sob" ] || m="$m repete-a-linha-1-ou-o-fecho-da-origem:$sob"
+  grep -qiE 'dez minutos' <<< "$todo$(awk '/^Material bruto:/{d=1} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/ && !/^Material bruto:/{d=0} d' "$br")" && m="$m dez-minutos-inventado"
+  recb=$(bloco_recorte "$s" "$rec"); grep -E '^O que muda frente à origem:' <<< "$recb" | grep -qi 'tese' || m="$m recomendado-sem-tese-de-la-e-nova"
   n=$(grep -v '^Tamanho:' "$br" > "$a/.sem-tamanho.tmp"; numeros_novos "$a/.sem-tamanho.tmp" "$fx" "$caso"; rm -f "$a/.sem-tamanho.tmp"); [ -z "$n" ] || m="$m numero-novo-no-briefing:$n"
   echo "$m"
+}
+
+sobrepoe() { # sobrepoe <fontes (uma por linha)> < texto: imprime a primeira sequencia de 6 palavras da fonte que aparece no texto
+  perl -CSDA -e 'sub n{ my $t=lc shift; $t=~s/[^\p{L}\p{N}]+/ /g; $t=~s/^ | $//g; $t } my @f=split /\n/,$ARGV[0]; local $/; my $x=" ".n(<STDIN>)." ";
+    for my $l (@f){ my @w=split / /,n($l); for my $i (0..$#w-5){ my $s=join " ",@w[$i..$i+5]; if(index($x," $s ")>=0){ $s=~s/ /_/g; print $s; exit } } }' "$1"
 }
 
 numeros_novos() { # numeros_novos <arquivo> <fixture> <caso.md>: numeros de 3+ digitos que nao estao em nenhum arquivo da fixture
@@ -141,6 +146,7 @@ confere_02() { # confere_02 <resposta>
 confere_03() { # confere_03 <arquivos> <resposta>
   local m="" br sem
   br=$(briefings_novos "$1" | head -1)
+  perl -0pe 's/\[FALTA[^\]]*\]//g' <(grep -E '^Recomendado:' "$2") | grep -qE '(^|[^0-9.,/-])50([^0-9.,/-]|$)|cinquenta' && m="$m 50-na-linha-Recomendado-fora-de-FALTA"
   if [ -n "$br" ]; then
     sem=$(perl -0pe 's/\[FALTA[^\]]*\]//g' "$br")
     grep -qE '(^|[^0-9.,/-])50([^0-9.,/-]|$)|cinquenta' <<< "$sem" && m="$m 50-no-briefing-fora-de-FALTA"

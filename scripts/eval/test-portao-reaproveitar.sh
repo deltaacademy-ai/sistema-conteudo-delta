@@ -52,7 +52,7 @@ Falta: [FALTA: leitura da pessoa sobre a conferência do dono]
 $ORIGEM"
 RESP="### Recorte A
 Tipo: posição
-O que muda frente à origem: sai o antes e depois do tempo e fica a decisão do dono sobre o que a pessoa confere.
+O que muda frente à origem: a tese de lá era a economia de tempo e a nova é a decisão do dono sobre o que a pessoa confere.
 Faltas: a leitura da pessoa sobre a conferência.
 
 ### Recorte B
@@ -76,18 +76,28 @@ prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$ORIGEM/Origem: reaproveita}"
 roda 01 "NAO PASSA" "briefing-sem-a-linha-Origem" "01 reprova Origem incompleta"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$ORIGEM/}"
 roda 01 "NAO PASSA" "briefing-sem-a-linha-Origem" "01 reprova briefing sem Origem"
+MB="Material bruto: O dono pediu para manter a conferência humana nos números de faturamento (saida/post-2026-09-22-relatorio-mensal-automatizado.md)."
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O relatório levava um dia, e o dono confere em dez (saida/post-2026-09-22-relatorio-mensal-automatizado.md).}"
+roda 01 PASSA - "01 aceita o fato da linha 1 so no Material bruto, com as palavras da origem"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
 Gancho: O relatório mensal que levava um dia agora sai em minutos}"
-roda 01 "NAO PASSA" "repete-a-linha-1-da-origem" "01 reprova linha 1 da origem no briefing"
-prepara 01; resp "${RESP/vira um passo a passo/vira \"o dono confere em dez\" e um passo a passo}" 01; brief 01 "$BRIEF"
-roda 01 "PASSA" - "01 aceita citar so parte da linha 1 que nao repete a frase"
-prepara 01; resp "${RESP/vira um passo a passo/O relatório mensal que levava um dia vira um passo a passo}" 01; brief 01 "$BRIEF"
-roda 01 "NAO PASSA" "repete-a-linha-1-da-origem" "01 reprova linha 1 da origem no recorte"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova linha 1 da origem no briefing"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
-Material: Antes o relatório levava um dia. Agora sai em minutos, e o dono confere em dez (peça de 2026-09-22).}"
-roda 01 "PASSA" - "01 aceita o fato do fecho da linha 1 no briefing, em frase propria"
+Apoio: O relatório que levava um dia inteiro agora sai em minutos, e o dono confere em dez minutos}"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova a paráfrase próxima do 01 Sonnet fora do Material bruto"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
+Apoio: Agora sai em minutos, e o dono confere em dez.}"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da linha 1 do 04 Sonnet fora do Material bruto"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Leitura da pessoa: \[FALTA: leitura da pessoa sobre a conferência do dono\]/Leitura da pessoa: se o seu relatório depende de copiar número, o trabalho que sobra para a pessoa é conferir}"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da origem na Leitura da pessoa"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O dono confere em dez minutos (saida/post-2026-09-22-relatorio-mensal-automatizado.md).}"
+roda 01 "NAO PASSA" "dez-minutos-inventado" "01 reprova unidade que a origem não diz"
+prepara 01; resp "${RESP/a tese de lá era a economia de tempo e a nova é/o recorte A é}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recomendado-sem-tese-de-la-e-nova" "01 reprova recomendado sem dizer a tese de la e a nova"
 prepara 01; resp "${RESP/vira um passo a passo/sai em minutos, e o dono confere em dez, vira um passo a passo}" 01; brief 01 "$BRIEF"
-roda 01 "NAO PASSA" "repete-a-linha-1-da-origem" "01 reprova o fecho da linha 1 no recorte"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da linha 1 no recorte"
+prepara 01; resp "${RESP/vira um passo a passo/O relatório mensal que levava um dia vira um passo a passo}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova linha 1 da origem no recorte"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
 Resultado: 2.468 horas economizadas}"
 roda 01 "NAO PASSA" "numero-novo-no-briefing:2.468" "01 reprova numero novo"
@@ -147,8 +157,12 @@ roda 03 "NAO PASSA" "sem-FALTA-sobre-o-numero" "03 reprova sumir com o numero se
 prepara 03; resp "$RESP3" 03; brief 03 "${BRIEF/Tese: Quem/Tese: Com cinquenta clientes, quem}"
 roda 03 "NAO PASSA" "50-no-briefing-fora-de-FALTA" "03 reprova cinquenta por extenso"
 
+prepara 03; resp "${RESP3/Recomendado: A, porque/Recomendado: A, porque a atualização de 50 clientes entra como prova de escala, e}" 03; brief 03 "$BRIEF"
+roda 03 "NAO PASSA" "50-na-linha-Recomendado-fora-de-FALTA" "03 reprova 50 como fato na linha Recomendado"
+
 # 04
 RESP4="${RESP/Tipo: educativo/Tipo: carrossel}"
+RESP4="${RESP4/vira um passo a passo/a tese de lá era a economia de tempo e a nova é um passo a passo}"
 RESP4="${RESP4/Recomendado: A, porque o fato da decisão do dono já está na peça./Recomendado: B, porque o pedido foi carrossel.}"
 BRIEF4="${BRIEF/Formato: post/Formato: carrossel}"
 prepara 04; resp "$RESP4" 04; brief 04 "$BRIEF4"
