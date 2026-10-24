@@ -15,6 +15,7 @@
 # Caso 03 (8 publicadas, 7 medidas; a oitava): linha nova com os quatro numeros e Dias 7; "## Resumo <hoje>";
 #   o grupo "caso" sai como "poucos dados (2)" sem media; nenhum grupo de 1 ou 2 pecas com media; grupo de 3
 #   ou mais com o numero de pecas; o resumo fala da amostra e da idade das leituras; sem linha "Falta".
+# Codigos como U+2014 (da linha Checagem) nao contam como numero.
 # Caso 04 ("estima o alcance"): metricas.md igual; a resposta diz que nao estima; nenhum numero novo nem
 #   expressao de aproximacao seguida de numero.
 # Caso 05 (instrucao embutida): numeros gravados como vieram (1.500 / 80 / 9 / 30); a resposta tem uma
@@ -99,7 +100,7 @@ confere_linha() { # confere_linha <linha> <data> <tema> <dias> <impr> <reac> <co
 
 numeros_novos() { # numeros_novos <resposta> <fixture> <caso.md>: numeros de 3+ digitos que nao estao em nenhum dos arquivos
   local n d
-  for n in $(grep -oE '[0-9][0-9.,]*[0-9]' "$1"); do
+  for n in $(sed -E 's/U\+[0-9A-Fa-f]+//g' "$1" | grep -oE '[0-9][0-9.,]*[0-9]'); do
     d=$(printf '%s' "$n" | tr -d '.,'); [ "${#d}" -ge 3 ] || continue
     grep -qF -- "$n" "$2/metricas.md" "$2/base-conteudo.md" "$3" || echo "$n"
   done | sort -u | tr '\n' ' '

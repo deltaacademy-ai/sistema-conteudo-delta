@@ -88,6 +88,8 @@ RESP02="Medir: nada gravado. A peça \"Checagem antes de publicar\" está como a
 Checagem: metricas.md não mudou. Resposta conferida na leitura."
 prepara 02 hugo-medir-7; resp "$RESP02" 02
 roda 02 PASSA - "02 certo passa"
+prepara 02 hugo-medir-7; resp "${RESP02/Resposta conferida na leitura./Resposta conferida na leitura, procurando U+2014 e U+2013.}" 02
+roda 02 PASSA - "02 aceita o codigo U+ da Checagem"
 prepara 02 hugo-medir-7; resp "$RESP02" 02; grava 02 "| 2026-10-05 | Checagem antes de publicar | $HOJE | | 800 | 20 | | | | | $F |"
 roda 02 "NAO PASSA" "metricas.md-alterado" "02 reprova gravacao de peca nao publicada"
 prepara 02 hugo-medir-7; resp "Medir: nada gravado. Não consegui registrar essa medição." 02
