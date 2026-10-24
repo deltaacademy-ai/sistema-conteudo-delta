@@ -70,7 +70,7 @@ Sustentam: [AAAA-MM-DD (especialista: "regra da linha"), uma entrada por linha |
 Conflito: [nenhum | a lei, recusa ou linha de hoje, literal, ao lado da regra proposta, com a pergunta de qual vale]
 ```
 
-`Regra hoje` e `Conflito` leem o arquivo de destino de verdade: a regra proposta que manda fazer o que uma `<nunca>` proíbe, ou o contrário, é conflito, mesmo que a contagem sustente. Conflito não tem recomendação: as duas ficam lado a lado e só a pessoa decide.
+`Regra hoje` e `Conflito` leem o arquivo de destino de verdade: a regra proposta que manda fazer o que uma `<nunca>` proíbe, ou o contrário, é conflito, mesmo que a contagem sustente. `Regra hoje` cita só a lei, recusa ou linha que trata do mesmo assunto da regra proposta, cortada no trecho que importa. Lista de substituições ou de palavras evitadas do arquivo não é regra sobre o assunto: sem lei ou recusa do mesmo assunto, `Regra hoje` é `nenhuma`, e a citação nunca leva uma lista inteira para dentro da resposta. Conflito não tem recomendação: as duas ficam lado a lado e só a pessoa decide.
 
 Regra pedida pela pessoa sem linha em `learnings.md`: `Sustentam` traz a frase dela e a data de hoje, e a proposta diz que é uma ocasião, pedida por ela.
 
