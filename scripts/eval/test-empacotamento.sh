@@ -10,17 +10,24 @@ erro() { echo "FALHA $1"; falhas=$((falhas+1)); }
 # 1. claude plugin validate
 if (cd "$raiz" && claude plugin validate . >/dev/null 2>&1); then ok "claude plugin validate sai com 0"; else erro "claude plugin validate nao saiu com 0"; fi
 
-# 2 e 3. frontmatter e corpo de cada skill que roda script do plugin
-for s in motor linkedin-post gancho carrossel-roteiro carrossel-render publicar radar-pautas; do
-  f="$raiz/skills/$s/SKILL.md"
+# 2 e 3. frontmatter e corpo de cada skill cujo corpo cita scripts/. Skill nova que roda
+# script falha por padrao ate alguem declarar o allowed-tools ou isenta-la aqui.
+# Isentas: rodam check-voz.sh mas ficaram fora do A5 (decisao do controlador, 2026-10-24).
+isentas=" angulo contexto-negocio entrevista-voz revisor "
+for f in "$raiz"/skills/*/SKILL.md; do
+  s=$(basename "$(dirname "$f")")
   fim=$(awk 'NR>1 && /^---$/{print NR; exit}' "$f")
   front=$(sed -n "1,${fim}p" "$f"); corpo=$(sed -n "$((fim+1)),\$p" "$f")
+  scripts=$(printf '%s\n' "$corpo" | grep -o 'scripts/[A-Za-z0-9._-]*\.\(sh\|mjs\)' | sort -u)
+  [ -z "$scripts" ] && continue
+  case "$isentas" in *" $s "*) ok "$s isenta (roda script sem allowed-tools, por decisao)"; continue ;; esac
   linha=$(printf '%s\n' "$front" | grep '^allowed-tools:' || true)
-  [ -n "$linha" ] && ok "$s declara allowed-tools" || erro "$s sem allowed-tools no frontmatter"
-  for sc in $(printf '%s\n' "$corpo" | grep -o 'scripts/[A-Za-z0-9._-]*\.\(sh\|mjs\)' | sort -u); do
+  [ -n "$linha" ] && ok "$s declara allowed-tools" || erro "$s roda script e nao declara allowed-tools"
+  for sc in $scripts; do
+    case "$sc" in *.mjs) cmd=node ;; *) cmd=bash ;; esac
     case "$linha" in
-      *'${CLAUDE_PLUGIN_ROOT}/'"$sc"*) ok "$s libera $sc" ;;
-      *) erro "$s manda rodar $sc e o allowed-tools nao libera" ;;
+      *"Bash($cmd "'${CLAUDE_PLUGIN_ROOT}/'"$sc "*) ok "$s libera $cmd $sc" ;;
+      *) erro "$s manda rodar $sc e o allowed-tools nao tem Bash($cmd \${CLAUDE_PLUGIN_ROOT}/$sc *)" ;;
     esac
   done
   if printf '%s\n' "$corpo" | grep -q 'CLAUDE_PLUGIN_ROOT'; then erro "$s tem CLAUDE_PLUGIN_ROOT no corpo"; else ok "$s corpo neutro"; fi
