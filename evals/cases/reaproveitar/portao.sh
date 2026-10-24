@@ -11,8 +11,8 @@
 # Casos 01, 03 e 04 (recorte de peca publicada): de 2 a 3 blocos "### Recorte <letra>", cada um com
 #   "Tipo:", "O que muda frente à origem:" e "Faltas:"; uma so linha "Recomendado: <letra>" de uma letra que
 #   existe; exatamente um briefing novo, com Tipo, Tese, Ângulo, Leitura da pessoa, Formato, Material bruto,
-#   Falta e a linha "Origem: reaproveita 2026-09-22 Caso do relatório mensal automatizado"; a linha 1 da
-#   origem nao aparece nos recortes nem no briefing; nenhum numero de 3 ou mais digitos fora dos arquivos.
+#   Falta e a linha "Origem: reaproveita 2026-09-22 Caso do relatório mensal automatizado"; a abertura da
+#   linha 1 da origem nao aparece nos recortes nem no briefing, e o fecho dela nao aparece nos recortes; nenhum numero de 3 ou mais digitos fora dos arquivos.
 # Caso 02 (peca em rascunho): nenhum arquivo novo, sem recorte e sem "Recomendado:"; a resposta diz que so
 #   peca publicada entra e cita o status.
 # Caso 03 (o pedido traz "50 clientes"): o 50 nao esta no briefing fora de um "[FALTA ...]"; a resposta ou o
@@ -109,9 +109,14 @@ confere_recortes() { # confere_recortes <arquivos> <fixture> <resposta> <caso.md
     grep -qE "^$k:" "$br" || m="$m briefing-sem-$k"
   done
   grep -qxF "$ORIGEM_LINHA" "$br" || m="$m briefing-sem-a-linha-Origem"
-  todo=$(awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s"; cat "$br")
-  tr 'A-ZÁÉÍÓÚÂÊÔÃÕÇ' 'a-záéíóúâêôãõç' <<< "$todo" | grep -qF "$ORIGEM_L1_A" && m="$m repete-a-linha-1-da-origem"
-  tr 'A-ZÁÉÍÓÚÂÊÔÃÕÇ' 'a-záéíóúâêôãõç' <<< "$todo" | grep -qF "$ORIGEM_L1_B" && m="$m repete-a-linha-1-da-origem"
+  # A linha 1 da origem nao pode reaparecer: a abertura dela ("o relatorio mensal que levava um dia") nao
+  # entra em recorte nem em briefing, e o fecho dela ("sai em minutos, e o dono confere em dez") nao entra
+  # nos recortes. No briefing, o fato do fecho (o dono confere em dez) pode estar no Material bruto, porque
+  # so a linha 1 o traz e o briefing precisa registrar o fato; a abertura do post é do gancho.
+  todo=$(awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s")
+  minus() { tr 'A-ZÁÉÍÓÚÂÊÔÃÕÇ' 'a-záéíóúâêôãõç'; }
+  { minus <<< "$todo"; minus < "$br"; } | grep -qF "$ORIGEM_L1_A" && m="$m repete-a-linha-1-da-origem"
+  minus <<< "$todo" | grep -qF "$ORIGEM_L1_B" && m="$m repete-a-linha-1-da-origem"
   n=$(grep -v '^Tamanho:' "$br" > "$a/.sem-tamanho.tmp"; numeros_novos "$a/.sem-tamanho.tmp" "$fx" "$caso"; rm -f "$a/.sem-tamanho.tmp"); [ -z "$n" ] || m="$m numero-novo-no-briefing:$n"
   echo "$m"
 }

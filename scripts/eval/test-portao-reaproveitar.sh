@@ -84,6 +84,11 @@ roda 01 "PASSA" - "01 aceita citar so parte da linha 1 que nao repete a frase"
 prepara 01; resp "${RESP/vira um passo a passo/O relatório mensal que levava um dia vira um passo a passo}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "repete-a-linha-1-da-origem" "01 reprova linha 1 da origem no recorte"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
+Material: Antes o relatório levava um dia. Agora sai em minutos, e o dono confere em dez (peça de 2026-09-22).}"
+roda 01 "PASSA" - "01 aceita o fato do fecho da linha 1 no briefing, em frase propria"
+prepara 01; resp "${RESP/vira um passo a passo/sai em minutos, e o dono confere em dez, vira um passo a passo}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "repete-a-linha-1-da-origem" "01 reprova o fecho da linha 1 no recorte"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
 Resultado: 2.468 horas economizadas}"
 roda 01 "NAO PASSA" "numero-novo-no-briefing:2.468" "01 reprova numero novo"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Ângulo:/Angulo:}"
