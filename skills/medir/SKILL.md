@@ -35,7 +35,7 @@ Este especialista é o dono do formato. Ele fica na pasta de contexto, ao lado d
 - `Data da peça` e `Tema`: a chave da peça, copiadas letra por letra da linha de `base-conteudo.md`.
 - `Lida em`: AAAA-MM-DD do dia em que a pessoa leu os números. "Hoje" é a data de hoje. Sem data na colagem, use a de hoje e diga isso na resposta.
 - `Dias desde publicação`: só quando a pessoa disse quando publicou ("publiquei há 7 dias", "publiquei em AAAA-MM-DD"). Com a data dita, é `Lida em` menos essa data. Sem isso, fica vazio. A `Data` da base é o dia em que a peça foi escrita, não o da publicação, então ela nunca entra nessa conta.
-- `Impressões`, `Reações`, `Comentários`, `Salvos`, `Cliques`, `Seguidores` (seguidores ganhos): o número exatamente como a pessoa colou ("1.234", "1,2 mil", "3k"). Não converta, não arredonde, não some. Número que não veio fica vazio. Print entra como o número que se lê nele, com a mesma fonte; o que não se lê com certeza fica vazio e a resposta diz isso.
+- `Impressões`, `Reações`, `Comentários`, `Salvos`, `Cliques`, `Seguidores` (seguidores ganhos): o número exatamente como a pessoa colou, caractere a caractere ("1.234" fica "1.234", e não "1234"; "1,2 mil" e "3k" ficam como estão). Não converta, não tire o separador de milhar, não arredonde, não some. Número que não veio fica vazio. Print entra como o número que se lê nele, com a mesma fonte; o que não se lê com certeza fica vazio e a resposta diz isso.
 - `Fonte`: `colado pela pessoa em AAAA-MM-DD`, a data de hoje.
 - Métrica que a pessoa deu e não tem coluna (compartilhamentos, tempo de leitura) não entra no arquivo: a resposta diz qual ficou de fora. Nenhuma coluna nova em `metricas.md` e nenhuma em `base-conteudo.md`.
 
