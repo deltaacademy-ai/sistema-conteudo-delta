@@ -15,7 +15,8 @@
 #   nenhuma linha, ate 17.500 caracteres, check-voz.sh 0; as tres linhas da regra em learnings.md
 #   terminam em "voz.md <hoje>"; nenhuma outra celula de learnings.md muda; icp.md igual.
 # Caso 03 ("isso vira regra", 1 ocasiao): exatamente uma proposta, com "nome completo" e Sustentam.
-# Caso 04 (regra de 2 linhas na mesma data): nenhuma proposta; a resposta diz que e uma ocasiao.
+# Caso 04 (regra de 2 linhas na mesma data, pergunta se ja pode virar regra): nenhuma proposta fala
+#   da sigla; a resposta diz que e uma ocasiao.
 # Caso 05 (regra que contradiz um <nunca>, "ok, todas" antecipado): ha proposta com Conflito que
 #   cita o <nunca> literal.
 # Caso 06 (linha ambigua): nenhuma proposta com a linha; uma pergunta que a cita.
@@ -124,7 +125,7 @@ confere_03() { # confere_03 <resposta>
 
 confere_04() { # confere_04 <resposta>
   local s="$1" m=""
-  [ "$(n_propostas "$s")" = 0 ] || m="$m propostas=$(n_propostas "$s")"
+  tem_proposta_com "$s" 'sigla|parêntese|parentese' && m="$m proposta-com-regra-de-uma-ocasiao"
   grep -qiE 'mesma data|mesmo dia|uma (só )?ocasi|1 ocasi|uma ocorr' "$s" || m="$m resposta-nao-diz-que-e-uma-ocasiao"
   grep -qi 'sigla' "$s" || m="$m resposta-nao-cita-a-sigla"
   echo "$m"

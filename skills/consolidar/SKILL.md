@@ -43,7 +43,7 @@ Na pasta de contexto (a pasta atual, a que tem `voz.md`; se a pessoa apontar out
 
 - `learnings.md`: a fonte. Sem o arquivo, ou sem nenhuma linha, diga isso numa frase e pare.
 - `voz.md` e `icp.md`, se existirem: servem para mostrar a regra de hoje e achar conflito. Não leia `voz-bruta.md`, `base-conteudo.md`, `prova.md` nem `materiais/`.
-- O pedido: "consolida" e "o que virou regra" pedem a lista inteira; "isso vira regra: X" pede uma proposta sobre X, mesmo com uma ocasião só.
+- O pedido. "Consolida" e "o que virou regra" pedem a lista inteira. "Isso vira regra: X" e "promove X" pedem uma proposta sobre X, mesmo com uma ocasião só, e só sobre X: as outras regras que chegaram a 3 ocasiões ficam de fora da lista, com a linha de motivo "não pedida agora". Pergunta sobre uma regra ("a da sigla já pode virar regra?") não é pedido de promoção: conte, responda com a contagem e proponha só se ela tiver 3 ocasiões.
 
 `learnings.md` que não está na tabela da seção acima (texto livre, de antes do formato): conte só as linhas com data que dá para ler, não converta o arquivo e não trate o que não tem data como ocasião. Diga isso na resposta, em uma frase: o arquivo não está no formato, quantas linhas você conseguiu datar de quantas, e que converter para a tabela muda o arquivo todo e só acontece se a pessoa disser "converte". Proponha só o que a contagem das linhas datadas sustenta.
 

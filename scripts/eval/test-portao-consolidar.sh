@@ -139,7 +139,7 @@ Regra proposta: sigla sem parêntese.
 Sustentam: $d6
 Conflito: nenhum
 Pergunta: ok? A sigla conta duas, mesma data." 04
-roda 04 "NAO PASSA" "propostas=1" "04 reprova proposta com regra de uma ocasiao"
+roda 04 "NAO PASSA" "proposta-com-regra-de-uma-ocasiao" "04 reprova proposta com regra de uma ocasiao"
 
 # 05
 prepara 05 hugo-learnings; resp "### Proposta 1: voz.md
