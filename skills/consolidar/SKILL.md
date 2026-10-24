@@ -91,6 +91,8 @@ Antes de entregar:
 2. Nenhuma `Regra proposta` traz palavra, número, nome ou juízo que não esteja nas linhas citadas ou na fala da pessoa.
 3. Cada proposta leu o arquivo de destino em `Regra hoje` e `Conflito`.
 4. Sem travessão, sem emoji e sem termo de `banidas.txt`, na resposta inteira. Quando puder rodar script, grave o texto da resposta em `consolidar-rascunho.md` na pasta atual e rode a checagem e a remoção num comando só: `bash [raiz do plugin]/scripts/check-voz.sh consolidar-rascunho.md banidas.txt; echo "codigo $?"; rm -f consolidar-rascunho.md` (a pasta `scripts/` fica dois níveis acima deste SKILL.md; omita `banidas.txt` se não existe). Citação literal de linha de `learnings.md` não se altera para passar: se o que acusou está dentro de uma citação, a linha `Checagem` diz isso. Sem script, confira na leitura e diga isso. A leitura procura o travessão (U+2014 e U+2013) caractere a caractere, principalmente dentro da `Pergunta` e das linhas de `Fora das propostas`, onde ele escapa mais: se achou, troque por vírgula, dois-pontos ou parênteses antes de entregar. Só escreva "sem travessão" na `Checagem` depois dessa procura.
+5. Cada proposta abre com `### ` (três cerquilhas e um espaço) antes de "Proposta", e a linha de `Conflito` de uma proposta com conflito traz a lei ou a recusa de hoje com as palavras literais do arquivo.
+6. A `Checagem` é a última linha da mensagem: nada vem depois dela, nem uma frase de fecho.
 
 Entregue assim (sem cerca de código em volta), com tudo o que a pessoa precisa ler dentro da mensagem:
 
