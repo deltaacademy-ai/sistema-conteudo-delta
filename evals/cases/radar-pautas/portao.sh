@@ -23,9 +23,10 @@
 #
 # Criterios novos de todo caso com lista: o id da pauta da rodada nova leva a data de hoje; toda
 #   "Origem: noticia" traz data dentro dos 15 dias (nem mais velha, nem no futuro), ou entao
-#   "[FALTA: data de publicacao]" no bloco; "48%" (numero que so aparece num resumo, nos casos de
-#   noticia) nao pode aparecer em lugar nenhum de pautas.md; a resposta tem a linha de Perplexity e
-#   Grok indisponiveis.
+#   "[FALTA: data de publicacao]" com Confianca baixa; Confianca alta so com dois sites; nota ate 16;
+#   Origem com a referencia do tipo (tudo isso e o checa-pautas.sh, chamado com --rodada de hoje, sem
+#   duplicar a regra aqui); "48%" (numero que so aparece num resumo, nos casos de noticia) nao pode
+#   aparecer em lugar nenhum de pautas.md; a resposta tem a linha de Perplexity e Grok indisponiveis.
 # Casos 01 e 03 a 07 (lista cheia): a rodada de hoje tem pelo menos 3 pautas (o 01 de 3 a 5). O
 #   checa-pautas.sh recebe so a rodada de hoje (--rodada).
 # Caso 04 (noticia de {HOJE-2} e de {HOJE-20}): ha pauta de noticia com a data de {HOJE-2}; nada da
@@ -86,42 +87,21 @@ secao_nova() { # imprime a secao "## Rodada <hoje>..." de pautas.md (ate o proxi
   awk -v h="## Rodada $hoje" 'index($0,h)==1{f=1;print;next} /^## /{f=0} f' "$1"
 }
 
-confere_pauta() { # confere_pauta <bloco-de-uma-pauta> -> achados
-  local b="$1" m="" id rot n anterior=0 l d
-  id=$(sed -nE 's/^### (P-[0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+):.*/\1/p' <<< "$b" | head -1)
-  [ -n "$id" ] || { echo " pauta-sem-identificador"; return; }
-  case "$id" in "P-$hoje-"*) ;; *) m="$m $id:id-com-data-que-nao-e-hoje";; esac
-  l=$(grep -m1 '^Origem:' <<< "$b")
-  if grep -qiE '^Origem: *not[ií]cia' <<< "$l"; then
-    d=$(grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' <<< "$l" | head -1)
-    if [ -z "$d" ]; then
-      grep -q 'FALTA: data de publica' <<< "$b" || m="$m $id:noticia-sem-data"
-    else
-      [[ "$d" < "$corte15" ]] && m="$m $id:noticia-fora-da-janela-$d"
-      [[ "$d" > "$hoje" ]] && m="$m $id:noticia-com-data-no-futuro-$d"
-    fi
-  fi
-  echo "$m"
-}
-
 pautas_da_secao() { # imprime cada bloco "### P-..." separado por \f
   awk '/^### /{if(b!="")printf "%s\f", b; b=$0 "\n"; next} b!=""{b=b $0 "\n"} END{if(b!="")printf "%s\f", b}' <<< "$1"
 }
 
 confere_lista() { # confere_lista <arquivos> <saida.md> [rede] -> criterios de todos os casos com lista
-  local a="$1" s="$2" m="" sec blocos b r
+  local a="$1" s="$2" m="" sec blocos r
   [ -f "$a/pautas.md" ] || { echo " sem-pautas.md"; return; }
   bash scripts/check-voz.sh "$a/pautas.md" "$a/banidas.txt" >/dev/null || m="$m check-voz-pautas"
   sec=$(secao_nova "$a/pautas.md")
   [ -n "$sec" ] || m="$m sem-rodada-de-hoje"
   blocos=$(pautas_da_secao "$sec")
   [ -n "$blocos" ] || m="$m rodada-sem-pautas"
-  while IFS= read -r -d $'\f' b; do
-    [ -n "$b" ] || continue
-    r=$(confere_pauta "$b"); m="$m$r"
-  done < <(printf '%s' "$blocos")
-  # forma da rodada nova (sete linhas, cerca com o id, valores) e numero de resumo (48%) fora de pautas.md:
-  # a regra mora em scripts/checa-pautas.sh, que a propria skill roda antes de entregar
+  # forma da rodada nova (sete linhas, cerca com o id), data do id e da noticia, nota, confianca,
+  # origem e numero de resumo (48%) fora de pautas.md: a regra mora em scripts/checa-pautas.sh,
+  # que a propria skill roda antes de entregar
   r=$(bash scripts/checa-pautas.sh --rodada "$hoje" "$a/pautas.md" "48%" "48 %" "48 por cento" | tr '\n' ' ' | tr -s ' ')
   [ -z "$r" ] || m="$m checa-pautas:[${r% }]"
   grep -qiE 'Perplexity[^.]*(não estava|nao estava|indispon|sem )' "$s" || m="$m sem-linha-de-perplexity-e-grok"
@@ -154,8 +134,8 @@ confere_rede() { # confere_rede <arquivos>: ao menos uma pauta de noticia com li
     l=$(grep -m1 '^Origem:' <<< "$b")
     grep -qiE '^Origem: *not[ií]cia' <<< "$l" || continue
     grep -q 'https\?://' <<< "$l" || continue
-    d=$(grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' <<< "$l" | head -1)
-    [ -n "$d" ] || continue
+    d=$(grep -oE 'publicada em [0-9]{4}-[0-9]{2}-[0-9]{2}' <<< "$l" | head -1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+    [ -n "$d" ] || continue   # vale a data de publicacao, nao a primeira data da linha
     [[ "$d" < "$corte15" || "$d" > "$hoje" ]] && continue
     achou=1
   done < <(printf '%s' "$(pautas_da_secao "$(secao_nova "$p")")")
@@ -177,7 +157,7 @@ bloco_status() { # bloco_status <pautas.md> <id> -> linha Status: do bloco da pa
 confere_03() { # confere_03 <arquivos>
   local p="$1/pautas.md" m="" d3 id1 id2 id3 id4 l_nova l_fato l_orig l_cont
   [ -f "$p" ] || { echo ""; return; }
-  d3=$(date -v-3d +%F 2>/dev/null || date -d "-3 days" +%F)
+  d3=$(rel 3)
   id1="P-$d3-1"; id2="P-$d3-2"; id3="P-$d3-3"; id4="P-$d3-4"
   grep -qF "$id1" "$p" && m="$m pauta-usada-continua"
   grep -qF "$id3" "$p" && m="$m noticia-velha-continua"
@@ -219,7 +199,7 @@ confere_05() { # confere_05 <arquivos> <saida.md>
   [ -f "$p" ] || { echo ""; return; }
   while IFS= read -r -d $'\f' b; do
     [ -n "$b" ] || continue
-    grep -qi 'romaneio' <<< "$b" || continue
+    grep -qiE 'transportadora-romaneio-ia|romaneio|transportadora|concilia' <<< "$b" || continue   # pelo link e por palavras da noticia
     id=$(sed -nE 's/^### (P-[^:]*):.*/\1/p' <<< "$b" | head -1)
     grep -q 'FALTA: data de publica' <<< "$b" || m="$m $id:noticia-sem-data-sem-a-falta"
     grep -qE '^Confiança: *baixa' <<< "$b" || m="$m $id:noticia-sem-data-sem-confianca-baixa"
@@ -231,8 +211,8 @@ confere_05() { # confere_05 <arquivos> <saida.md>
 confere_06() { # confere_06 <arquivos> <saida.md>
   local p="$1/pautas.md" m=""
   [ -f "$p" ] || { echo ""; return; }
-  grep -qiE 'delivery|cashback|entrega de comida|aplicativo de entrega' "$p" && m="$m noticia-de-consumo-final-no-arquivo"
-  grep -iE 'cashback|entrega de comida|aplicativo de entrega|delivery' "$2" | grep -q 'ICP' || m="$m resposta-nao-diz-icp-na-linha-da-noticia"
+  grep -qiE 'delivery-cashback|delivery|cashback|entrega de comida|aplicativo de entrega|pessoas? f[ií]sicas?' "$p" && m="$m noticia-de-consumo-final-no-arquivo"
+  grep -iE 'delivery-cashback|cashback|entrega de comida|aplicativo de entrega|delivery' "$2" | grep -q 'ICP' || m="$m resposta-nao-diz-icp-na-linha-da-noticia"
   echo "$m"
 }
 
