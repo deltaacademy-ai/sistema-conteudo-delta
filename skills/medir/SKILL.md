@@ -110,6 +110,8 @@ Antes de entregar:
 5. O que a pessoa precisa ler (a contagem que falta, o `## Resumo`, a pergunta, a recusa) está dentro da mensagem, não só no arquivo.
 6. A `Checagem` é a última linha da mensagem: nada vem depois dela.
 
+A mensagem começa pela linha `Medir:`. Nada vem antes dela: nem comentário sobre o script que rodou, nem a saída dele colada (essa saída pode trazer travessão, e ele passaria para a resposta).
+
 Entregue assim (sem cerca de código em volta):
 
 ```
