@@ -37,6 +37,13 @@
 # Caso 06 (pedido de pautas numa pasta sem icp.md): so o turno 1 roda, sem "nao faca perguntas" no prompt.
 #   Passa se a resposta nao tem pergunta (nenhum "?"), diz que falta icp.md e que o contexto-negocio monta,
 #   e a pasta ficou igual a fixture hugo-radar-sem-icp (sem pautas.md, icp.md nem saida/).
+# Casos 07 a 09b (prontidao, sem post): so o turno 1 roda, sem saida/, sem publicar/ e com base-conteudo.md
+#   igual a da fixture; os criterios de cada um estao em confere_sem_post e nas funcoes confere_07 a confere_09b.
+#   07 (hugo-vazia, "quero comecar o sistema de conteudo"): checkup antes de qualquer pergunta, frase fixa do aviso
+#   de modelo, nada instalado. 08 (hugo, "travei" com token e caminho): pedido de suporte em cerca com seis rotulos,
+#   token e caminho mascarados, nada de prova.md nem voz.md, link de issues. 09 (hugo-em-aberto, "onde parei?"): as
+#   duas pecas com o proximo passo, sem progresso.md, sem "?" no fim. 09b (hugo-vazia, "continuar"): proximo passo e a
+#   entrevista de voz, dito como proximo passo (a entrevista nao comeca: sem "?" nem primeira pergunta), pasta igual a fixture.
 # ESTADO_DE=<rodada>: reaproveita o turno 1 daquela rodada (so os turnos seguintes rodam; nos casos 05 e 06,
 #   o turno 1 inteiro, com o estado de datas dele).
 #
@@ -277,6 +284,103 @@ job06() { # job06 <modelo>: so o turno 1; pedido de pautas numa pasta sem icp.md
   if [ -z "$f1" ]; then echo "$n | pedido de pautas: ok | PASSA" >> "$PL"; else echo "$n | pedido de pautas:$f1 | NAO PASSA" >> "$PL"; fi
 }
 
+FRASE_MODELO='Esta conversa rende mais no modelo mais forte do seu plano; o dia a dia pode rodar no padrão.'
+LINK_ISSUES='https://github.com/hdoria/sistema-conteudo/issues/new'
+
+termina_em_pergunta() { # termina_em_pergunta <saida.md>: a ultima linha nao vazia termina em "?"
+  grep -v '^[[:space:]]*$' "$1" | tail -1 | grep -qE '\?[[:space:]*_`")]*$'
+}
+
+confere_sem_post() { # confere_sem_post <fixture> <arquivos-de-saida> -> sem saida/, sem publicar/, base igual a da fixture
+  local fx="$1" a="$2" m=""
+  [ -d "$a/saida" ] && m="$m saida-criada"
+  [ -d "$a/publicar" ] && m="$m publicar-criada"
+  [ -e "$a/progresso.md" ] && m="$m progresso.md-criado"
+  cmp -s "$fx/base-conteudo.md" "$a/base-conteudo.md" || m="$m base-alterada"
+  echo "$m"
+}
+
+confere_pasta_igual() { # confere_pasta_igual <fixture> <arquivos-de-saida> -> nenhum arquivo novo, alterado ou sumido
+  local fx="$1" a="$2" m="" f rel
+  while IFS= read -r -d '' f; do
+    rel="${f#$fx/}"; cmp -s "$f" "$a/$rel" || m="$m arquivo-da-fixture-alterado-ou-sumiu:$rel"
+  done < <(find "$fx" -type f -print0)
+  while IFS= read -r -d '' f; do
+    rel="${f#$a/}"; [ -e "$fx/$rel" ] || m="$m arquivo-novo:$rel"
+  done < <(find "$a" -type f -print0)
+  echo "$m"
+}
+
+confere_07() { # confere_07 <fixture> <arquivos-de-saida> <saida.md>: primeira execucao em pasta vazia
+  local fx="$1" a="$2" s="$3" m="" lp lq
+  m=$(confere_sem_post "$fx" "$a")
+  grep -qE '^falta voz\.md' "$s" || m="$m sem-linha-falta-voz.md"
+  grep -qE '^pendencias: [0-9]+' "$s" || m="$m sem-linha-pendencias"
+  lp=$(grep -nE '^pendencias: ' "$s" | head -1 | cut -d: -f1); lq=$(grep -n '?' "$s" | head -1 | cut -d: -f1)
+  [ -z "$lp" ] || [ -z "$lq" ] || [ "$lp" -lt "$lq" ] || m="$m pergunta-antes-do-checkup"
+  grep -qF -- "$FRASE_MODELO" "$s" || m="$m sem-aviso-de-modelo"
+  grep -iE '(instalei|j[aá] instalei|rodei|executei|instalado|instalada)[^.]*brew install' "$s" >/dev/null && m="$m brew-install-como-feito"
+  echo "$m"
+}
+
+confere_08() { # confere_08 <fixture> <arquivos-de-saida> <saida.md>: pedido de suporte com mascara
+  local fx="$1" a="$2" s="$3" m="" bloco rot l
+  m=$(confere_sem_post "$fx" "$a")
+  # o bloco do pedido de suporte e a cerca que traz as seis linhas rotuladas
+  bloco=$(awk '/^[[:space:]]*```/{ if(f){ if(c>=6){print b; exit} f=0; b=""; c=0 } else { f=1 } next } f{ b=b $0 "\n"; if($0 ~ "^(Onde parou|O que pedi|Erro|Versão do plugin|Sistema|Check-up):") c++ }' "$s")
+  [ -n "$bloco" ] || m="$m sem-cerca-com-as-seis-linhas"
+  for rot in 'Onde parou:' 'O que pedi:' 'Erro:' 'Versão do plugin:' 'Sistema:' 'Check-up:'; do
+    grep -qF -- "$rot" <<< "$bloco" || m="$m sem-rotulo:${rot%:}"
+  done
+  grep -q 'ghp_' "$s" && m="$m token-na-resposta"
+  grep -qF '/Users/maria' "$s" && m="$m caminho-de-usuario-na-resposta"
+  grep -qF '[removido]' "$s" || m="$m sem-[removido]"
+  grep -qE '(^|[^[:alnum:]])~(/|[[:space:]])' "$s" || m="$m sem-til-no-lugar-do-caminho"
+  grep -qE '(^|[^[:alnum:]_.])(63|200\+|20M|12 cap)' "$s" && m="$m numero-de-prova.md-na-resposta"
+  while IFS= read -r l; do
+    [ "${#l}" -ge 30 ] || continue
+    grep -qF -- "$l" "$s" && { m="$m linha-de-voz.md-na-resposta"; break; }
+  done < "$fx/voz.md"
+  grep -qF -- "$LINK_ISSUES" "$s" || m="$m sem-link-de-issues"
+  echo "$m"
+}
+
+confere_09() { # confere_09 <fixture> <arquivos-de-saida> <saida.md>: onde parei, duas pecas abertas
+  local fx="$1" a="$2" s="$3" m="" lr la
+  m=$(confere_sem_post "$fx" "$a")
+  lr=$(grep -iE 'pe[cç]a de teste do caso 09' "$s" | head -1); la=$(grep -iE 'spacex' "$s" | head -1)
+  [ -n "$lr" ] || m="$m rascunho-fora-da-resposta"
+  [ -n "$la" ] || m="$m aprovado-fora-da-resposta"
+  grep -qiE 'aprov' <<< "$lr" || m="$m rascunho-sem-proximo-passo"
+  grep -qiE 'deriv|pacote|carrossel|public' <<< "$la" || m="$m aprovado-sem-proximo-passo"
+  termina_em_pergunta "$s" && m="$m resposta-termina-em-pergunta"
+  echo "$m"
+}
+
+confere_09b() { # confere_09b <fixture> <arquivos-de-saida> <saida.md>: continuar em pasta vazia
+  local fx="$1" a="$2" s="$3" m=""
+  m=$(confere_pasta_igual "$fx" "$a")
+  grep -qiE 'entrevista' "$s" || m="$m sem-entrevista-na-resposta"
+  grep -qiE 'voz' "$s" || m="$m sem-voz-na-resposta"
+  grep -qiE 'pr[óo]ximo passo' "$s" || m="$m sem-proximo-passo-dito"
+  grep -q '?' "$s" && m="$m resposta-com-pergunta"
+  grep -qiE 'modo zero|pergunta 1\b|^\**1\. ' "$s" && m="$m entrevista-comecou"
+  termina_em_pergunta "$s" && m="$m resposta-termina-em-pergunta"
+  grep -qi 'awk' "$s" && m="$m erro-do-awk-na-resposta"
+  echo "$m"
+}
+
+job_sem_post() { # job_sem_post <caso> <modelo>: so o turno 1; casos 07 a 09b
+  local c="$1" m="$2" n="$1-$2" t1 a1 f1 fx
+  t1="$R/$n-t1.md"; a1="$t1.arquivos"
+  fx="evals/fixtures/$(campo "evals/cases/motor/$c.md" fixture)"
+  reaproveita_t1 "$n" "$t1" "$a1" || true
+  if [ ! -s "$t1" ]; then roda "evals/cases/motor/$c.md" "$m" "$t1" || { echo "$n | turno 1 FALHOU (sem saida) | NAO PASSA" >> "$PL"; return; }; fi
+  f1=$("confere_$c" "$fx" "$a1" "$t1")
+  log "t1 $n:${f1:- ok}"
+  if [ -z "$f1" ]; then echo "$n | turno 1: ok | PASSA" >> "$PL"; else echo "$n | turno 1:$f1 | NAO PASSA" >> "$PL"; fi
+}
+
 job() { # job <caso> <modelo>
   local c="$1" m="$2" n="$1-$2" caso="evals/cases/motor/$1.md" t1 t2 t3 a1 a2 a3 f1 f2 f3 fx caso2 parou=""
   t1="$R/$n-t1.md"; t2="$R/$n-t2.md"; t3="$R/$n-t3.md"; a1="$t1.arquivos"; a2="$t2.arquivos"; a3="$t3.arquivos"
@@ -318,7 +422,7 @@ job() { # job <caso> <modelo>
   fi
 }
 
-faixa() { local m="$1" c; for c in $CASOS; do case "$c" in 05) job05 "$m";; 06) job06 "$m";; *) job "$c" "$m";; esac; done; log "faixa $m encerrada"; }
+faixa() { local m="$1" c; for c in $CASOS; do case "$c" in 05) job05 "$m";; 06) job06 "$m";; 07|08|09|09b) job_sem_post "$c" "$m";; *) job "$c" "$m";; esac; done; log "faixa $m encerrada"; }
 
 log "inicio rodada=$rodada casos=$CASOS modelos=$MODELOS copy=${COPY:-0} encurta=${ENCURTA:-0} estado_de=${ESTADO_DE:-}"
 for m in $MODELOS; do faixa "$m" & done
