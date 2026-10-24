@@ -109,5 +109,69 @@ if [ "$rc" = 0 ] && [ -z "$saida" ]; then echo "ok --rodada da data de hoje pass
 saida=$(bash "$script" --rodada 2026-01-01 "$tmp/bom.md" 2>&1); rc=$?
 if [ "$rc" = 1 ] && grep -q "sem rodada" <<< "$saida"; then echo "ok --rodada de data que nao existe"; else echo "FALHA --rodada 2026-01-01: codigo $rc, saida: $saida"; falhas=$((falhas+1)); fi
 
+# --- regras que dependem do conteudo: data, nota, confianca, origem, titulo ---
+variante id-outra-data 's/P-2026-10-21-2/P-2026-10-20-2/g'
+confere "id com data que nao e a da rodada" 1 "data diferente da rodada" "$tmp/id-outra-data.md"
+variante noticia-velha 's/publicada em 2026-10-19/publicada em 2026-09-01/'
+confere "noticia publicada ha mais de 15 dias" 1 "fora da janela" "$tmp/noticia-velha.md"
+variante noticia-no-limite 's/publicada em 2026-10-19/publicada em 2026-10-06/'
+confere "noticia de exatamente 15 dias passa" 0 - "$tmp/noticia-no-limite.md"
+variante noticia-16-dias 's/publicada em 2026-10-19/publicada em 2026-10-05/'
+confere "noticia de 16 dias cai" 1 "fora da janela" "$tmp/noticia-16-dias.md"
+variante noticia-futura 's/publicada em 2026-10-19/publicada em 2026-10-25/'
+confere "noticia com data depois da rodada" 1 "depois da rodada" "$tmp/noticia-futura.md"
+variante noticia-sem-data 's/, publicada em 2026-10-19//'
+confere "noticia sem data e sem FALTA" 1 "sem \"publicada em" "$tmp/noticia-sem-data.md"
+variante noticia-sem-data-conf-media 's/, publicada em 2026-10-19//; s/Faltas: \[FALTA: leitura da pessoa sobre o tema\]/Faltas: [FALTA: data de publicação]/'
+confere "noticia sem data com FALTA mas confianca media" 1 "so pode ter Confianca: baixa" "$tmp/noticia-sem-data-conf-media.md"
+variante noticia-sem-data-ok 's/, publicada em 2026-10-19//; s/Faltas: \[FALTA: leitura da pessoa sobre o tema\]/Faltas: [FALTA: data de publicação]/; s/Confiança: média/Confiança: baixa/'
+confere "noticia sem data com FALTA e confianca baixa passa" 0 - "$tmp/noticia-sem-data-ok.md"
+variante noticia-sem-data-alta 's/, publicada em 2026-10-19//; s/Faltas: \[FALTA: leitura da pessoa sobre o tema\]/Faltas: [FALTA: data de publicação]/; s/Confiança: média/Confiança: alta/'
+confere "noticia sem data nao tem confianca alta" 1 "so pode ter Confianca: baixa" "$tmp/noticia-sem-data-alta.md"
+variante noticia-alta-uma-fonte 's/Origem: notícia, colada pela pessoa,/Origem: notícia, https:\/\/a.com.br\/x,/; s/Confiança: média/Confiança: alta/'
+confere "confianca alta com uma fonte so" 1 "duas fontes independentes" "$tmp/noticia-alta-uma-fonte.md"
+variante noticia-alta-mesmo-site 's/Origem: notícia, colada pela pessoa,/Origem: notícia, https:\/\/a.com.br\/x e https:\/\/www.a.com.br\/y,/; s/Confiança: média/Confiança: alta/'
+confere "confianca alta com dois links do mesmo site" 1 "duas fontes independentes" "$tmp/noticia-alta-mesmo-site.md"
+variante noticia-alta-dois-sites 's/Origem: notícia, colada pela pessoa,/Origem: notícia, https:\/\/a.com.br\/x e https:\/\/b.com\/y,/; s/Confiança: média/Confiança: alta/'
+confere "confianca alta com dois sites diferentes passa" 0 - "$tmp/noticia-alta-dois-sites.md"
+variante noticia-sem-fonte 's/Origem: notícia, colada pela pessoa,/Origem: notícia,/'
+confere "noticia sem link nem colada pela pessoa" 1 "sem link http" "$tmp/noticia-sem-fonte.md"
+variante nota-17 's/Nota: 14\/16/Nota: 17\/16/'
+confere "nota acima de 16" 1 "Nota acima de 16" "$tmp/nota-17.md"
+variante nota-16 's/Nota: 14\/16/Nota: 16\/16/'
+confere "nota 16 passa" 0 - "$tmp/nota-16.md"
+variante nota-99 's/Nota: 12\/16/Nota: 99\/16/'
+confere "nota 99 de 16" 1 "Nota acima de 16" "$tmp/nota-99.md"
+variante fato-sem-arquivo 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: fato, conversa com a pessoa/'
+confere "fato sem prova.md nem materiais" 1 "Origem de fato" "$tmp/fato-sem-arquivo.md"
+variante fato-sem-linha 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: fato, prova.md/'
+confere "fato sem a linha citada" 1 "Origem de fato" "$tmp/fato-sem-linha.md"
+variante fato-materiais 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: fato, materiais\/post-x.md, secao 2/'
+confere "fato de materiais com secao passa" 0 - "$tmp/fato-materiais.md"
+variante dor-sem-icp 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: dor, o leitor se perde no financeiro/'
+confere "dor sem icp.md" 1 "Origem de dor" "$tmp/dor-sem-icp.md"
+variante dor-ok 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: dor, icp.md, item "O que preocupa"/'
+confere "dor com icp.md e item passa" 0 - "$tmp/dor-ok.md"
+variante continuacao-sem-base 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: continuação, a peça de setembro/'
+confere "continuacao sem base-conteudo.md" 1 "Origem de continuacao" "$tmp/continuacao-sem-base.md"
+variante continuacao-ok 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: continuação, base-conteudo.md, peça de 2026-09-12/'
+confere "continuacao com base-conteudo.md passa" 0 - "$tmp/continuacao-ok.md"
+variante origem-sistema 's/Origem: fato, prova.md, linha "63 check-ins"/Origem: fato, prova.md, linha vinda do SKILL.md do radar/'
+confere "origem que cita o proprio sistema" 1 "proprio sistema" "$tmp/origem-sistema.md"
+variante ganho-sistema 's/Ganho: numero com fonte\./Ganho: o sistema ganhou o radar-pautas hoje./'
+confere "ganho que cita o proprio sistema" 1 "proprio sistema" "$tmp/ganho-sistema.md"
+variante cerca-com-linguagem 's/```\nUse a skill motor do plugin/```python\nUse a skill motor do plugin/'
+confere "cerca com linguagem" 1 "com linguagem" "$tmp/cerca-com-linguagem.md"
+variante titulo-numero-solto 's/### P-2026-10-21-2: Outro titulo/### P-2026-10-21-2: 5 erros que custam caro/'
+confere "numero no titulo sem lastro" 1 "numero 5 do titulo" "$tmp/titulo-numero-solto.md"
+variante titulo-numero-com-lastro 's/### P-2026-10-21-2: Outro titulo/### P-2026-10-21-2: 63 check-ins em um dia/'
+confere "numero no titulo que aparece na Origem passa" 0 - "$tmp/titulo-numero-com-lastro.md"
+variante titulo-numero-no-id 's/### P-2026-10-21-2: Outro titulo/### P-2026-10-21-2: 21 motivos/'
+confere "numero do titulo igual a parte do id nao conta" 1 "numero 21 do titulo" "$tmp/titulo-numero-no-id.md"
+variante titulo-numero-colado 's/### P-2026-10-21-2: Outro titulo/### P-2026-10-21-2: 3 check-ins/'
+confere "numero do titulo dentro de outro numero nao conta" 1 "numero 3 do titulo" "$tmp/titulo-numero-colado.md"
+variante cabecalho-sem-data 's/## Rodada 2026-10-21/## Rodada de hoje/'
+confere "cabecalho da rodada sem data" 1 "cabecalho da rodada sem data" "$tmp/cabecalho-sem-data.md"
+
 
 [ "$falhas" = 0 ] || exit 1
