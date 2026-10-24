@@ -36,10 +36,10 @@ Na pasta de contexto (a pasta atual, a que tem `voz.md`; se a pessoa apontar out
 - `banidas.txt`, para a checagem do fim.
 - `icp.md`: quem lê e o jargão que ele usa e não usa (é o passe de ICP da Etapa 4), o que a oferta entrega (só material listado ali pode ter CTA de palavra-chave), o que o produto não faz e os claims que precisam de aval.
 - `prova.md`: os números e casos que podem entrar além do briefing. O que não está nele nem no briefing não existe.
-- `base-conteudo.md`, as três últimas peças registradas: não repita a linha 1 de nenhuma; leia a coluna `CTA` das duas últimas linhas (a palavra-chave usada, ou vazio): se alguma das duas tem palavra, o post de agora não leva CTA de palavra-chave (Etapa 2, item 10); e leia a coluna `Assinatura` das duas últimas: frase que está lá não entra neste post (Etapa 2, item 9). Tabela sem essas colunas conta como linhas vazias, e a Etapa 5 acrescenta as colunas ao registrar.
+- `base-conteudo.md`, as três últimas peças registradas: não repita a linha 1 de nenhuma; leia a coluna `CTA` das duas últimas linhas (a palavra-chave usada, ou vazio): se alguma das duas tem palavra, o post de agora não leva CTA de palavra-chave (Etapa 2, item 10); e leia a coluna `Assinatura` das duas últimas: frase que está lá não entra neste post (Etapa 2, item 9). Tabela sem essas colunas conta como linhas vazias, e a Etapa 5 acrescenta as colunas ao registrar. A coluna `Origem` não entra nessas contas.
 - `learnings.md`, se existir: cada correção anterior da pessoa vale como regra aqui.
 - `../angulo/references/tipos-de-post.md` (a pasta `angulo` fica ao lado da pasta deste SKILL.md): a estrutura, o tamanho, o fecho e o que fica de fora de cada tipo.
-- O pedido: tipo, tese, ângulo, gancho aprovado, fontes e links, fechamento pedido, e o material bruto (notícia, transcrição, nota de sessão).
+- O pedido: tipo, tese, ângulo, gancho aprovado, fontes e links, fechamento pedido, e o material bruto (notícia, transcrição, nota de sessão). Se o briefing traz a linha `Origem:` (ele veio do `reaproveitar`), guarde-a: ela vai para a base na Etapa 5.
 
 Sem briefing e sem tema, peça em uma pergunta o tema e o fato principal (o número, a cena ou a notícia). Sem turno de resposta, escreva com o que houver e marque `[FALTA]`. Não reescreva a tese nem o ângulo: se o texto não fecha, o problema é do texto.
 
@@ -107,10 +107,10 @@ Falhou em algum item: corrija aquele trecho, não regenere o post (a regeneraç�
 Registre a peça em `base-conteudo.md`. O formato da tabela é este, e é aqui que ele está definido para todos os especialistas que a leem ou escrevem:
 
 ```
-| Data | Tema | Tipo | Gancho | Status | CTA | Assinatura |
+| Data | Tema | Tipo | Gancho | Status | CTA | Assinatura | Origem |
 ```
 
-`Data` é a de hoje; `Tipo` é um dos sete; `Gancho` é a linha 1 do post entre aspas; `Status` nasce `rascunho` (o `motor` troca por `aprovado` e o `publicar` por `publicado`, sem tocar nas outras colunas); `CTA` é a palavra-chave usada, ou vazio; `Assinatura` é a frase de assinatura literal usada no post, entre aspas, ou vazio. As duas últimas colunas existem separadas do status porque sustentam as contas do próximo post (1 em 3 no CTA, sem repetição na assinatura), e status muda de mão em mão. A linha nova entra logo abaixo do cabeçalho (a peça mais nova fica no topo). Se a tabela tem outras colunas, preencha as que tiver como preencher e deixe as demais vazias; se não tem `CTA` ou `Assinatura`, acrescente as que faltam ao fim do cabeçalho e da linha separadora, e deixe vazias nas linhas antigas; se o arquivo ainda não tem tabela, crie o cabeçalho acima.
+`Data` é a de hoje; `Tipo` é um dos sete; `Gancho` é a linha 1 do post entre aspas; `Status` nasce `rascunho` (o `motor` troca por `aprovado` e o `publicar` por `publicado`, sem tocar nas outras colunas); `CTA` é a palavra-chave usada, ou vazio; `Assinatura` é a frase de assinatura literal usada no post, entre aspas, ou vazio. `Origem` é vazio, ou `reaproveita AAAA-MM-DD <tema>` quando o briefing trouxe a linha `Origem:`: copie o valor dela letra por letra, sem o rótulo, e sem inventar origem para briefing que não a traz. Ela permite ao `radar-pautas` e ao `reaproveitar` ver o que já foi reaproveitado. `CTA` e `Assinatura` existem separadas do status porque sustentam as contas do próximo post (1 em 3 no CTA, sem repetição na assinatura), e status muda de mão em mão. A linha nova entra logo abaixo do cabeçalho (a peça mais nova fica no topo). Se a tabela tem outras colunas, preencha as que tiver como preencher e deixe as demais vazias; se não tem `CTA`, `Assinatura` ou `Origem`, acrescente as que faltam ao fim do cabeçalho e da linha separadora, nessa ordem, e deixe uma célula vazia por coluna nova em cada linha antiga, sem mexer em mais nada (é a migração de uma base de 7 colunas, sem `Origem`, que a primeira gravação faz) e diga isso em uma linha na resposta (`Base:` no formato abaixo); se o arquivo ainda não tem tabela, crie o cabeçalho acima.
 
 Trocar o status de uma peça (o que o `motor` e o `publicar` fazem, e o único procedimento para isso): leia o cabeçalho e conte as colunas que ele declara (a lista é a do cabeçalho, nunca uma lista fixa, porque colunas são acrescentadas quando precisa); localize a linha da peça por data e tema; troque só a célula `Status`, sem tocar em nenhuma outra célula, no cabeçalho nem em outra linha; releia a linha e conte as células. Linha da peça com menos células que o cabeçalho é completada na hora (as células que faltam entram vazias, no lugar certo) e dita na resposta ("a linha saiu curta e foi completada"), porque a célula perdida quebra a conta que aquela coluna sustenta sem ninguém perceber. Linha antiga que já estava curta antes de você tocar na tabela não é para corrigir: aponte na resposta qual linha e quantas células faltam.
 
@@ -125,6 +125,7 @@ Primeiro comentário:
 [uma linha por fonte, com link, ou "sem primeiro comentário: o briefing não traz link"]
 
 Nota: [tipo] porque [uma linha]. Gancho [aprovado no pedido | escrito aqui, sem aprovação].
+Base: [só quando a tabela ganhou coluna: coluna <nome> acrescentada ao cabeçalho; as linhas antigas ganharam uma célula vazia. Senão, omita a linha].
 Fora: [o que ficou de fora e por quê, em uma linha de prosa, cada lacuna dita como falta; ou "nada"].
 Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto | longo] (ou `TAMANHO FORA DA REGRA`, [N]). Leitura: [posição aplicada e de onde veio | do briefing | FALTA]. Registrado em base-conteudo.md.
 ````

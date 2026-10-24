@@ -43,7 +43,7 @@ Na pasta de contexto (a pasta atual, a que tem `voz.md`; se a pessoa apontar out
 - `base-conteudo.md`: a linha 1 do post de origem e das últimas peças, porque a legenda precisa de linha 1 nova.
 - `learnings.md`, se existir: cada correção anterior da pessoa vale como regra aqui.
 - `../gancho/references/banco-de-ganchos.md`, seção "Regra de capa" (a pasta `gancho` fica ao lado da pasta deste SKILL.md).
-- O pedido: o texto-base (post aprovado, com a data de publicação quando houver, ou briefing com tipo, tese e material bruto), o gancho de capa quando o `gancho` já entregou um, e o tema.
+- O pedido: o texto-base (post aprovado, com a data de publicação quando houver, ou briefing com tipo, tese e material bruto), o gancho de capa quando o `gancho` já entregou um, e o tema. Quando o pedido vem do `reaproveitar` (o briefing traz a linha `Origem:`), o post de origem está `publicado` e vale como texto aprovado dos fatos, mas o texto-base do carrossel é o briefing: a ordem dos slides é a do briefing, e a capa, a legenda e o título do PDF não repetem a linha 1, a tese nem a sequência de argumentos do post de origem.
 
 Sem texto-base e sem briefing, peça em uma pergunta o texto de origem. Sem turno de resposta, roteirize com o que houver e marque `[FALTA]`. Não reescreva a tese nem o post: se um bloco não cabe em slide, o problema é do slide.
 
@@ -127,7 +127,7 @@ Antes de entregar, slide por slide:
 
 Falhou em algum item: corrija aquele slide, não regenere o roteiro.
 
-Quando o carrossel não deriva de post já registrado em `base-conteudo.md` (nasceu de briefing), registre uma linha nova logo abaixo do cabeçalho da tabela: data de hoje, tema, tipo `carrossel` (essa palavra só, sem o tipo do post ao lado), o título da capa entre aspas e status `rascunho`. Carrossel derivado de post registrado não ganha linha: é o mesmo tema.
+Quando o carrossel não deriva de post já registrado em `base-conteudo.md` (nasceu de briefing), registre uma linha nova logo abaixo do cabeçalho da tabela: data de hoje, tema, tipo `carrossel` (essa palavra só, sem o tipo do post ao lado), o título da capa entre aspas e status `rascunho`. Carrossel derivado de post registrado não ganha linha: é o mesmo tema. A exceção é o carrossel que vem do `reaproveitar`: o briefing dele é um tema novo, então ele ganha linha, com a coluna `Origem` copiada da linha `Origem:` do briefing, letra por letra e sem o rótulo. A tabela é do `linkedin-post`, e o formato dela, as colunas e a migração de uma base sem `Origem` estão definidos na Etapa 5 dele: siga o que está lá, preenchendo as colunas que a linha acima não nomeia (`CTA`, `Assinatura`) com célula vazia, na ordem do cabeçalho.
 
 Entregue neste formato, sem preâmbulo:
 
