@@ -30,7 +30,7 @@ Use a skill motor do plugin sistema-conteudo. Pauta P-$HOJE-$1. TEMA: x
 \`\`\`
 P
 }
-resposta() { printf 'P-%s-1 | titulo | fato | Nota 10/16 | alta\nA busca na web não estava disponível; a lista saiu só dos arquivos da pessoa.\nPerplexity e Grok não estavam configurados; ficou sem a camada das últimas 24 horas.\nChecagem: check-voz.sh código 0 em pautas.md\n' "$HOJE"; }
+resposta() { printf 'P-%s-1 | titulo | fato | Nota 10/16 | alta\nA busca na web não estava disponível. A lista saiu só dos arquivos da pessoa.\nPerplexity e Grok não estavam configurados. Ficou sem a camada das últimas 24 horas.\nChecagem: check-voz.sh código 0 em pautas.md\n' "$HOJE"; }
 prepara() { # prepara <caso> -> zera a saida falsa em $base/<caso>-fake.md
   rm -rf "$base"; mkdir -p "$base/$1-fake.md.arquivos"
   cp evals/fixtures/hugo-radar/banidas.txt "$base/$1-fake.md.arquivos/banidas.txt"
