@@ -85,7 +85,9 @@ E peça:
 Quero começar o sistema de conteúdo.
 ```
 
-O `motor` vê que a pasta tá vazia e chama a entrevista de voz primeiro, depois o contexto do seu negócio. São as conversas mais longas do sistema, e só acontecem uma vez.
+O `motor` vê que a pasta tá vazia, confere o que falta na instalação e chama a entrevista de voz primeiro, depois o contexto do seu negócio. São as conversas mais longas do sistema, e só acontecem uma vez. Elas rendem mais no modelo mais forte do seu plano; o dia a dia pode rodar no padrão.
+
+Parou no meio? Abra o Claude Code na mesma pasta e diga "continuar": o `motor` lê a pasta e diz o próximo passo.
 
 Com as duas prontas, abra uma conversa nova na mesma pasta e mande o tema: uma notícia, um link, algo que aconteceu na sua empresa. Tipo "faz um post disso: [o que aconteceu]". O sistema escreve, manda pra um revisor que não viu o raciocínio de quem escreveu e para pra você aprovar. Nada é publicado sozinho: no fim ele monta a pasta `publicar/` com o texto, o carrossel e o passo a passo, e quem posta é você.
 
@@ -121,4 +123,4 @@ Pra atualizar sozinho: dentro do Claude Code, abra `/plugin`, vá em Marketplace
 - **O `cp` do passo 4 diz que a pasta não existe:** o passo 3 não terminou. Rode `claude plugin list` e confira.
 - **O carrossel saiu só em HTML:** falta o passo 5. A resposta do sistema também explica como exportar pelo Chrome.
 - **A entrevista começou numa pasta errada:** o sistema usa a pasta onde você abriu o Claude Code. Feche, entre na pasta de conteúdo e abra de novo.
-- **Travou em qualquer ponto, ou algo não responde:** abra o Claude Code na sua pasta de conteúdo e peça "faz um check-up". O sistema confere `git`, `node`, `jq`, o Chromium do carrossel e os arquivos da pasta, e diz o que falta e o comando que resolve.
+- **Travou em qualquer ponto, ou algo não responde:** abra o Claude Code na sua pasta de conteúdo e diga "travei". O sistema faz o check-up (`git`, `node`, `jq`, o Chromium do carrossel e os arquivos da pasta), diz o que falta e o comando que resolve, e monta o pedido de suporte pronto, como descreve a seção "Pedido de suporte" do `motor`. Você cola o pedido em uma issue nova do repositório; o `motor` entrega o link.
