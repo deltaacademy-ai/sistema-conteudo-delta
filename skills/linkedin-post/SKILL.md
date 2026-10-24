@@ -137,7 +137,7 @@ Checagem: [o que o script acusou, ou "por leitura"]; [N] caracteres, lado [curto
 - "Mais viral" ou "mais polêmico": mais direto e mais apontado para quem lê (segunda pessoa na linha 1, frase mais curta), nunca mais esperto, nunca polêmica fabricada.
 - "Troca de tipo": releia `tipos-de-post.md` e reescreva na estrutura nova; o gancho pode mudar, os fatos não.
 - "Tira o nome" ou "esse número tá errado": corrija e registre a correção como fonte na nota.
-- Correção que muda uma regra (a pessoa rejeitou uma palavra, um fecho, um tom, um tipo de exemplo): grave em `learnings.md` da pasta de contexto a regra, o porquê e como aplicar, para o próximo post já nascer certo.
+- Correção que muda uma regra (a pessoa rejeitou uma palavra, um fecho, um tom, um tipo de exemplo): registre uma linha em `learnings.md` da pasta de contexto, no formato (seção "Formato de learnings.md" do `consolidar`), para o próximo post já nascer certo.
 
 ## O que este especialista não faz
 

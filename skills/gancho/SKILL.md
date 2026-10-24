@@ -112,7 +112,7 @@ Quando o pedido é só um tema, sem peça nem briefing, o gancho é a ferramenta
 - "Tá parecido com o exemplo do banco": reescreva adaptando ao fato da peça; o exemplo só calibra a forma.
 - "Esse número tá errado": corrija o número e a fonte; se a pessoa deu o número de cabeça, registre isso como fonte.
 - "Reescreve o A": gere 2 ou 3 opções novas só para aquela vaga, de famílias diferentes das que ficaram.
-- Correção que muda uma regra (a pessoa rejeitou uma estrutura, um tom, uma palavra): grave em `learnings.md` da pasta de contexto a regra, o porquê e como aplicar, para o próximo gancho já nascer certo.
+- Correção que muda uma regra (a pessoa rejeitou uma estrutura, um tom, uma palavra): registre uma linha em `learnings.md` da pasta de contexto, no formato (seção "Formato de learnings.md" do `consolidar`), para o próximo gancho já nascer certo.
 
 ## O que este especialista não faz
 

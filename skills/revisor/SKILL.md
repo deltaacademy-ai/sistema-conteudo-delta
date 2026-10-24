@@ -121,5 +121,5 @@ Antes de responder, confira:
 ## Ajustes depois da entrega
 
 - "Revisa de novo": a peça corrigida passa pelo processo inteiro, do zero, e sai um JSON novo. Diga as duas notas na linha de veredito, para a pessoa ver o que mudou.
-- "Discordo da correção X": a palavra da pessoa vence a do revisor. Se ela disser que a regra por trás da correção não vale para ela, registre em `learnings.md` a regra, o motivo dela e como aplicar da próxima vez, para o revisor não cobrar de novo o que ela já rejeitou.
+- "Discordo da correção X": a palavra da pessoa vence a do revisor. Se ela disser que a regra por trás da correção não vale para ela, registre uma linha em `learnings.md`, no formato (seção "Formato de learnings.md" do `consolidar`), com o motivo dela, para o revisor não cobrar de novo o que ela já rejeitou.
 - "Só o cético" ou "só o tamanho": rode só o crítico pedido e devolva o JSON com os outros campos marcados como não avaliados (`null`), sem inventar nota para o que não leu.

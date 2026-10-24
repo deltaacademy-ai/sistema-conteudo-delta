@@ -127,10 +127,19 @@ Se ela errar 2 ou mais, o perfil passou. Se ela acertar os 3 gerados sem hesitar
 Quando `base-conteudo.md` registrar 10 peças publicadas, o perfil compilado a partir de entrevista já está atrás do que a pessoa de fato publica. Recompile com:
 
 - os 10 posts publicados como material principal (o que ela publicou vale mais que o que ela disse que faria)
-- `learnings.md`: cada correção recorrente vira regra ou recusa no perfil novo
+- `learnings.md`: cada correção recorrente vira regra ou recusa no perfil novo. Linha com `Promovida` preenchida fica de fora: a regra dela já está no `voz.md` atual ou no `icp.md`
 - `voz-bruta.md` e o `voz.md` atual como base
 
 Antes de sobrescrever, guarde a versão anterior (commit na pasta de contexto, ou cópia em `voz-anterior.md`). A recompilação segue a Etapa 3 e a Etapa 4 inteiras: contexto limpo, aprovação e teste de reconhecimento.
+
+## Ajustes depois da entrega
+
+- Promover uma regra: o `consolidar` chama este procedimento depois do ok da pessoa, com o destino `voz.md`, a frase da regra, as datas das linhas de `learnings.md` que a sustentam e, se for troca, a linha que sai. Este especialista é o dono do formato de `voz.md`, então a linha entra por aqui e nunca pelo `consolidar`.
+  1. Escolha o bloco pelo que a regra é: `<leis_de_escrita>` para escrita e tom, `<recusas_duras>` para o que a pessoa nunca quer, `<leis_de_comunicacao>` para como o agente responde a ela. Acrescente uma linha antes do fecho do bloco: `<lei>Faça: ... Evite: ...</lei>` ou `<nunca>Nunca ...</nunca>`. A frase usa só as palavras da regra e da pessoa. "Faça" e "Evite" entram só quando a regra traz os dois lados; o lado que falta não se inventa.
+  2. Troca só quando o `consolidar` trouxe a decisão escrita da pessoa: a linha antiga sai e a nova entra no lugar. Sem essa decisão, nunca deixe duas linhas que se contradizem.
+  3. Conte o arquivo com `wc -m voz.md`. Passou de 17.500 caracteres: não grave, diga quantos passam e qual linha do próprio `voz.md` pode sair (a pessoa decide), e devolva "recusado" ao `consolidar`.
+  4. Rode `bash [raiz do plugin]/scripts/check-voz.sh voz.md` (sem o segundo argumento). Código diferente de 0: desfaça a linha, diga o que acusou e devolva "recusado".
+  5. Devolva ao `consolidar` "gravado", com o bloco e a linha, ou "recusado", com o motivo.
 
 ## O que este especialista não faz
 
@@ -138,4 +147,4 @@ Antes de sobrescrever, guarde a versão anterior (commit na pasta de contexto, o
 - Não preenche categoria sem evidência. Lacuna vira `<nao_inferir>` e pergunta.
 - Não resume a resposta da pessoa em `voz-bruta.md`.
 - Não compila na mesma conversa em que entrevistou.
-- Não corrige `voz.md` à mão depois da compilação.
+- Não corrige `voz.md` à mão depois da compilação. A única exceção é "Promover uma regra", com o ok da pessoa.

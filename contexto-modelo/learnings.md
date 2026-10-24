@@ -1,3 +1,4 @@
 # Learnings
 
-Preenchido por qualquer especialista.
+| Data | Especialista | Regra | Porquê | Como aplicar | Promovida |
+|---|---|---|---|---|---|

@@ -158,7 +158,7 @@ Tudo o que houver a dizer cabe nesses campos: nada antes do primeiro ângulo, na
 - "Pode citar o cliente": mova o nome de `Aval` para `Material bruto`, com "aval da pessoa, AAAA-MM-DD" como fonte.
 - "Esse número tá errado": corrija o número e a fonte; se a pessoa deu o número de cabeça, registre isso como fonte.
 - "Faz carrossel também": só se a tese tiver lista; sem lista, diga que o formato não sustenta e por quê.
-- Correção que muda uma regra (a pessoa rejeitou um tipo para certo fato, um recorte, uma forma de tese): grave em `learnings.md` da pasta de contexto a regra, o porquê e como aplicar, para o próximo ângulo já nascer certo.
+- Correção que muda uma regra (a pessoa rejeitou um tipo para certo fato, um recorte, uma forma de tese): registre uma linha em `learnings.md` da pasta de contexto, no formato (seção "Formato de learnings.md" do `consolidar`), para o próximo ângulo já nascer certo.
 
 ## O que este especialista não faz
 

@@ -171,7 +171,7 @@ Tudo o que houver a dizer cabe nesses campos: nada antes do slide 1, nada depois
 - Pedido que muda a ordem dos blocos: diga em uma linha que a reordenação quebra a fidelidade ao texto-base e execute só com confirmação explícita.
 - "Esse número tá errado" ou "tira o nome": corrija e registre a correção como fonte na nota.
 - Pedido de cor, fundo, layout ou imagem: é do `carrossel-render`; anote no `Próximo passo` e não mude o roteiro.
-- Correção que muda uma regra (a pessoa rejeitou um formato de capa, um tamanho de corpo, uma palavra): grave em `learnings.md` da pasta de contexto a regra, o porquê e como aplicar, para o próximo roteiro já nascer certo.
+- Correção que muda uma regra (a pessoa rejeitou um formato de capa, um tamanho de corpo, uma palavra): registre uma linha em `learnings.md` da pasta de contexto, no formato (seção "Formato de learnings.md" do `consolidar`), para o próximo roteiro já nascer certo.
 
 ## O que este especialista não faz
 
