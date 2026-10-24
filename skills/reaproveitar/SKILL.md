@@ -78,7 +78,7 @@ Em `Tipo: carrossel`, a linha só diz o formato; o tipo do conteúdo vai no brie
 
 Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e menos encosto na origem, ou o carrossel, quando a pessoa o pediu. Grave o briefing dele em `saida/briefing-AAAA-MM-DD-<tema>.md`, no formato que a seção "Etapa 4: conferência e entrega" do `angulo` define para o bloco "Briefing do ângulo", com estas regras daqui:
 
-- `Material bruto`: só fatos da origem, de `prova.md` ou da fala da pessoa, com a fonte de cada um (a peça de origem entra pelo nome do arquivo). Nenhum número novo do pedido fora de `[FALTA ...]`.
+- `Material bruto`: só fatos da origem, de `prova.md` ou da fala da pessoa, com a fonte de cada um (a peça de origem entra pelo nome do arquivo). Nenhum número novo do pedido fora de `[FALTA ...]`. O fato que a linha 1 da origem resume entra pelo dado, em frase sua, sem as palavras da linha 1 nem a ordem dela (o `linkedin-post` lê este campo e copia o que está nele).
 - `Leitura da pessoa`: só o que ela disse, ou `[FALTA: leitura da pessoa sobre X]`. O que a origem afirma na voz dela é leitura que ela já publicou, e pode entrar com a fonte "peça de AAAA-MM-DD"; leitura nova não se inventa.
 - `Falta`: cada item como `[FALTA: descrição]`, com os colchetes; sem colchetes, o item é lido como afirmação.
 - `Formato`: `carrossel` no recorte de carrossel, `post` nos demais.
