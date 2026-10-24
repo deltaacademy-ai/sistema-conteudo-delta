@@ -141,7 +141,7 @@ confere_05() { # confere_05 <resposta>
 confere_06() { # confere_06 <resposta>
   local s="$1" m=""
   tem_proposta_com "$s" 'não gostei|nao gostei|daquilo' && m="$m proposta-com-a-linha-ambigua"
-  grep -iE 'não gostei|nao gostei|daquilo' "$s" | grep -q '?' || m="$m sem-pergunta-sobre-a-linha"
+  grep -iE 'não gostei|nao gostei|não gostou|nao gostou|aquilo' "$s" | grep -q '?' || m="$m sem-pergunta-sobre-a-linha"
   echo "$m"
 }
 

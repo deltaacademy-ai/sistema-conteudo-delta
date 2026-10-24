@@ -185,6 +185,8 @@ prepara 06 hugo-learnings; resp "Não consegui entender a linha de $d6: o que fo
 roda 06 "NAO PASSA" "sem-pergunta-sobre-a-linha" "06 reprova resposta sem citar a linha"
 prepara 06 hugo-learnings; resp "A linha \"não gostei daquilo\" não diz o que mudar. O que você não gostou?" 06
 roda 06 PASSA - "06 certo passa"
+prepara 06 hugo-learnings; resp "Sem proposta. Pergunta: o que foi \"aquilo\" que você não gostou, nas suas palavras?" 06
+roda 06 PASSA - "06 aceita a pergunta com aquilo e gostou"
 prepara 06 hugo-learnings; resp "### Proposta 1: voz.md
 Regra proposta: Evite aquilo que não gostei.
 Sustentam: $d6 (revisor: \"não gostei daquilo\")

@@ -150,3 +150,22 @@ Medido sobre `335acfa` mais `scripts/eval/instalacao-limpa.sh`. Sem modelo. Bran
 Achados do teste, todos de ambiente e já tratados no script, nenhum erro no `INSTALAR.md`: (1) o Keychain do gh não existe num HOME falso, então o token vai só em memória, numa variável não exportada, e apenas para `git ls-remote` e `claude plugin install`; (2) o `osxkeychain` do gitconfig de sistema trava sem o Keychain real (`GIT_CONFIG_NOSYSTEM=1`); (3) o `ssh` acha `~/.ssh` pelo usuário do sistema, não pelo `$HOME`, e sem bloquear isso o teste usaria a chave real.
 
 Fica para a pessoa real, no roteiro do relatório da tarefa: convite numa conta sem acesso, `gh auth login` no navegador, login do Claude Code, auto-update na tela `/plugin`, check-up e aviso de modelo na primeira conversa, "travei" com a issue. Tempo e pontos de ajuda ainda não medidos.
+
+## Prontidão, tarefa 4: consolidar (24/10/2026)
+
+Portão mecânico sem juiz (`evals/cases/consolidar/portao.sh`), casos 01 a 07, `check-voz.sh` 0 na resposta e fixture intacta em todos. Teste local do portão, sem modelo: `scripts/eval/test-portao-consolidar.sh`, 31 verificações ok (reprova gravação sem ok, proposta a mais, marca faltando, `voz.md` que perde linha, regra de uma data só, conflito sem o `<nunca>` literal, linha ambígua virando proposta, texto livre sem aviso).
+
+| Rodada | Modelo | Commit | Resultado | Pasta |
+|---|---|---|---|---|
+| RED, plugin sem `skills/consolidar` | Sonnet | `0b2d00c` sem a skill | 7 de 7 NAO PASSA (a resposta diz que a skill não existe) | `consolidar-red` (cópia descartável) |
+| Tentativa 1 | Sonnet | `d8ffaf7` | 01, 02, 05, 06, 07 PASSA; 03 e 04 NAO PASSA (propôs a regra de 3 datas junto com a pedida; tratou a pergunta sobre a sigla como pedido) | `consolidar-g1` |
+| Tentativa 2, 03 e 04 | Sonnet | `9351efb` | 2 de 2 PASSA (04 passa a perguntar se a sigla "já pode virar regra") | `consolidar-g2` |
+| Medição 1 | Sonnet e Opus | `9351efb` | 12 de 14: falham 06 Sonnet (travessão na `Pergunta`), 05 Sonnet e 01 Sonnet (cabeçalho `### Proposta` sem as cerquilhas ou em negrito), 04 Sonnet e 06 Opus (o portão lia o comentário seguinte como parte do bloco) | `consolidar-final` e `final2` |
+| Tentativas seguintes | Sonnet | `c77e98a` a `e60c322` | 06 (2 vezes), 01, 03, 04, 05, 07 PASSA depois de cada correção; 05 Sonnet e 07 Sonnet reprovaram uma vez cada nas rodadas intermediárias (cabeçalho sem `###`, aviso de formato sem oferta de converter) | `consolidar-g3` a `g11` |
+| Medição 2 | Sonnet e Opus | `9c1014b` | 13 de 14: 01 Opus citou em `Regra hoje` uma lista de substituições de `voz.md` com termo de `banidas.txt` | `consolidar-final4` |
+| Tentativas | Opus (desvio do ritmo, ver abaixo) | `0eaf0a0` | 01, 2 de 2 PASSA | `consolidar-g12`, `g13` |
+| Medição 3 | Sonnet e Opus | `0eaf0a0` | 13 de 14: 02 Sonnet entregou um travessão na mensagem de depois de gravar (o `check-voz.sh` não rodou na sessão) | `consolidar-final5` |
+| Tentativas | Sonnet | `31e9f50` | 02, 2 de 2 PASSA | `consolidar-g14`, `g15` |
+| **Medição final** | Sonnet e Opus | `31e9f50` | **14 de 14 PASSA**, depois de corrigir o portão (06 Opus perguntou com "aquilo" e "não gostou", e o regex só aceitava "daquilo" e "não gostei"; a saída foi reavaliada sem rodar modelo, com `REAVALIAR=final6`) | `consolidar-final6`, `final6r` |
+
+Leitura: as falhas de conteúdo que apareceram foram de forma (cabeçalho, travessão quando o `check-voz.sh` não roda na sessão, citação com termo banido) e cada uma virou regra de forma na skill ou ajuste do portão; nos casos sem ok, `voz.md`, `icp.md` e `learnings.md` ficaram idênticos em todas as execuções que o portão conferiu (nenhuma falha por gravação indevida). O `check-voz.sh` não rodou em cerca de metade das sessões do runner (a pasta `scripts/` do plugin fica fora do que a sessão enxerga); a skill diz isso na `Checagem`, mas nesses casos a ausência de travessão só é garantida pelo portão.
