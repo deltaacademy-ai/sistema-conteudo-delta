@@ -104,6 +104,26 @@ roda "$d/base"
 espera_cod   "base so com cabecalho" 0
 espera_linha "base so com cabecalho" '^pecas em aberto: 0 rascunho, 0 aprovado$'
 
+# 6d. base antiga de 7 colunas (sem Origem) e base nova de 8 (com Origem): Status achado pelo nome
+cat > "$d/base/base-conteudo.md" <<'EOT'
+| Data | Tema | Tipo | Gancho | Status | CTA | Assinatura |
+|---|---|---|---|---|---|---|
+| 2026-10-01 | A | teardown | "gancho com | barra" | rascunho | | |
+| 2026-10-02 | B | caso | "outro" | aprovado | | "frase" |
+| 2026-10-03 | C | caso | "terceiro" | publicado | | |
+EOT
+roda "$d/base"
+espera_linha "base de 7 colunas" '^pecas em aberto: 1 rascunho, 1 aprovado$'
+cat > "$d/base/base-conteudo.md" <<'EOT'
+| Data | Tema | Tipo | Gancho | Status | CTA | Assinatura | Origem |
+|---|---|---|---|---|---|---|---|
+| 2026-10-01 | A | teardown | "gancho com | barra" | rascunho | | | reaproveita 2026-09-22 Caso do relatorio |
+| 2026-10-02 | B | caso | "outro" | aprovado | | "frase" | |
+| 2026-10-03 | C | caso | "terceiro" | publicado | | | |
+EOT
+roda "$d/base"
+espera_linha "base de 8 colunas" '^pecas em aberto: 1 rascunho, 1 aprovado$'
+
 # 7. base ausente
 completa "$d/semb"; rm "$d/semb/base-conteudo.md"
 roda "$d/semb"
