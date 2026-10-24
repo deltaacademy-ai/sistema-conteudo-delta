@@ -169,3 +169,20 @@ Portão mecânico sem juiz (`evals/cases/consolidar/portao.sh`), casos 01 a 07, 
 | **Medição final** | Sonnet e Opus | `31e9f50` | **14 de 14 PASSA**, depois de corrigir o portão (06 Opus perguntou com "aquilo" e "não gostou", e o regex só aceitava "daquilo" e "não gostei"; a saída foi reavaliada sem rodar modelo, com `REAVALIAR=final6`) | `consolidar-final6`, `final6r` |
 
 Leitura: as falhas de conteúdo que apareceram foram de forma (cabeçalho, travessão quando o `check-voz.sh` não roda na sessão, citação com termo banido) e cada uma virou regra de forma na skill ou ajuste do portão; nos casos sem ok, `voz.md`, `icp.md` e `learnings.md` ficaram idênticos em todas as execuções que o portão conferiu (nenhuma falha por gravação indevida). O `check-voz.sh` não rodou em cerca de metade das sessões do runner (a pasta `scripts/` do plugin fica fora do que a sessão enxerga); a skill diz isso na `Checagem`, mas nesses casos a ausência de travessão só é garantida pelo portão.
+
+## Prontidão, tarefa 5: medir (24/10/2026)
+
+Portão mecânico sem juiz (`evals/cases/medir/portao.sh`), casos 01 a 07, fixtures `hugo-medir-7` (7 publicadas, 6 medidas) e `hugo-medir-8` (8 publicadas, 7 medidas). Em todos: `check-voz.sh` 0 na resposta e em `metricas.md`, `base-conteudo.md` e `saida/` iguais, nenhuma linha antiga de `metricas.md` perdida, nenhum arquivo novo, `## Resumo` só no caso 03. Teste local do portão, sem modelo: `scripts/eval/test-portao-medir.sh`, 52 verificações ok (reprova gravação onde não devia, célula estimada ou calculada, número convertido ou sem o separador, soma da instrução embutida, linha antiga perdida, Resumo antes das 8 peças, grupo de 2 com média, grupo sem número de peças, pergunta que não cita as duas peças).
+
+| Rodada | Modelo | Commit | Resultado | Pasta |
+|---|---|---|---|---|
+| RED, plugin sem `skills/medir` | Sonnet e Opus | `1376132` | 14 de 14 NAO PASSA (a resposta diz que a skill não existe, ou improvisa uma linha sem o formato) | `medir-red` |
+| Tentativa 1 | Sonnet | `2162d07` | 01, 03, 06 PASSA; 02 e 04 com travessão na resposta; 05 recusou em vez de gravar os números; 02, 04 e 07 reprovados também por um critério errado do portão (o código `U+2014` da `Checagem` contava como número novo) | `medir-g1` |
+| Tentativa 2, 02, 04, 05 e 07 | Sonnet | `0ab138d` | 4 de 4 PASSA (caso 05 com a colagem entre aspas; portão ignora `U+`) | `medir-g2` |
+| Medição 1 | Sonnet e Opus | `0ab138d` | 13 de 14: 05 Sonnet gravou `1500` no lugar de `1.500` | `medir-final` |
+| Tentativa | Sonnet | `3a9e1b9` | 05 PASSA | `medir-g3` |
+| Medição 2 | Sonnet e Opus | `3a9e1b9` | 13 de 14: 05 Sonnet abriu a mensagem com a saída do script colada, que trazia travessão | `medir-final2` |
+| Tentativa | Sonnet | `fd15ea5` | 05 PASSA | `medir-g4` |
+| **Medição final** | Sonnet e Opus | `fd15ea5` | **14 de 14 PASSA**, depois de corrigir o portão (03 Sonnet escreveu `(3 peças: datas)` e o critério só aceitava `(3 peças)`; saída reavaliada sem rodar modelo, com `REAVALIAR=final3`) | `medir-final3`, `final3r2` |
+
+Leitura: as falhas de conteúdo foram de forma (travessão na resposta, abertura com saída de script, separador de milhar tirado) e de desenho do caso 05 (a instrução estava solta no pedido e o modelo a tratou como ordem da pessoa; entre aspas, como colagem, o `medir` a ignora e grava os números). Nos casos sem gravação (02, 04, 07), `metricas.md` ficou igual em todas as execuções. As médias do `## Resumo` do caso 03 não são conferidas pelo portão (só o rótulo de amostra, a idade das leituras, o número de peças por grupo e o `poucos dados (2)`); as médias de Sonnet e Opus na medição final foram refeitas à mão e batem (teardown 1.083 e 32, build ou bastidor 1.807 e 76, curto 1.215, longo 1.800). O `RED` rodou também em Opus porque o padrão do portão inclui os dois modelos (desvio do ritmo de teste, 7 execuções a mais, só de resposta sem skill).
