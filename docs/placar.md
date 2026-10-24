@@ -101,3 +101,21 @@ Medido sobre `e7bbb3a` (último commit de código; `docs(placar)` e relatório v
 | motor 04 normal, só Sonnet, texto antigo (worktree temporário, já removido) | `d81b8f2` | NAO PASSA (turno 2 sem `carrossel.pdf` nem PNG) | `motor-sp-d81b8f2` |
 
 Leitura do 04 Sonnet (s+): falha também em `d81b8f2`, antes do texto novo do motor, com outro sintoma (sem PDF e PNG, contra sem `publicar/` agora). É oscilação antiga, não efeito da correção. O 01 Sonnet é falha de ambiente na linha `Checagem da peça`, caminho que a correção não tocou. Nenhuma regra de `[FALTA]` do motor mudou.
+
+## Prontidão, tarefa 1: motor pronto para quem está sozinho (24/10/2026)
+
+Medido sobre `08d576c` (último commit de código; `docs(placar)` vem depois). Pastas em `evals/results/nova/`. Casos novos 07, 08, 09 e 09b (um turno, sem post) e `checkup.md` (conferido por leitura); regressão 01 e 06.
+
+| Portão | Commit | Resultado | Pasta |
+|---|---|---|---|
+| motor 07, 08, 09 e 09b, RED só em Sonnet, sobre o motor sem a mudança | `cf99ca8` + casos e portão novos (árvore de trabalho, `portao.sh` reavaliado sem modelo depois de apertar o 09b) | 4 de 4 NAO PASSA (07 sem check-up nem aviso; 08 sem pedido de suporte; 09 termina em pergunta; 09b abre a entrevista) | `motor-prontidao-red`, `motor-prontidao-red-reaval` |
+| motor 07 a 09b e `checkup.md`, tentativa 1, só Sonnet | árvore de trabalho sobre `ae9b627` | 07 PASSA, 09 PASSA; 08 NAO PASSA (token e caminho repetidos fora da cerca); 09b NAO PASSA (a Etapa 0 abriu a entrevista); `checkup.md` lido, ok | `motor-prontidao-a1` |
+| motor 08 e 09b, tentativa 2, só Sonnet | árvore de trabalho sobre `63aab90` | 2 de 2 PASSA | `motor-prontidao-a2` |
+| motor 07 a 09b, 06 e 01, medição final, Sonnet e Opus | `63aab90` | 07 NAO PASSA nos dois (a abertura do `entrevista-voz` escondia o check-up, e `claude -p` guarda só a última mensagem); 01 Sonnet NAO PASSA (turno 2 sem `carrossel.pdf` nem PNG: render bloqueado pelo host); resto PASSA | `motor-prontidao-final` |
+| motor 07, tentativas só em Sonnet, texto do motor reescrito a cada rodada | árvore de trabalho sobre `54d032a` | a3 e a4 NAO PASSA, a5 e a6 NAO PASSA, a7 PASSA, a8 NAO PASSA, a9, a10 e a11 PASSA (abertura da conversa repete o check-up, o motivo e o aviso) | `motor-prontidao-a3` a `a11` |
+| motor 01, base, só Sonnet | `03bd60b` (worktree temporário, já removido) | NAO PASSA (t1 sem `Checagem da peça` do motor, t2 sem PDF e PNG): a falha do 01 em Sonnet é anterior a esta tarefa | `motor-base01` (no worktree) |
+| motor 07, 08, 09, 09b, 06 e 01, medição final, Sonnet | `08d576c` | 6 de 6 PASSA | `motor-prontidao-fs` |
+| motor 07, 08, 09, 09b, 06 e 01, medição final, Opus | `08d576c` | 6 de 6 PASSA | `motor-prontidao-fo` |
+| motor `checkup.md`, medição final, Sonnet e Opus (leitura) | `08d576c` | 2 de 2 ok: saída inteira do `checkup.sh`, código 0, peça aprovada com o próximo passo; sem `saida/`, sem `publicar/`, base igual | `motor-prontidao-fck` |
+
+Leitura: o 01 Sonnet passou em `08d576c` e falhou em `63aab90` e em `03bd60b` com sintomas de ambiente (render e `check-voz.sh` bloqueados pelo host); oscila, não é efeito desta tarefa. `test-checkup.sh` e `test-portao-motor.sh` passam inteiros.
