@@ -72,7 +72,7 @@ O que muda frente à origem: [a linha 1, a tese e a ordem dos argumentos que fic
 Faltas: [cada falta como [FALTA: descrição], ou "nada"]
 ```
 
-Em `Tipo: carrossel`, a linha só diz o formato; o tipo do conteúdo vai no briefing, no campo `Tipo`. Tese sem paralelismo negativo ("não é X, é Y" e as variantes).
+Em `Tipo: carrossel`, a linha traz só a palavra `carrossel`, sem o tipo do conteúdo ao lado (nem "educativo, formato carrossel"), porque ela só diz o formato; o tipo do conteúdo vai no briefing, no campo `Tipo`. Tese sem paralelismo negativo ("não é X, é Y" e as variantes).
 
 ## Etapa 4: o briefing do recomendado
 
@@ -86,7 +86,7 @@ Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e 
 
 O briefing não leva a linha 1 da origem, nem a tese dela, nem a sequência de argumentos dela.
 
-No recorte recomendado, `O que muda frente à origem:` diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas: sem citar a linha 1 nem o fecho da origem, e com a palavra "tese".
+No recorte recomendado, `O que muda frente à origem:` diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas, e com a palavra "tese". Diga o assunto da tese de lá, não a frase dela: copiar ou encurtar o fecho da origem (mesmo entre parênteses ou como "a origem fecha dizendo que ...") reprova, e a mesma regra vale para a linha 1. Exemplo da forma: "a tese de lá era sobre economia de tempo; a nova é sobre quem responde pelo número".
 
 ## Etapa 5: a sugestão ("o que vale reaproveitar?")
 
