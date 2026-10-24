@@ -101,6 +101,7 @@ Antes de entregar, item por item:
 9. Script rodado no arquivo do post, com `banidas.txt`, saída limpa; ou conferência por leitura, dita como tal.
 10. Nenhuma frase em voz passiva, e a leitura da pessoa (ou o `[FALTA]` dela) aparece até o terceiro parágrafo: releia o post procurando "foi", "foram", "é", "são" seguidos de particípio, e reescreva cada um com sujeito.
 11. Nenhum fato repetido, nenhuma inferência sua no post, nenhuma posição aplicada virou biografia e nenhuma ação a mais na sequência: releia cada frase em primeira pessoa com verbo de ação e aponte a linha do briefing que a registra; sem linha, a frase diz só o que a pessoa pensa, ou sai.
+12. Se a tabela ganhou coluna nesta gravação (a migração da Etapa 5), a linha `Base:` do formato de entrega está na resposta, antes de `Fora:`, dizendo qual coluna entrou.
 
 Falhou em algum item: corrija aquele trecho, não regenere o post (a regeneração reintroduz o que você já tinha limpado).
 
