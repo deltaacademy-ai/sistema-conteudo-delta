@@ -50,7 +50,7 @@ Leia o texto de origem do início ao fim e anote, para não repetir:
 - A sequência de argumentos: a ordem em que os fatos aparecem.
 - Os fatos: cada número, nome, cena e decisão que o texto traz, com a frase que o sustenta.
 
-Os fatos disponíveis para um recorte são só estes: os da peça de origem, os de `prova.md`, as posições gerais de `voz.md` e o que a pessoa disse no pedido. Número ou fato novo dito no pedido (por exemplo "agora são 50 clientes") não é fato do recorte: `prova.md` não o tem, e a origem não o diz. Ele entra só como `[FALTA: fonte do número 50 clientes]`, e a resposta pede que a pessoa o registre antes (o `contexto-negocio`, em "Acrescentar um fato dito pela pessoa", é o dono do formato de `prova.md`). Conta feita por você com os fatos que existem também é número inventado.
+Os fatos disponíveis para um recorte são só estes: os da peça de origem, os de `prova.md`, as posições gerais de `voz.md` e o que a pessoa disse no pedido. Número ou fato novo dito no pedido (por exemplo "agora são 50 clientes") não é fato do recorte: `prova.md` não o tem, e a origem não o diz. Ele entra só como `[FALTA: fonte do número 50 clientes]`, com os colchetes, em todo lugar onde aparecer (em `Faltas:`, em `Falta:` do briefing e na resposta): o número escrito fora de um `[FALTA ...]` é fato dito, e a resposta pede que a pessoa o registre antes (o `contexto-negocio`, em "Acrescentar um fato dito pela pessoa", é o dono do formato de `prova.md`). Conta feita por você com os fatos que existem também é número inventado.
 
 ## Etapa 3: os recortes
 
@@ -69,7 +69,7 @@ Cada recorte sai neste formato:
 Tipo: [um dos sete | carrossel]
 Tese: [uma frase, afirmativa, que a pessoa sustenta com os fatos da origem]
 O que muda frente à origem: [a linha 1, a tese e a ordem dos argumentos que ficam de fora, e o que entra no lugar]
-Faltas: [lista de FALTA, ou "nada"]
+Faltas: [cada falta como [FALTA: descrição], ou "nada"]
 ```
 
 Em `Tipo: carrossel`, a linha só diz o formato; o tipo do conteúdo vai no briefing, no campo `Tipo`. Tese sem paralelismo negativo ("não é X, é Y" e as variantes).
@@ -80,6 +80,7 @@ Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e 
 
 - `Material bruto`: só fatos da origem, de `prova.md` ou da fala da pessoa, com a fonte de cada um (a peça de origem entra pelo nome do arquivo). Nenhum número novo do pedido fora de `[FALTA ...]`.
 - `Leitura da pessoa`: só o que ela disse, ou `[FALTA: leitura da pessoa sobre X]`. O que a origem afirma na voz dela é leitura que ela já publicou, e pode entrar com a fonte "peça de AAAA-MM-DD"; leitura nova não se inventa.
+- `Falta`: cada item como `[FALTA: descrição]`, com os colchetes; sem colchetes, o item é lido como afirmação.
 - `Formato`: `carrossel` no recorte de carrossel, `post` nos demais.
 - `Origem:` é a última linha do briefing, com a data e o tema da linha da base, copiados letra por letra: `Origem: reaproveita AAAA-MM-DD <tema>`.
 
