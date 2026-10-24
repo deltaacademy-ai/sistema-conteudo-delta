@@ -85,3 +85,19 @@ Saídas de 70 bytes ("You've hit your weekly limit") da rodada de 19/09 foram mo
 | motor 04 normal, medição final | `528a4e4` | Opus PASSA; Sonnet NAO PASSA (sem pasta publicar, Atualizado sem a data de hoje, verbo no presente na frase do 37) | `motor-t3-final-04` |
 | motor 04 com `PROVA_CONFLITO=1`, medição final | `528a4e4` | Opus PASSA (parou no veredito reescrever); Sonnet NAO PASSA (sem pasta publicar, verbo no presente, mensagem sem veredito do revisor) | `motor-t3-final-04c` |
 | radar-pautas rede (busca de verdade, WebSearch e WebFetch liberados), medição única, 4 pautas de notícia lidas e 5 links abertos | `77f7ef3` | Sonnet PASSA, Opus PASSA: 2 de 2; links: 5 de 5 conferem (data, trecho e números) | `radar-pautas-t4` |
+
+## radar-pautas, correção final (24/10/2026)
+
+Medido sobre `e7bbb3a` (último commit de código; `docs(placar)` e relatório vêm depois). Pastas em `evals/results/nova/`.
+
+| Portão | Commit | Resultado | Pasta |
+|---|---|---|---|
+| radar 01 a 08b, tentativa só em Sonnet | `7bbf01e` (SKILL do radar igual ao medido) | Sonnet 9 de 9 | `radar-pautas-fc1a` |
+| motor 06, tentativas só em Sonnet (a resposta terminava em oferta com `?`; duas voltas de texto no motor) | árvore de trabalho sobre `da9318a` | NAO PASSA, NAO PASSA, NAO PASSA, PASSA | `motor-fc1m` a `fc1m4` |
+| radar 01 a 08b e rede, medição final | `e7bbb3a` | Sonnet 10 de 10, Opus 10 de 10: 20 de 20 PASSA | `radar-pautas-fm` |
+| motor 01, 02, 03, 05, 06 e 04, medição final, Opus | `e7bbb3a` | 6 de 6 PASSA | `motor-fm-o` |
+| motor 01, 02, 03, 05, 06 e 04, medição final, Sonnet | `e7bbb3a` | 4 de 6: 02, 03, 05 e 06 PASSA; 01 NAO PASSA (sem `Checagem da peça` do motor: o host bloqueou o script e a linha disse "por leitura"); 04 NAO PASSA (sem pasta `publicar/`) | `motor-fm-s` |
+| motor 04 com `PROVA_CONFLITO=1`, medição final | `e7bbb3a` | Sonnet PASSA, Opus PASSA (os dois pararam no veredito reescrever) | `motor-fm-04c-s`, `motor-fm-04c-o` |
+| motor 04 normal, só Sonnet, texto antigo (worktree temporário, já removido) | `d81b8f2` | NAO PASSA (turno 2 sem `carrossel.pdf` nem PNG) | `motor-sp-d81b8f2` |
+
+Leitura do 04 Sonnet (s+): falha também em `d81b8f2`, antes do texto novo do motor, com outro sintoma (sem PDF e PNG, contra sem `publicar/` agora). É oscilação antiga, não efeito da correção. O 01 Sonnet é falha de ambiente na linha `Checagem da peça`, caminho que a correção não tocou. Nenhuma regra de `[FALTA]` do motor mudou.
