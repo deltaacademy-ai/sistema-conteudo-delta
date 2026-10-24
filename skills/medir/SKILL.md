@@ -103,14 +103,14 @@ Escreva a resposta inteira sem travessão, desde a primeira frase: ligue as ora�
 
 Antes de entregar:
 
-1. A linha gravada tem 11 células, a chave é a da base letra por letra, e cada número é o que a pessoa colou, sem soma, sem conversão e sem estimativa. Célula que a colagem não trouxe está vazia.
+1. A linha gravada tem 11 células, a chave é a da base letra por letra, e cada número é o que a pessoa colou, sem soma, sem conversão e sem estimativa. Compare célula por célula com a colagem, caractere a caractere: se a colagem tem "1.500", a célula tem "1.500", com o ponto, e "1500" é erro a corrigir antes de gravar. Célula que a colagem não trouxe está vazia.
 2. As linhas antigas de `metricas.md` e `base-conteudo.md` não mudaram.
 3. Nenhum número na resposta que a pessoa não colou, que não esteja nos arquivos ou que não saia de conta feita com eles.
 4. Sem travessão, sem emoji e sem termo de `banidas.txt`, na resposta e em `metricas.md`. Rode `bash [raiz do plugin]/scripts/check-voz.sh metricas.md banidas.txt` sozinho, sem `echo` encadeado (a pasta `scripts/` fica dois níveis acima deste SKILL.md, e o caminho vai absoluto e já resolvido, sem `..`; omita `banidas.txt` se não existe). Acusou: corrija o que o próprio texto trouxe e rode de novo; citação literal de tema da base não se altera, e a `Checagem` diz isso. Se não gravou, `metricas.md` não mudou e não precisa rodar. A resposta se confere na leitura, procurando o travessão (U+2014 e U+2013) caractere a caractere, principalmente na pergunta e nas linhas do resumo; só escreva que procurou depois de procurar. Sem como rodar o script, diga isso.
 5. O que a pessoa precisa ler (a contagem que falta, o `## Resumo`, a pergunta, a recusa) está dentro da mensagem, não só no arquivo.
 6. A `Checagem` é a última linha da mensagem: nada vem depois dela.
 
-A mensagem começa pela linha `Medir:`. Nada vem antes dela: nem comentário sobre o script que rodou, nem a saída dele colada (essa saída pode trazer travessão, e ele passaria para a resposta).
+A mensagem começa pela linha `Medir:`. Nada vem antes dela: nem comentário sobre o script que rodou, nem aviso de que o script não pôde rodar (isso vai só na `Checagem`), nem a saída dele colada (essa saída pode trazer travessão, e ele passaria para a resposta).
 
 Entregue assim (sem cerca de código em volta):
 
