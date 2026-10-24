@@ -119,3 +119,19 @@ Medido sobre `08d576c` (último commit de código; `docs(placar)` vem depois). P
 | motor `checkup.md`, medição final, Sonnet e Opus (leitura) | `08d576c` | 2 de 2 ok: saída inteira do `checkup.sh`, código 0, peça aprovada com o próximo passo; sem `saida/`, sem `publicar/`, base igual | `motor-prontidao-fck` |
 
 Leitura: o 01 Sonnet passou em `08d576c` e falhou em `63aab90` e em `03bd60b` com sintomas de ambiente (render e `check-voz.sh` bloqueados pelo host); oscila, não é efeito desta tarefa. `test-checkup.sh` e `test-portao-motor.sh` passam inteiros.
+
+## Prontidão, tarefa 2: empacotamento e versão (24/10/2026)
+
+Medido sobre `7e3f3f5` (último commit de código). Pastas em `evals/results/nova/`. Achado da tarefa: skill com `allowed-tools` no cabeçalho deixa de ser aprovada sozinha pela ferramenta Skill; em `claude -p` o pedido "Execute skill" é negado e o cabeçalho nunca vale. O `run-case.sh` passou a liberar a ferramenta Skill (`7e3f3f5`).
+
+| Portão | Commit | Resultado | Pasta |
+|---|---|---|---|
+| `checkup.md`, RED, só Sonnet, motor sem `allowed-tools` (worktree temporário, já removido) | `3c21f28` + wrapper que libera Skill | NAO PASSA: o host negou o `checkup.sh` e a resposta pediu para a pessoa rodar | `motor-empacotamento-red` |
+| `checkup.md`, só Sonnet, runner sem Skill | `0d7e3ef` | NAO PASSA (a skill não carregou; sem linha `pendencias:`), 2 vezes | `motor-empacotamento-a1`, `a2` |
+| `checkup.md`, só Sonnet, com Skill liberada | `0d7e3ef` | PASSA: `checkup.sh` rodou pelo cabeçalho, `pendencias: 0` | `motor-empacotamento-a3` |
+| motor 01 e 04, Sonnet e Opus, runner sem Skill | `bfec73e` | 01 e 04 NAO PASSA nos dois modelos (Skill negada, plugin ilegível, sem render): efeito do `allowed-tools` sobre a ferramenta Skill | `motor-empacotamento-fs`, `fo` |
+| motor 01 e 04, medição final, Opus | `7e3f3f5` | 2 de 2 PASSA (04 parou no veredito reescrever, sem pacote) | `motor-emp2-fo` |
+| motor 01 e 04, medição final, Sonnet | `7e3f3f5` | 01 PASSA; 04 NAO PASSA (t2 sem `publicar/`, fato distorcido "atende no presente") | `motor-emp2-fs` |
+| `checkup.md`, medição final, Sonnet e Opus | `7e3f3f5` | 2 de 2 ok: saída inteira do `checkup.sh`, `pendencias: 0`, próximo passo da peça aprovada | `motor-emp2-ck` |
+
+Leitura: o 04 Sonnet falha agora por conteúdo (fato distorcido, parou sem pacote), não por render bloqueado; o render e o `check-voz.sh` do 01 Sonnet rodaram. Oscilação anterior à tarefa, registrada, não bloqueia.
