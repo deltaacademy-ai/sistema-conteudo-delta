@@ -199,3 +199,19 @@ Três achados da revisão: `Lida em` assumida como hoje sem fonte, médias do `#
 | **Medição final** 01, 05, 05b, 08 | Sonnet e Opus | `8a485f6` | **8 de 8 PASSA** | `medir-h3` |
 
 O 05b sem aspas e sem rótulo passou nos dois modelos sem mexer no parágrafo de material de terceiro. Os casos 02, 03, 04, 06 e 07 não rodaram de novo com modelo nesta volta (o 03 foi reavaliado sobre a saída da medição anterior).
+
+## Prontidão, tarefa 6: reaproveitar (24/10/2026)
+
+Portão mecânico sem juiz (`evals/cases/reaproveitar/portao.sh`), casos 01 a 05, fixture `hugo-reaproveitar` (2 peças `publicado` e 1 `rascunho`, base de 8 colunas, `metricas.md` das duas publicadas). Em todos: `check-voz.sh` 0 na resposta e no briefing, `base-conteudo.md`, `metricas.md` e as peças de `saida/` iguais, nenhum arquivo novo além de `saida/briefing-<hoje>-*.md`. Teste local do portão, sem modelo: `scripts/eval/test-portao-reaproveitar.sh`, 45 verificações ok. Caso extra, dono `linkedin-post`: `evals/cases/linkedin-post/06.md` com `migracao-origem.sh` (base de 7 colunas vira 8, `Origem` copiada do briefing, `checkup.sh` conta as peças em aberto), teste local `scripts/eval/test-migracao-origem.sh`, 14 verificações ok. Regressão `linkedin-post` 01 conferida por script ad hoc (cabeçalho termina em `Origem`, toda linha com o número de células do cabeçalho, post gravado, `check-voz.sh` 0).
+
+| Rodada | Modelo | Commit | Resultado | Pasta |
+|---|---|---|---|---|
+| RED, plugin sem `skills/reaproveitar` | Sonnet | `c072eb8` | 5 de 5 NAO PASSA (a resposta diz que a skill não existe) | `reaproveitar-red` |
+| Tentativa 1, 01 a 05 e 06 | Sonnet | `05cd056` com a skill de `776e4e3` | 5 de 6 PASSA; 03 NAO PASSA (o número 50 apareceu em `Falta:` do briefing sem colchetes) | `reaproveitar-g1`, `migracao-origem-g1` |
+| Tentativa 2, 03 | Sonnet | `f0eac61` | PASSA | `reaproveitar-g2` |
+| Medição 1, 01 a 05, 06 e regressão `linkedin-post` 01 | Sonnet e Opus | `f0eac61` | 01 a 05: 9 de 10 (01 Opus parafraseou a linha 1 no `Material bruto`); 06: 1 de 2 (Sonnet sem a linha `Base:`); regressão: 2 de 2 | `reaproveitar-final`, `migracao-origem-final`, `lp01-reap-final` |
+| Tentativa 3, 01 e 06 | Sonnet | `85af655` | 2 de 2 PASSA | `reaproveitar-g3`, `migracao-origem-g3` |
+| **Medição final**, 01 a 05, 06 e regressão `linkedin-post` 01 | Sonnet e Opus | `85af655` | 01 a 05: **10 de 10 PASSA**, depois de corrigir o portão (reavaliada sem rodar modelo, `REAVALIAR=final2`, portão de `82cb5e1`); 06: 1 de 2 (Sonnet, travessão na linha `Checagem` do post, com o script fora da pasta permitida; Opus PASSA); regressão: 2 de 2 | `reaproveitar-final2`, `final2r`, `migracao-origem-final2`, `lp01-reap-final2` |
+| Controle do 06 Sonnet, não conta | Sonnet | `85af655` | PASSA | `migracao-origem-g4` |
+
+Leitura: as falhas de conteúdo foram de forma (colchetes do `[FALTA]`, linha de aviso da migração) e de critério do portão: o portão exigia que o briefing não trouxesse nenhuma palavra do fecho da linha 1 da origem, mas o fato "o dono confere em dez" só existe nessa linha, e o brief pede que nenhum *recorte* repita a linha 1. O portão passou a barrar a abertura da linha 1 em recorte e briefing e o fecho dela nos recortes, e deixa o fato no `Material bruto`. O 06 Sonnet reprovado na medição final é o travessão do `linkedin-post` quando o `check-voz.sh` não roda na sessão, falha conhecida de forma que não vem da migração (a base migrou certo nas três execuções de Sonnet). A qualidade da tese do recorte (se ela de fato difere da origem) e da sequência de argumentos não é mecânica: o portão confere só a linha 1, os campos e a origem.
