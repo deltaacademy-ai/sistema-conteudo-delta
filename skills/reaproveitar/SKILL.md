@@ -85,13 +85,13 @@ Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e 
 - `Falta`: cada item como `[FALTA: descrição]`, com os colchetes; sem colchetes, o item é lido como afirmação.
 - `Formato`: `carrossel` no recorte de carrossel, `post` nos demais.
 - A primeira linha do briefing é `Briefing do ângulo <letra>`, com a letra do `Recomendado:`, e o campo `Tipo` é exatamente o `Tipo:` do recorte recomendado na resposta. Pedido de carrossel: `Tipo: carrossel` nos dois lugares.
-- Quando o `Ângulo` disser o que ficou de fora, nomeie a espinha da origem em poucas palavras suas ("o processo em ordem cronológica"), nunca com as palavras do fecho.
+- Quando o `Ângulo` disser o que ficou de fora, nomeie a espinha da origem em poucas palavras suas ("o processo em ordem cronológica", "o ganho de tempo"), nunca com as palavras do fecho nem da linha 1, nem como exclusão ("fica de fora que agora sai em minutos ..." reprova).
 - Ordem: o `Ângulo` e o `Material bruto` seguem a ordem que a tese nova pede, não a do post. No carrossel, os slides vêm dessa ordem nova (o briefing diz qual slide abre com o quê), nunca etapa por etapa na ordem do post.
 - `Origem:` fica onde o formato do `angulo` a põe (depois de `Falta:`, antes de `Checagem:`), com a data e o tema da linha da base, copiados letra por letra: `Origem: reaproveita AAAA-MM-DD <tema>`.
 
 O briefing não leva a linha 1 da origem, nem a tese dela, nem a sequência de argumentos dela.
 
-No recorte recomendado, `O que muda frente à origem:` diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas, e com a palavra "tese". Nomeie a tese de lá pelo que a origem afirma (a regra que o fecho dá), não pela abertura nem pelo assunto que ela mais ocupa, e não copie a frase: copiar ou encurtar o fecho da origem (mesmo entre parênteses ou como "a origem fecha dizendo que ...") reprova, e a mesma regra vale para a linha 1. Exemplo da forma, em outro caso: "a tese de lá era que prazo curto manda cortar escopo; a nova é sobre quem decide o corte".
+No recorte recomendado, `O que muda frente à origem:` abre com "A tese de lá era ...; a tese nova é ..." (as duas palavras "tese" são obrigatórias, no recomendado) e diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas, e com a palavra "tese". Nomeie a tese de lá pelo que a origem afirma (a regra que o fecho dá), não pela abertura nem pelo assunto que ela mais ocupa, e não copie a frase: copiar ou encurtar o fecho da origem (mesmo entre parênteses ou como "a origem fecha dizendo que ...") reprova, e a mesma regra vale para a linha 1. Exemplo da forma, em outro caso: "a tese de lá era que prazo curto manda cortar escopo; a nova é sobre quem decide o corte".
 
 ## Etapa 5: a sugestão ("o que vale reaproveitar?")
 
