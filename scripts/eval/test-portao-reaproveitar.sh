@@ -80,6 +80,9 @@ roda 01 "NAO PASSA" "briefing-sem-a-linha-Origem" "01 reprova briefing sem Orige
 MB="Material bruto: O dono pediu para manter a conferência humana nos números de faturamento (saida/post-2026-09-22-relatorio-mensal-automatizado.md)."
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O relatório levava um dia, e o dono confere em dez (saida/post-2026-09-22-relatorio-mensal-automatizado.md).}"
 roda 01 PASSA - "01 aceita o fato da linha 1 so no Material bruto, com as palavras da origem"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto:
+Tempo do relatório: levava um dia, agora sai em minutos, e o dono confere em dez (saida/post-2026-09-22-relatorio-mensal-automatizado.md)}"
+roda 01 PASSA - "01 aceita item com rotulo proprio dentro do Material bruto"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
 Gancho: O relatório mensal que levava um dia agora sai em minutos}"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova linha 1 da origem no briefing"

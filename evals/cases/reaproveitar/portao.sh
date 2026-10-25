@@ -116,10 +116,10 @@ confere_recortes() { # confere_recortes <arquivos> <fixture> <resposta> <caso.md
   # "o dono confere em dez" so existe na linha 1, entao fica permitido dentro do Material bruto, e la a
   # unidade "minutos" depois do dez e invencao. A linha "O que muda frente a origem" fica fora desta
   # conta: ela existe para nomear a tese de la, e nomea-la fiel ecoa o fecho (o resto do recorte continua conferido).
-  todo=$({ awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s" | grep -v '^O que muda frente à origem:'; awk '/^Material bruto:/{d=1; next} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/{d=0} !d' "$br"; })
+  todo=$({ awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s" | grep -v '^O que muda frente à origem:'; awk '/^Material bruto:/{d=1; next} d && /^(Aval|Falta|Origem|Checagem|Funil|Tom|Tipo|Tese|Ângulo|Leitura da pessoa|Formato|Tamanho|Fechamento|Fontes e links|Tipo de gancho):/{d=0} !d' "$br"; })
   src=$(perl -CSDA -e 'open F,"<:utf8",$ARGV[0]; local $/; $t=<F>; ($p)=split /\n/,$t; @pp=split /\n\n+/,$t; $u=$pp[-1]; print "$p\n$u\n"' "$fx/saida/post-2026-09-22-relatorio-mensal-automatizado.md")
   sob=$(sobrepoe "$src" <<< "$todo"); [ -z "$sob" ] || m="$m repete-a-linha-1-ou-o-fecho-da-origem:$sob"
-  grep -qiE 'dez minutos' <<< "$todo$(awk '/^Material bruto:/{d=1} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/ && !/^Material bruto:/{d=0} d' "$br")" && m="$m dez-minutos-inventado"
+  grep -qiE 'dez minutos' <<< "$todo$(awk '/^Material bruto:/{d=1} d && /^(Aval|Falta|Origem|Checagem|Funil|Tom|Tipo|Tese|Ângulo|Leitura da pessoa|Formato|Tamanho|Fechamento|Fontes e links|Tipo de gancho):/ && !/^Material bruto:/{d=0} d' "$br")" && m="$m dez-minutos-inventado"
   recb=$(bloco_recorte "$s" "$rec"); grep -E '^O que muda frente à origem:' <<< "$recb" | grep -qi 'tese' || m="$m recomendado-sem-tese-de-la-e-nova"
   n=$(grep -v '^Tamanho:' "$br" > "$a/.sem-tamanho.tmp"; numeros_novos "$a/.sem-tamanho.tmp" "$fx" "$caso"; rm -f "$a/.sem-tamanho.tmp"); [ -z "$n" ] || m="$m numero-novo-no-briefing:$n"
   echo "$m"
