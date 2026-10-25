@@ -215,3 +215,16 @@ Portão mecânico sem juiz (`evals/cases/reaproveitar/portao.sh`), casos 01 a 05
 | Controle do 06 Sonnet, não conta | Sonnet | `85af655` | PASSA | `migracao-origem-g4` |
 
 Leitura: as falhas de conteúdo foram de forma (colchetes do `[FALTA]`, linha de aviso da migração) e de critério do portão: o portão exigia que o briefing não trouxesse nenhuma palavra do fecho da linha 1 da origem, mas o fato "o dono confere em dez" só existe nessa linha, e o brief pede que nenhum *recorte* repita a linha 1. O portão passou a barrar a abertura da linha 1 em recorte e briefing e o fecho dela nos recortes, e deixa o fato no `Material bruto`. O 06 Sonnet reprovado na medição final é o travessão do `linkedin-post` quando o `check-voz.sh` não roda na sessão, falha conhecida de forma que não vem da migração (a base migrou certo nas três execuções de Sonnet). A qualidade da tese do recorte (se ela de fato difere da origem) e da sequência de argumentos não é mecânica: o portão confere só a linha 1, os campos e a origem.
+
+### Tarefa 6, volta de correção 1 (reaproveitar)
+
+Dois achados da revisão: o portão relaxado deixava passar a linha 1 parafraseada no briefing, e a tese e a sequência da origem não tinham regra clara. Portão: nenhuma sequência de 6 palavras seguidas da linha 1 ou do fecho da origem nos recortes e no briefing fora do `Material bruto`; "dez minutos" reprova (a origem diz só "em dez"); o recomendado diz a tese de lá e a nova (palavra "tese" em `O que muda`); o 50 fora de `[FALTA` na linha `Recomendado:` reprova (caso 03). `test-portao-reaproveitar.sh` com casos negativos das paráfrases do 01 e do 04 de Sonnet e positivo com o fato só no `Material bruto`.
+
+| Rodada | Modelo | Commit | Resultado | Pasta |
+|---|---|---|---|---|
+| Reavaliação de `reaproveitar-final2` com o portão novo, sem modelo | Sonnet e Opus | `dd2d341` | 2 de 10 PASSA (02 e 05 nos dois). Caem: 01, 03 e 04 nos dois modelos (fecho ou linha 1 quase literal, "dez minutos", tese de lá e nova ausente; 03 Sonnet com o 50 na linha `Recomendado:`) | `reaproveitar-final2r2` |
+| Tentativa 5, 01 03 04 | Sonnet | `dd2d341` | 0 de 3: citava o fecho da origem em `O que muda`; 04 com `Tipo: educativo, formato carrossel` | `reaproveitar-g5` |
+| Tentativa 6, 01 03 04 | Sonnet | `ccc16f9` | 3 de 3 PASSA | `reaproveitar-g6` |
+| **Medição final**, 01 a 05 | Sonnet e Opus | `ccc16f9` | **10 de 10 PASSA** | `reaproveitar-final3` |
+
+Regressão `linkedin-post` 01 não rodou: a única mudança nele foi tirar uma frase sobre o `radar-pautas`. Sem mudança: critério afrouxado nenhum. Ainda não mecânico: se a tese nova difere de fato da origem (a revisão cega dos recortes 01 e 04 cobre).
