@@ -4,7 +4,10 @@
 # Cada criterio tem pelo menos um caso negativo: recorte a mais ou a menos, bloco sem campo, Recomendado
 # ausente ou de letra que nao existe, briefing ausente, sem a linha Origem, linha 1 da origem repetida,
 # numero novo, 50 fora do FALTA, recorte de peca em rascunho, briefing onde nao devia, candidata errada,
-# base ou metricas alteradas, peca de saida alterada, arquivo novo.
+# base ou metricas alteradas, peca de saida alterada, arquivo novo. Fatos ancorados (volta 3): trecho inventado,
+# com palavra trocada, de fonte errada, curto, da linha 1, recorte sem Fatos ou sem Tese, Fatos com 1 ou 6
+# trechos, linha fora dos campos, Tese com duas frases, Material bruto sem o trecho do recomendado ou com item
+# sem trecho, linha Fato novo ausente ou com fato que a prova.md nao tem.
 set -u
 raiz=$(cd "$(dirname "$0")/../.." && pwd); cd "$raiz"
 portao=evals/cases/reaproveitar/portao.sh
@@ -47,21 +50,28 @@ Formato: post
 Tamanho: abaixo de 900, tipo mantido
 Fechamento: pergunta genuína
 Fontes e links: nenhum link no tema
-Material bruto: O dono pediu para manter a conferência humana nos números de faturamento (saida/post-2026-09-22-relatorio-mensal-automatizado.md).
+Material bruto:
+- \"O dono pediu para manter a conferência humana nos números de faturamento\" (origem)
+- \"Esse foi o único ponto que ele não quis automatizar\" (origem)
 Aval: nada
 Falta: [FALTA: leitura da pessoa sobre a conferência do dono]
 $ORIGEM"
 RESP="### Recorte A
 Tipo: posição
+Tese: Nesse relatório, o dono escolheu o único ponto que ficou com conferência humana.
+Fatos: \"O dono pediu para manter a conferência humana nos números de faturamento\" (origem); \"Esse foi o único ponto que ele não quis automatizar\" (origem)
 O que muda frente à origem: a tese de lá era a economia de tempo e a nova é a decisão do dono sobre o que a pessoa confere.
 Faltas: a leitura da pessoa sobre a conferência.
 
 ### Recorte B
 Tipo: educativo
+Tese: A pessoa passou a só conferir os totais que o agente junta.
+Fatos: \"um agente junta as planilhas e escreve o rascunho do relatório\" (origem); \"A pessoa só confere os totais\" (origem)
 O que muda frente à origem: vira um passo a passo para decidir o que a pessoa confere num relatório automatizado.
 Faltas: um método que a pessoa use de verdade, com exemplo.
 
 Recomendado: A, porque o fato da decisão do dono já está na peça.
+Fato novo: nenhum; a prova.md não tem fato sobre a distribuidora, e a distância vem do Tipo (posição).
 Briefing gravado em $BR.
 Checagem: check-voz.sh código 0 no briefing. Resposta conferida na leitura."
 RESP3="${RESP/Faltas: a leitura da pessoa sobre a conferência./Faltas: [FALTA: fonte do número de 50 clientes] e a leitura da pessoa.}"
@@ -77,11 +87,12 @@ prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$ORIGEM/Origem: reaproveita}"
 roda 01 "NAO PASSA" "briefing-sem-a-linha-Origem" "01 reprova Origem incompleta"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$ORIGEM/}"
 roda 01 "NAO PASSA" "briefing-sem-a-linha-Origem" "01 reprova briefing sem Origem"
-MB="Material bruto: O dono pediu para manter a conferência humana nos números de faturamento (saida/post-2026-09-22-relatorio-mensal-automatizado.md)."
-prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O relatório levava um dia, e o dono confere em dez (saida/post-2026-09-22-relatorio-mensal-automatizado.md).}"
-roda 01 PASSA - "01 aceita o fato da linha 1 so no Material bruto, com as palavras da origem"
+MB="Material bruto:"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto:
-Tempo do relatório: levava um dia, agora sai em minutos, e o dono confere em dez (saida/post-2026-09-22-relatorio-mensal-automatizado.md)}"
+- \"o dono confere em dez\" (origem)}"
+roda 01 "NAO PASSA" "Material-bruto-trecho-da-linha-1-ou-do-fecho:o_dono_confere_em_dez" "01 reprova trecho da linha 1 no Material bruto"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto:
+Antes: \"uma pessoa juntava três planilhas todo mês\" (origem)}"
 roda 01 PASSA - "01 aceita item com rotulo proprio dentro do Material bruto"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
 Gancho: O relatório mensal que levava um dia agora sai em minutos}"
@@ -94,7 +105,7 @@ Apoio: Agora sai em minutos, e o dono confere em dez.}"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da linha 1 do 04 Sonnet fora do Material bruto"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Leitura da pessoa: \[FALTA: leitura da pessoa sobre a conferência do dono\]/Leitura da pessoa: se o seu relatório depende de copiar número, o trabalho que sobra para a pessoa é conferir}"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da origem na Leitura da pessoa"
-prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O dono confere em dez minutos (saida/post-2026-09-22-relatorio-mensal-automatizado.md).}"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O dono confere em dez minutos (origem).}"
 roda 01 "NAO PASSA" "dez-minutos-inventado" "01 reprova unidade que a origem não diz"
 prepara 01; resp "${RESP/a tese de lá era a economia de tempo e a nova é/o recorte A é}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "recomendado-sem-tese-de-la-e-nova" "01 reprova recomendado sem dizer a tese de la e a nova"
@@ -139,6 +150,56 @@ roda 01 "NAO PASSA" "arquivo-novo:rascunho.md" "01 reprova rascunho que ficou"
 prepara 01; resp "$RESP" 01; brief 01 "$BRIEF"; rm "$base/01-fake.md.arquivos/icp.md"
 roda 01 "NAO PASSA" "arquivo-da-fixture-sumiu:icp.md" "01 reprova arquivo da fixture que sumiu"
 
+# Fatos ancorados (volta 3)
+F1='"O dono pediu para manter a conferência humana nos números de faturamento" (origem)'
+F2='"A pessoa só confere os totais" (origem)'
+FB='Fatos: "um agente junta as planilhas e escreve o rascunho do relatório" (origem); "A pessoa só confere os totais" (origem)'
+prepara 01; resp "${RESP/$F1/\"O dono pediu para revisar todos os números do relatório\" (origem)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-A-trecho-nao-existe-na-origem" "01 reprova trecho inventado"
+prepara 01; resp "${RESP/$F1/\"O dono pediu para manter a conferência humana nos números de vendas\" (origem)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-A-trecho-nao-existe-na-origem" "01 reprova trecho com palavra trocada"
+prepara 01; resp "${RESP/$F2/\"A pessoa só confere os totais\" (prova.md)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-trecho-nao-existe-em-prova.md" "01 reprova trecho com fonte errada"
+prepara 01; resp "${RESP/$F2/\"A pessoa só confere os totais\" (post de setembro)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-fonte-desconhecida" "01 reprova fonte que nao e origem nem prova.md"
+prepara 01; resp "$(printf '%s\n' "$RESP" | grep -vF "$FB")" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-sem-Fatos" "01 reprova recorte sem Fatos"
+prepara 01; resp "$(printf '%s\n' "$RESP" | grep -v '^Tese: A pessoa passou')" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-sem-Tese" "01 reprova recorte sem Tese"
+prepara 01; resp "${RESP/$FB/Fatos: \"A pessoa só confere os totais\" (origem)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-Fatos=1" "01 reprova Fatos com um trecho so"
+prepara 01; resp "${RESP/$FB/$FB; \"uma pessoa juntava três planilhas\" (origem); \"copiava os totais à mão\" (origem); \"O agente erra pouco na soma\" (origem); \"o dono assina o relatório\" (origem)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-Fatos=6" "01 reprova Fatos com seis trechos"
+prepara 01; resp "${RESP/$F2/\"os totais\" (origem)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-trecho-curto" "01 reprova trecho de menos de 3 palavras"
+prepara 01; resp "${RESP/$F2/\"o dono confere em dez\" (origem)}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-trecho-da-linha-1-ou-do-fecho" "01 reprova trecho que so existe na linha 1"
+prepara 01; resp "${RESP/$F2/“a  PESSOA só confere os totais.” (origem)}" 01; brief 01 "$BRIEF"
+roda 01 PASSA - "01 aceita trecho com outra caixa, espaco a mais, aspas curvas e ponto final"
+prepara 01; resp "${RESP/$F2/\"20 anos de experiência em tecnologia\" (prova.md)}" 01; brief 01 "$BRIEF"
+roda 01 PASSA - "01 aceita trecho literal de prova.md"
+prepara 01; resp "${RESP/$FB/$FB
+Esse recorte conversa com o gestor que confere o número.}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-linha-fora-dos-campos" "01 reprova prosa fora dos campos no recorte"
+prepara 01; resp "${RESP/Tese: A pessoa passou a só conferir os totais que o agente junta./Tese: A pessoa passou a só conferir. O agente junta o resto.}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-Tese-com-mais-de-uma-frase" "01 reprova Tese com duas frases"
+prepara 01; resp "${RESP/vira um passo a passo para decidir o que a pessoa confere num relatório automatizado./vira um passo a passo. Cada passo é uma decisão.}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "recorte-B-O-que-muda-com-mais-de-uma-frase" "01 reprova O que muda com duas frases no nao recomendado"
+prepara 01; resp "$RESP" 01; brief 01 "$(printf '%s\n' "$BRIEF" | grep -v 'único ponto que ele')"
+roda 01 "NAO PASSA" "Material-bruto-sem-o-trecho-do-recomendado:esse_foi_o_único_ponto" "01 reprova Material bruto sem um trecho do recomendado"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto:
+- \"O dono pediu para revisar todos os números do relatório\" (origem)}"
+roda 01 "NAO PASSA" "Material-bruto-trecho-nao-existe-na-origem" "01 reprova trecho inventado no Material bruto"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto:
+- O dono quis olhar o faturamento antes de assinar (origem)}"
+roda 01 "NAO PASSA" "Material-bruto-item-sem-trecho" "01 reprova item do Material bruto sem trecho literal"
+prepara 01; resp "$(printf '%s\n' "$RESP" | grep -v '^Fato novo:')" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "linhas-Fato-novo=0" "01 reprova resposta sem a linha Fato novo"
+prepara 01; resp "$(printf '%s\n' "$RESP" | sed 's/^Fato novo:.*/Fato novo: "200+ projetos entregues" (prova.md), que a origem não usou./')" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "Fato-novo-que-a-prova-nao-tem" "01 reprova fato novo que a prova.md nao tem sobre o caso"
+prepara 01; resp "$(printf '%s\n' "$RESP" | sed 's/^Fato novo:.*/Fato novo: nenhum na prova.md./')" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "Fato-novo-sem-dizer-de-onde-vem-a-distancia" "01 reprova Fato novo sem dizer de onde vem a distancia"
+
 # 02
 RESP02="Reaproveitar: nada gravado. A peça \"Checagem antes de publicar\" está como rascunho, e só peça publicada entra.
 Checagem: nenhum arquivo mudou. Resposta conferida na leitura."
@@ -159,7 +220,7 @@ prepara 03; resp "$RESP3" 03; brief 03 "$BRIEF"
 roda 03 PASSA - "03 certo passa (FALTA na resposta)"
 prepara 03; resp "$RESP" 03; brief 03 "${BRIEF/Falta: \[FALTA: leitura/Falta: [FALTA: fonte do número de 50 clientes]. [FALTA: leitura}"
 roda 03 PASSA - "03 aceita o FALTA so no briefing"
-prepara 03; resp "$RESP3" 03; brief 03 "${BRIEF/Material bruto: O dono/Material bruto: Agora são 50 clientes. O dono}"
+prepara 03; resp "$RESP3" 03; brief 03 "${BRIEF/Material bruto:/Material bruto: Agora são 50 clientes.}"
 roda 03 "NAO PASSA" "50-no-briefing-fora-de-FALTA" "03 reprova 50 como fato no briefing"
 prepara 03; resp "$RESP" 03; brief 03 "$BRIEF"
 roda 03 "NAO PASSA" "sem-FALTA-sobre-o-numero" "03 reprova sumir com o numero sem avisar"
@@ -176,6 +237,8 @@ RESP4="${RESP4/Recomendado: A, porque o fato da decisão do dono já está na pe
 BRIEF4="${BRIEF/Formato: post/Formato: carrossel}"
 BRIEF4="${BRIEF4/Briefing do ângulo A/Briefing do ângulo B}"
 BRIEF4="${BRIEF4/Tipo: posição/Tipo: carrossel}"
+BRIEF4="${BRIEF4/"O dono pediu para manter a conferência humana nos números de faturamento"/"um agente junta as planilhas e escreve o rascunho do relatório"}"
+BRIEF4="${BRIEF4/"Esse foi o único ponto que ele não quis automatizar"/"A pessoa só confere os totais"}"
 prepara 04; resp "$RESP4" 04; brief 04 "$BRIEF4"
 roda 04 PASSA - "04 certo passa"
 prepara 04; resp "$RESP" 04; brief 04 "$BRIEF4"
