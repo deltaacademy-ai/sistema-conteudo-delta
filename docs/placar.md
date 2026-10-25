@@ -228,3 +228,16 @@ Dois achados da revisão: o portão relaxado deixava passar a linha 1 parafrasea
 | **Medição final**, 01 a 05 | Sonnet e Opus | `ccc16f9` | **10 de 10 PASSA** | `reaproveitar-final3` |
 
 Regressão `linkedin-post` 01 não rodou: a única mudança nele foi tirar uma frase sobre o `radar-pautas`. Sem mudança: critério afrouxado nenhum. Ainda não mecânico: se a tese nova difere de fato da origem (a revisão cega dos recortes 01 e 04 cobre).
+
+### Tarefa 6, volta de correção 2 (reaproveitar)
+
+Revisão cega reprovou 3 de 4 entregas: invenção nos recortes não recomendados, tipo e letra do briefing diferentes do recomendado, carrossel na ordem da origem, tese como o fecho virado método, tese de lá descrita errado. Skill: anti-invenção em todo recorte; tese nova não pode ser o fecho virado instrução, e com poucas teses distintas saem 2 recortes (dito em uma linha); `Tipo` e letra do briefing iguais ao recomendado (carrossel pedido: `carrossel` nos dois); ordem do `Ângulo` e do `Material bruto` pela tese nova; pedido de carrossel sempre recomenda carrossel; `O que muda` abre com "A tese de lá era ...; a tese nova é ...". Portão: cabeçalho `Briefing do ângulo <letra>` com a letra do `Recomendado:`, `Tipo` igual ao do recorte (sem diferença de caixa), `Tipo: carrossel` e `Formato: carrossel` no 04. A linha `O que muda` saiu da conta das 6 palavras, porque nomear a tese de lá ecoa o fecho (as outras linhas do recorte e o briefing seguem conferidos). Bug do portão corrigido: um item com rótulo próprio dentro do `Material bruto` ("Tempo do relatório: ...") encerrava o campo e dava falso reprovado.
+
+| Rodada | Modelo | Commit | Resultado | Pasta |
+|---|---|---|---|---|
+| Tentativas 7 a 9, 01 e 04 | Sonnet | até `dedf111` | 0 de 2, 0 de 2, 1 de 2 (eco do fecho em `Ângulo` e em `O que muda`; 04 sem recorte de carrossel recomendado) | `reaproveitar-g7`, `g8`, `g9` |
+| Medição 1, 01 a 05 | Sonnet e Opus | `dedf111` | 8 de 10 (01 Sonnet sem a palavra "tese"; 04 Opus com a linha 1 no `Ângulo` como exclusão) | `reaproveitar-final4` |
+| Tentativa 10, 01 e 04 | Sonnet | `dedf111` | 2 de 2 PASSA depois de tolerar caixa no `Tipo` | `reaproveitar-g10` |
+| **Medição final**, 01 a 05 | Sonnet e Opus | `51fc959` | **10 de 10 PASSA**, depois de corrigir o portão (falso reprovado do 04 Opus; reavaliada sem rodar modelo com `REAVALIAR=final5`, portão de `e3c9218`) | `reaproveitar-final5`, `final5r` |
+
+Invenção, tese e ordem seguem por leitura: o portão não vê "foi isso que fez o dono aceitar"; só a revisão cega vê.
