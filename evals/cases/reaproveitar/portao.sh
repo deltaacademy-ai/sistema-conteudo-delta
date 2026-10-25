@@ -114,8 +114,9 @@ confere_recortes() { # confere_recortes <arquivos> <fixture> <resposta> <caso.md
   # A linha 1 e o fecho da origem nao reaparecem: nenhuma sequencia de 6 palavras seguidas delas (texto
   # normalizado, sem maiusculas nem pontuacao) nos recortes nem no briefing fora do Material bruto. O fato
   # "o dono confere em dez" so existe na linha 1, entao fica permitido dentro do Material bruto, e la a
-  # unidade "minutos" depois do dez e invencao.
-  todo=$({ awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s"; awk '/^Material bruto:/{d=1; next} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/{d=0} !d' "$br"; })
+  # unidade "minutos" depois do dez e invencao. A linha "O que muda frente a origem" fica fora desta
+  # conta: ela existe para nomear a tese de la, e nomea-la fiel ecoa o fecho (o resto do recorte continua conferido).
+  todo=$({ awk '/^### Recorte/{d=1} /^Recomendado:/{d=0} d' "$s" | grep -v '^O que muda frente à origem:'; awk '/^Material bruto:/{d=1; next} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/{d=0} !d' "$br"; })
   src=$(perl -CSDA -e 'open F,"<:utf8",$ARGV[0]; local $/; $t=<F>; ($p)=split /\n/,$t; @pp=split /\n\n+/,$t; $u=$pp[-1]; print "$p\n$u\n"' "$fx/saida/post-2026-09-22-relatorio-mensal-automatizado.md")
   sob=$(sobrepoe "$src" <<< "$todo"); [ -z "$sob" ] || m="$m repete-a-linha-1-ou-o-fecho-da-origem:$sob"
   grep -qiE 'dez minutos' <<< "$todo$(awk '/^Material bruto:/{d=1} d && /^[A-ZÁÉÍÓÚ][^:]{0,40}:/ && !/^Material bruto:/{d=0} d' "$br")" && m="$m dez-minutos-inventado"

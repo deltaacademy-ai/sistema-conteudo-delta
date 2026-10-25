@@ -95,6 +95,11 @@ prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/$MB/Material bruto: O dono confer
 roda 01 "NAO PASSA" "dez-minutos-inventado" "01 reprova unidade que a origem não diz"
 prepara 01; resp "${RESP/a tese de lá era a economia de tempo e a nova é/o recorte A é}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "recomendado-sem-tese-de-la-e-nova" "01 reprova recomendado sem dizer a tese de la e a nova"
+prepara 01; resp "${RESP/a tese de lá era a economia de tempo e a nova é/a tese de lá era que decida o que ela confere antes de decidir o que o agente escreve, e a nova é}" 01; brief 01 "$BRIEF"
+roda 01 PASSA - "01 aceita a tese de la nomeada na linha O que muda"
+prepara 01; resp "${RESP/Faltas: um método/Tese: decida o que ela confere antes de decidir o que o agente escreve.
+Faltas: um método}" 01; brief 01 "$BRIEF"
+roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho em outra linha do recorte"
 prepara 01; resp "${RESP/vira um passo a passo/sai em minutos, e o dono confere em dez, vira um passo a passo}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da linha 1 no recorte"
 prepara 01; resp "${RESP/vira um passo a passo/O relatório mensal que levava um dia vira um passo a passo}" 01; brief 01 "$BRIEF"
