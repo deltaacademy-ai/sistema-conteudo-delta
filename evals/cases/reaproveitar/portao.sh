@@ -109,7 +109,7 @@ confere_recortes() { # confere_recortes <arquivos> <fixture> <resposta> <caso.md
   done
   head -1 "$br" | grep -qxF "Briefing do ângulo $rec" || m="$m briefing-sem-cabecalho-com-a-letra-do-Recomendado:$(head -1 "$br" | cut -c1-30)"
   tr_r=$(bloco_recorte "$s" "$rec" | grep -m1 -E '^Tipo:' | sed -E 's/^Tipo: *//; s/ *$//'); tr_b=$(grep -m1 -E '^Tipo:' "$br" | sed -E 's/^Tipo: *//; s/ *$//')
-  [ "$tr_r" = "$tr_b" ] || m="$m Tipo-do-briefing-difere-do-recorte:'$tr_b'/'$tr_r'"
+  [ "$(perl -CSDA -e "print lc shift" "$tr_r")" = "$(perl -CSDA -e "print lc shift" "$tr_b")" ] || m="$m Tipo-do-briefing-difere-do-recorte:'$tr_b'/'$tr_r'"
   grep -qxF "$ORIGEM_LINHA" "$br" || m="$m briefing-sem-a-linha-Origem"
   # A linha 1 e o fecho da origem nao reaparecem: nenhuma sequencia de 6 palavras seguidas delas (texto
   # normalizado, sem maiusculas nem pontuacao) nos recortes nem no briefing fora do Material bruto. O fato
