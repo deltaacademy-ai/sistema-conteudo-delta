@@ -100,9 +100,9 @@ roda 01 PASSA - "01 aceita a tese de la nomeada na linha O que muda"
 prepara 01; resp "${RESP/Faltas: um método/Tese: decida o que ela confere antes de decidir o que o agente escreve.
 Faltas: um método}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho em outra linha do recorte"
-prepara 01; resp "${RESP/vira um passo a passo/sai em minutos, e o dono confere em dez, vira um passo a passo}" 01; brief 01 "$BRIEF"
+prepara 01; resp "${RESP/Faltas: um método/Faltas: sai em minutos, e o dono confere em dez, e um método}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova o fecho da linha 1 no recorte"
-prepara 01; resp "${RESP/vira um passo a passo/O relatório mensal que levava um dia vira um passo a passo}" 01; brief 01 "$BRIEF"
+prepara 01; resp "${RESP/Faltas: um método/Faltas: o relatório mensal que levava um dia, e um método}" 01; brief 01 "$BRIEF"
 roda 01 "NAO PASSA" "repete-a-linha-1-ou-o-fecho-da-origem" "01 reprova linha 1 da origem no recorte"
 prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Funil: meio/Funil: meio
 Resultado: 2.468 horas economizadas}"

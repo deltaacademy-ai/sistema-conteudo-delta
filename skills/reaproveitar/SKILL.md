@@ -85,6 +85,7 @@ Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e 
 - `Falta`: cada item como `[FALTA: descrição]`, com os colchetes; sem colchetes, o item é lido como afirmação.
 - `Formato`: `carrossel` no recorte de carrossel, `post` nos demais.
 - A primeira linha do briefing é `Briefing do ângulo <letra>`, com a letra do `Recomendado:`, e o campo `Tipo` é exatamente o `Tipo:` do recorte recomendado na resposta. Pedido de carrossel: `Tipo: carrossel` nos dois lugares.
+- Quando o `Ângulo` disser o que ficou de fora, nomeie a espinha da origem em poucas palavras suas ("o processo em ordem cronológica"), nunca com as palavras do fecho.
 - Ordem: o `Ângulo` e o `Material bruto` seguem a ordem que a tese nova pede, não a do post. No carrossel, os slides vêm dessa ordem nova (o briefing diz qual slide abre com o quê), nunca etapa por etapa na ordem do post.
 - `Origem:` fica onde o formato do `angulo` a põe (depois de `Falta:`, antes de `Checagem:`), com a data e o tema da linha da base, copiados letra por letra: `Origem: reaproveita AAAA-MM-DD <tema>`.
 
