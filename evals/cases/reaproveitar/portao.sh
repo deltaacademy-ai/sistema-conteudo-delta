@@ -107,6 +107,9 @@ confere_recortes() { # confere_recortes <arquivos> <fixture> <resposta> <caso.md
   for k in 'Tipo' 'Tese' 'Ângulo' 'Leitura da pessoa' 'Formato' 'Material bruto' 'Falta'; do
     grep -qE "^$k:" "$br" || m="$m briefing-sem-$k"
   done
+  head -1 "$br" | grep -qxF "Briefing do ângulo $rec" || m="$m briefing-sem-cabecalho-com-a-letra-do-Recomendado:$(head -1 "$br" | cut -c1-30)"
+  tr_r=$(bloco_recorte "$s" "$rec" | grep -m1 -E '^Tipo:' | sed -E 's/^Tipo: *//; s/ *$//'); tr_b=$(grep -m1 -E '^Tipo:' "$br" | sed -E 's/^Tipo: *//; s/ *$//')
+  [ "$tr_r" = "$tr_b" ] || m="$m Tipo-do-briefing-difere-do-recorte:'$tr_b'/'$tr_r'"
   grep -qxF "$ORIGEM_LINHA" "$br" || m="$m briefing-sem-a-linha-Origem"
   # A linha 1 e o fecho da origem nao reaparecem: nenhuma sequencia de 6 palavras seguidas delas (texto
   # normalizado, sem maiusculas nem pontuacao) nos recortes nem no briefing fora do Material bruto. O fato
@@ -158,8 +161,8 @@ confere_03() { # confere_03 <arquivos> <resposta>
 confere_04() { # confere_04 <arquivos> <resposta>
   local m="" rec br
   rec=$(recomendada "$2"); br=$(briefings_novos "$1" | head -1)
-  bloco_recorte "$2" "$rec" | grep -qiE '^Tipo: *carrossel' || m="$m recorte-recomendado-sem-Tipo-carrossel"
-  [ -n "$br" ] && { grep -qiE '^Formato: *carrossel' "$br" || m="$m briefing-sem-Formato-carrossel"; }
+  bloco_recorte "$2" "$rec" | grep -qiE '^Tipo: *carrossel *$' || m="$m recorte-recomendado-sem-Tipo-carrossel"
+  [ -n "$br" ] && { grep -qiE '^Formato: *carrossel' "$br" || m="$m briefing-sem-Formato-carrossel"; grep -qiE '^Tipo: *carrossel *$' "$br" || m="$m briefing-sem-Tipo-carrossel"; }
   echo "$m"
 }
 

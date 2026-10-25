@@ -35,7 +35,8 @@ roda() { # roda <caso> <esperado: PASSA|NAO PASSA> <trecho do achado|-> <descric
 }
 
 ORIGEM="Origem: reaproveita 2026-09-22 Caso do relatório mensal automatizado"
-BRIEF="Tipo: posição
+BRIEF="Briefing do ângulo A
+Tipo: posição
 Tese: Quem assina o relatório decide o que a pessoa confere, e o agente escreve o resto.
 Ângulo: Na distribuidora de peças, o dono manteve a conferência humana nos totais de faturamento. O recorte fica na decisão do dono e deixa de fora o antes e depois do tempo.
 Leitura da pessoa: [FALTA: leitura da pessoa sobre a conferência do dono]
@@ -165,12 +166,23 @@ RESP4="${RESP/Tipo: educativo/Tipo: carrossel}"
 RESP4="${RESP4/vira um passo a passo/a tese de lá era a economia de tempo e a nova é um passo a passo}"
 RESP4="${RESP4/Recomendado: A, porque o fato da decisão do dono já está na peça./Recomendado: B, porque o pedido foi carrossel.}"
 BRIEF4="${BRIEF/Formato: post/Formato: carrossel}"
+BRIEF4="${BRIEF4/Briefing do ângulo A/Briefing do ângulo B}"
+BRIEF4="${BRIEF4/Tipo: posição/Tipo: carrossel}"
 prepara 04; resp "$RESP4" 04; brief 04 "$BRIEF4"
 roda 04 PASSA - "04 certo passa"
 prepara 04; resp "$RESP" 04; brief 04 "$BRIEF4"
 roda 04 "NAO PASSA" "recorte-recomendado-sem-Tipo-carrossel" "04 reprova recomendado que nao e carrossel"
 prepara 04; resp "$RESP4" 04; brief 04 "$BRIEF"
 roda 04 "NAO PASSA" "briefing-sem-Formato-carrossel" "04 reprova briefing em formato post"
+
+prepara 04; resp "$RESP4" 04; brief 04 "${BRIEF4/Tipo: carrossel/Tipo: educativo}"
+roda 04 "NAO PASSA" "Tipo-do-briefing-difere-do-recorte" "04 reprova briefing educativo com recorte carrossel"
+prepara 04; resp "$RESP4" 04; brief 04 "${BRIEF4/Briefing do ângulo B/Briefing do ângulo A}"
+roda 04 "NAO PASSA" "briefing-sem-cabecalho-com-a-letra-do-Recomendado" "04 reprova briefing de outra letra"
+prepara 01; resp "$RESP" 01; brief 01 "${BRIEF/Tipo: posição/Tipo: caso}"
+roda 01 "NAO PASSA" "Tipo-do-briefing-difere-do-recorte" "01 reprova Tipo do briefing diferente do recomendado"
+prepara 01; resp "$RESP" 01; brief 01 "$(printf '%s\n' "$BRIEF" | sed 1d)"
+roda 01 "NAO PASSA" "briefing-sem-cabecalho" "01 reprova briefing sem o cabecalho com a letra"
 
 # 05
 RESP5="Candidata 1: 2026-09-14 Caso da fila de chamados. 1.780 impressões, colado pela pessoa em 2026-09-24 (acima da média das duas medidas).

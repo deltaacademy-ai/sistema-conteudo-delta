@@ -52,6 +52,8 @@ Leia o texto de origem do início ao fim e anote, para não repetir:
 
 Os fatos disponíveis para um recorte são só estes: os da peça de origem, os de `prova.md`, as posições gerais de `voz.md` e o que a pessoa disse no pedido. Número ou fato novo dito no pedido (por exemplo "agora são 50 clientes") não é fato do recorte: `prova.md` não o tem, e a origem não o diz. Ele entra só como `[FALTA: fonte do número 50 clientes]`, com os colchetes, em todo lugar onde aparecer (em `Faltas:`, em `Falta:` do briefing e na resposta): o número escrito fora de um `[FALTA ...]` é fato dito, e a resposta pede que a pessoa o registre antes (o `contexto-negocio`, em "Acrescentar um fato dito pela pessoa", é o dono do formato de `prova.md`). Conta feita por você com os fatos que existem também é número inventado.
 
+A regra vale para todo recorte, o recomendado e os outros: nenhum recorte afirma causa, consequência, sequência de eventos, reação de alguém ou detalhe que a origem ou `prova.md` não digam ("foi isso que fez o dono aceitar", "a montagem foi a parte rápida" são invenção). O que o recorte precisaria e a origem não tem vai em `Faltas:` como `[FALTA: ...]`.
+
 ## Etapa 3: os recortes
 
 Proponha de 2 a 3 recortes que diferem entre si no tipo ou no fato que carregam: dois recortes do mesmo tipo com a mesma tese são a mesma escolha com outra roupa. Cada recorte é de um destes três modos:
@@ -60,7 +62,7 @@ Proponha de 2 a 3 recortes que diferem entre si no tipo ou no fato que carregam:
 - Outro tipo dos sete: o mesmo material numa estrutura diferente. O tipo só entra se a peça traz o que a linha "Exige" dele pede em `tipos-de-post.md`; o que falta vai em `Faltas:`.
 - Carrossel: quando a tese se divide em 3 a 9 passos ou itens que ficam de pé sozinhos, um por slide. Peça sem lista, só com cena e opinião, não sustenta carrossel: diga isso e ofereça o recorte mais próximo. A pessoa pediu carrossel e a origem sustenta: um dos recortes tem `Tipo: carrossel` e é o recomendado.
 
-Um recorte cai (e é trocado por outro) quando repete a linha 1, a tese ou a sequência de argumentos da origem, ou quando só muda as palavras. Teste: se a tese do recorte cabe na frase que você anotou como tese da origem, ele é a mesma peça. Dois recortes que usam os mesmos fatos na mesma ordem também são um só.
+Um recorte cai (e é trocado por outro) quando repete a linha 1, a tese ou a sequência de argumentos da origem, ou quando só muda as palavras. A tese nova também não pode ser o fecho da origem virado instrução ("antes de X, decida Y" com outro critério): isso é a mesma tese como método. Se a origem só sustenta poucas teses de fato distintas, entregue 2 recortes e não 3; o segundo ganha distância pelo `Tipo` ou pelo leitor (`icp.md`), sem forçar tese, e a resposta diz isso em uma linha ("a origem sustenta só duas teses distintas"). Teste: se a tese do recorte cabe na frase que você anotou como tese da origem, ele é a mesma peça. Dois recortes que usam os mesmos fatos na mesma ordem também são um só.
 
 Cada recorte sai neste formato:
 
@@ -72,7 +74,7 @@ O que muda frente à origem: [a linha 1, a tese e a ordem dos argumentos que fic
 Faltas: [cada falta como [FALTA: descrição], ou "nada"]
 ```
 
-Em `Tipo: carrossel`, a linha traz só a palavra `carrossel`, sem o tipo do conteúdo ao lado (nem "educativo, formato carrossel"), porque ela só diz o formato; o tipo do conteúdo vai no briefing, no campo `Tipo`. Tese sem paralelismo negativo ("não é X, é Y" e as variantes).
+Em `Tipo: carrossel`, a linha traz só a palavra `carrossel`, sem o tipo do conteúdo ao lado (nem "educativo, formato carrossel"), porque ela só diz o formato; o `Tipo` do briefing do recomendado é o mesmo (`carrossel`), e o `Formato` também. Tese sem paralelismo negativo ("não é X, é Y" e as variantes).
 
 ## Etapa 4: o briefing do recomendado
 
@@ -82,11 +84,13 @@ Recomende um recorte: o que o material da origem sustenta com menos `[FALTA]` e 
 - `Leitura da pessoa`: só o que ela disse, ou `[FALTA: leitura da pessoa sobre X]`. Ela traz a tese nova do recorte, nunca reafirma a tese da origem nem o fecho dela; uma frase de apoio da origem pode entrar com a fonte "peça de AAAA-MM-DD", e leitura nova não se inventa.
 - `Falta`: cada item como `[FALTA: descrição]`, com os colchetes; sem colchetes, o item é lido como afirmação.
 - `Formato`: `carrossel` no recorte de carrossel, `post` nos demais.
+- A primeira linha do briefing é `Briefing do ângulo <letra>`, com a letra do `Recomendado:`, e o campo `Tipo` é exatamente o `Tipo:` do recorte recomendado na resposta. Pedido de carrossel: `Tipo: carrossel` nos dois lugares.
+- Ordem: o `Ângulo` e o `Material bruto` seguem a ordem que a tese nova pede, não a do post. No carrossel, os slides vêm dessa ordem nova (o briefing diz qual slide abre com o quê), nunca etapa por etapa na ordem do post.
 - `Origem:` fica onde o formato do `angulo` a põe (depois de `Falta:`, antes de `Checagem:`), com a data e o tema da linha da base, copiados letra por letra: `Origem: reaproveita AAAA-MM-DD <tema>`.
 
 O briefing não leva a linha 1 da origem, nem a tese dela, nem a sequência de argumentos dela.
 
-No recorte recomendado, `O que muda frente à origem:` diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas, e com a palavra "tese". Diga o assunto da tese de lá, não a frase dela: copiar ou encurtar o fecho da origem (mesmo entre parênteses ou como "a origem fecha dizendo que ...") reprova, e a mesma regra vale para a linha 1. Exemplo da forma: "a tese de lá era sobre economia de tempo; a nova é sobre quem responde pelo número".
+No recorte recomendado, `O que muda frente à origem:` diz em uma linha qual era a tese da origem e qual é a nova, com palavras suas, e com a palavra "tese". Nomeie a tese de lá pelo que a origem afirma (a regra que o fecho dá), não pela abertura nem pelo assunto que ela mais ocupa, e não copie a frase: copiar ou encurtar o fecho da origem (mesmo entre parênteses ou como "a origem fecha dizendo que ...") reprova, e a mesma regra vale para a linha 1. Exemplo da forma, em outro caso: "a tese de lá era que prazo curto manda cortar escopo; a nova é sobre quem decide o corte".
 
 ## Etapa 5: a sugestão ("o que vale reaproveitar?")
 
