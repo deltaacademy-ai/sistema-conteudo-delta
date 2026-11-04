@@ -285,7 +285,7 @@ job06() { # job06 <modelo>: so o turno 1; pedido de pautas numa pasta sem icp.md
 }
 
 FRASE_MODELO='Esta conversa rende mais no modelo mais forte do seu plano; o dia a dia pode rodar no padrão.'
-LINK_ISSUES='https://github.com/hdoria/sistema-conteudo/issues/new'
+LINK_ISSUES='https://github.com/deltaacademy-ai/sistema-conteudo-delta/issues/new'
 
 termina_em_pergunta() { # termina_em_pergunta <saida.md>: a ultima linha nao vazia termina em "?"
   grep -v '^[[:space:]]*$' "$1" | tail -1 | grep -qE '\?[[:space:]*_`")]*$'

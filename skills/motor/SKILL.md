@@ -87,7 +87,7 @@ Mascarar tudo o que vai na cerca, antes de entregar:
 - A máscara vale para a resposta inteira, não só para a cerca: ao comentar o erro, o motor não repete o token nem o caminho original. Se havia token, diga em uma linha, sem repeti-lo, que ele apareceu na conversa e deve ser revogado e trocado por outro.
 - Não entram, mesmo que estejam à vista: senha, chave, nome de cliente, número de `prova.md`, trecho de `voz.md`, `voz-bruta.md`, `icp.md` ou do post.
 
-Depois da cerca, o link `https://github.com/hdoria/sistema-conteudo/issues/new` e uma linha dizendo que a issue fica visível para quem tem acesso ao repositório, e por isso o pedido não leva dado sensível. O motor não abre a issue (nenhum comando dele toca em rede) e a resposta termina aí, sem pergunta. O `.github/ISSUE_TEMPLATE/suporte.md` traz os mesmos seis rótulos para quem abre a issue à mão.
+Depois da cerca, o link `https://github.com/deltaacademy-ai/sistema-conteudo-delta/issues/new` e uma linha dizendo que o repositório é público, então qualquer pessoa vê a issue, e por isso o pedido não leva dado sensível. O motor não abre a issue (nenhum comando dele toca em rede) e a resposta termina aí, sem pergunta. O `.github/ISSUE_TEMPLATE/suporte.md` traz os mesmos seis rótulos para quem abre a issue à mão.
 
 ## Etapa 2: até a peça principal
 

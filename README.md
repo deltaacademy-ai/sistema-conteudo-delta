@@ -8,7 +8,7 @@ Um conjunto de especialistas (skills) que leem o contexto do comprador em `conte
 
 ## Instalação
 
-Passo a passo completo em [INSTALAR.md](INSTALAR.md): convite do repositório, credencial do git, instalação do plugin, pasta de contexto e primeiro uso.
+Passo a passo completo em [INSTALAR.md](INSTALAR.md): instalação do plugin, pasta de contexto e primeiro uso.
 
 Para desenvolver no próprio plugin, sem instalar:
 

@@ -35,7 +35,7 @@ done
 
 # 4. INSTALAR.md
 if grep -Eq '/[0-9]+\.[0-9]+\.[0-9]+([^0-9.]|$)' "$raiz/INSTALAR.md"; then erro "INSTALAR.md tem numero de versao em caminho"; else ok "INSTALAR.md sem versao em caminho"; fi
-if grep -Fq 'claude plugin install sistema-conteudo --marketplace hdoria/sistema-conteudo' "$raiz/INSTALAR.md"; then ok "INSTALAR.md traz a instalacao de uma linha"; else erro "INSTALAR.md sem a instalacao de uma linha"; fi
+if grep -Fq 'claude plugin install sistema-conteudo --marketplace deltaacademy-ai/sistema-conteudo-delta' "$raiz/INSTALAR.md"; then ok "INSTALAR.md traz a instalacao de uma linha"; else erro "INSTALAR.md sem a instalacao de uma linha"; fi
 
 # 5. icone
 ic="$raiz/.claude-plugin/icon.png"

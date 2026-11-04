@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Teste de instalacao limpa: simula a maquina de quem acabou de aceitar o convite.
+# Teste de instalacao limpa: simula a maquina de quem vai instalar pela primeira vez.
 # Tudo roda em HOME temporario ($H). Nao toca no HOME real nem em ~/.claude.
 #
 # uso: instalacao-limpa.sh
@@ -77,7 +77,7 @@ git config --global credential.helper "!$gh_bin auth git-credential"
 if [ "$(git config --global credential.helper)" = "!$gh_bin auth git-credential" ]; then ok "1 credential helper do gh gravado no HOME temporario"; else erro "1 credential helper nao gravou"; fi
 
 # 2. git ls-remote
-if GH_TOKEN="$tok" limite 60 git ls-remote https://github.com/hdoria/sistema-conteudo.git HEAD > "$log/lsremote" 2>&1 && grep -qE '^[0-9a-f]{40}[[:space:]]+HEAD$' "$log/lsremote"; then
+if GH_TOKEN="$tok" limite 60 git ls-remote https://github.com/deltaacademy-ai/sistema-conteudo-delta.git HEAD > "$log/lsremote" 2>&1 && grep -qE '^[0-9a-f]{40}[[:space:]]+HEAD$' "$log/lsremote"; then
   ok "2 git ls-remote devolve uma linha com HEAD"
 else
   erro "2 git ls-remote sem linha HEAD"; mostra "$log/lsremote"
@@ -88,7 +88,7 @@ fi
 # GH_TOKEN do ambiente. Por isso este item prova o transporte HTTPS sem SSH, mas nao
 # o fluxo `gh auth setup-git` do INSTALAR.md: prova-lo exigiria gravar credencial em $H.
 # Esse fluxo so e provado no roteiro da pessoa real.
-GH_TOKEN="$tok" limite 240 claude plugin install sistema-conteudo --marketplace hdoria/sistema-conteudo > "$log/install" 2>&1 < /dev/null
+GH_TOKEN="$tok" limite 240 claude plugin install sistema-conteudo --marketplace deltaacademy-ai/sistema-conteudo-delta > "$log/install" 2>&1 < /dev/null
 cod=$?
 if [ "$cod" -ne 0 ] && grep -Eqi 'not logged in|/login|please log ?in|sign in|authenticat' "$log/install"; then
   erro "3 login exigido (o item e os seguintes passam para o roteiro da pessoa real)"; mostra "$log/install"

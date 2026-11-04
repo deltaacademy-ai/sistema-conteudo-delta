@@ -5,7 +5,7 @@ title: "Suporte: "
 labels: suporte
 ---
 
-Esta issue fica visível para quem tem acesso ao repositório. Não cole senha, token, chave, nome de cliente nem trecho dos seus arquivos de voz, prova ou ICP.
+O repositório é público: qualquer pessoa vê esta issue. Não cole senha, token, chave, nome de cliente nem trecho dos seus arquivos de voz, prova ou ICP.
 
 ```
 Onde parou:
